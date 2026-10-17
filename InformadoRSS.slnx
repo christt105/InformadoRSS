@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/InformadoRSS/InformadoRSS.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/InformadoRSS.Tests/InformadoRSS.Tests.csproj" />
+  </Folder>
+</Solution>
