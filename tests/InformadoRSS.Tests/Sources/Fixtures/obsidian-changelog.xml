@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:base="en">
+	<title>Obsidian Changelog</title>
+	<subtitle>Follow new releases of Obsidian for mobile and desktop.</subtitle>
+	<link href="https://obsidian.md/changelog.xml" rel="self"/>
+	<link href="https://obsidian.md/"/>
+	<updated>2026-10-05T00:00:00Z</updated>
+	<id>https://obsidian.md/</id>
+	<author>
+		<name>Obsidian</name>
+	</author>
+	
+	<entry>
+		<title>Obsidian 1.14 Mobile (Public)</title>
+		<link href="https://obsidian.md/changelog/2026-10-05-mobile-v1.14.4/"/>
+		<updated>2026-10-05T00:00:00Z</updated>
+		<id>https://obsidian.md/changelog/2026-10-05-mobile-v1.14.4/</id>
+		<content type="html">&lt;p&gt;Includes all new features and bug fixes up to &lt;a href=&quot;/changelog/2026-10-05-desktop-v1.14.4/&quot;&gt;Obsidian Desktop v1.14.4&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;While you’re here… Tell us about your favorite plugins, themes, tools, and ways to use Obsidian: &lt;a href=&quot;https://2026.obsidian.md/&quot;&gt;take the State of Obsidian 2026 survey&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;Quick Capture on iOS&lt;/h2&gt;
+&lt;p&gt;On iOS 26, &lt;strong&gt;Quick Capture&lt;/strong&gt; lets you instantly create notes from the &lt;strong&gt;Lock Screen&lt;/strong&gt;, &lt;strong&gt;Control Center&lt;/strong&gt;, &lt;strong&gt;Home Screen&lt;/strong&gt; widgets, or &lt;strong&gt;Shortcuts&lt;/strong&gt; without waiting for your vault to load.&lt;/p&gt;
+&lt;div style=&quot;padding:75% 0 0 0;position:relative;&quot;&gt;&lt;div class=&quot;interface&quot; style=&quot;height:100%;left:0;position:absolute;top:0;width:100%;&quot;&gt;&lt;iframe src=&quot;https://fast.wistia.net/embed/iframe/68joh49r5z?web_component=true&amp;seo=false&quot; title=&quot;1.14 Quick Capture&quot; allow=&quot;autoplay; fullscreen&quot; allowtransparency=&quot;true&quot; frameborder=&quot;0&quot; scrolling=&quot;no&quot; class=&quot;wistia_embed&quot; name=&quot;wistia_embed&quot; width=&quot;100%&quot; height=&quot;100%&quot;&gt;&lt;/iframe&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;Customize &lt;a href=&quot;https://obsidian.md/help/ios&quot;&gt;Locations&lt;/a&gt; to capture to a new note, today’s daily note, a bookmarked note, or any note you choose, with optional templates.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Improvements&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Text and interface elements now scale with your system’s preferred text size, including larger accessibility sizes.&lt;/li&gt;
+&lt;li&gt;Right-to-left (RTL) languages: Swipe gestures and page animations are now flipped.&lt;/li&gt;
+&lt;li&gt;Settings now open in a sheet over the app. Swipe anywhere to dismiss.&lt;/li&gt;
+&lt;li&gt;iOS: Added support for the new extra large widgets in iOS 27 for &lt;strong&gt;View Note&lt;/strong&gt; and &lt;strong&gt;Quick Capture&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;iOS: &lt;strong&gt;Share Sheet&lt;/strong&gt; now uses the vault accent color.&lt;/li&gt;
+&lt;li&gt;Android: The &lt;strong&gt;Open Note&lt;/strong&gt; widget now displays the name of the note.&lt;/li&gt;
+&lt;li&gt;Android: The “Insert attachment” mobile toolbar button now allows taking a photo directly.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Bases&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Revised the toolbar layout. The new &lt;strong&gt;Group&lt;/strong&gt; menu is available inside the &lt;strong&gt;Display&lt;/strong&gt; toolbar menu.&lt;/li&gt;
+&lt;li&gt;Opening the view configuration page no longer automatically focuses the view name.&lt;/li&gt;
+&lt;li&gt;The “Add view” command now automatically focuses the view name input.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;No longer broken&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Fixed “Setup Obsidian Sync” on the vault chooser screen loading forever after your login expired.&lt;/li&gt;
+&lt;li&gt;The &lt;strong&gt;Configure toolbar&lt;/strong&gt; button now takes you directly to the mobile toolbar settings page (previously it took you to “Interface”).&lt;/li&gt;
+&lt;li&gt;Fixed Hotkeys settings overflowing and causing the page to scroll horizontally.&lt;/li&gt;
+&lt;li&gt;Fixed missing close animation when tapping the “x” button in the command palette.&lt;/li&gt;
+&lt;li&gt;Fixed the vault switcher not always showing a dark keyboard.&lt;/li&gt;
+&lt;li&gt;Bases: Fixed exporting a view as a CSV file.&lt;/li&gt;
+&lt;li&gt;Bases: Fixed table view losing its horizontal scroll position when the pull-down action is triggered.&lt;/li&gt;
+&lt;li&gt;iOS: Fixed syllables sometimes disappearing while typing in Korean.&lt;/li&gt;
+&lt;li&gt;iOS: Fixed the &lt;strong&gt;Share Sheet&lt;/strong&gt; generating invalid filenames for Instagram posts.&lt;/li&gt;
+&lt;li&gt;iOS: Fixed the progress bar briefly flashing during startup.&lt;/li&gt;
+&lt;li&gt;iPad: Fixed incorrect app and status bar sizing when resizing windows in &lt;strong&gt;Split View&lt;/strong&gt; or &lt;strong&gt;Stage Manager&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;Android: Fixed the splash screen rendering incorrectly.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Developers&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Use &lt;code&gt;--font-preferred-size&lt;/code&gt; for text that should respect the system’s preferred text size. On mobile, it combines &lt;code&gt;--font-text-size&lt;/code&gt; with the &lt;code&gt;--preferred-text-scale&lt;/code&gt; multiplier.&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+	</entry>
+	
+	<entry>
+		<title>Obsidian 1.14 Desktop (Public)</title>
+		<link href="https://obsidian.md/changelog/2026-10-05-desktop-v1.14.4/"/>
+		<updated>2026-10-05T00:00:00Z</updated>
+		<id>https://obsidian.md/changelog/2026-10-05-desktop-v1.14.4/</id>
+		<content type="html">&lt;p&gt;This update introduces support for opening individual Markdown files, a kanban view for Bases, and highlight colors.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Important: opening Markdown files requires the latest installer.&lt;/strong&gt; &lt;a href=&quot;https://obsidian.md/download&quot;&gt;Download Obsidian from our website&lt;/a&gt; and reinstall the app.&lt;/p&gt;
+&lt;p&gt;While you’re here… Tell us about your favorite plugins, themes, tools, and ways to use Obsidian: &lt;a href=&quot;https://2026.obsidian.md/&quot;&gt;take the State of Obsidian 2026 survey&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;Open individual Markdown files&lt;/h2&gt;
+&lt;p&gt;You can now open individual Markdown files from outside your vault in Obsidian, and preview them on macOS using &lt;strong&gt;Quick Look&lt;/strong&gt;. Files open in your current window.&lt;/p&gt;
+&lt;div style=&quot;padding:65.63% 0 0 0;position:relative;&quot;&gt;&lt;div class=&quot;interface&quot; style=&quot;height:100%;left:0;position:absolute;top:0;width:100%;&quot;&gt;&lt;iframe src=&quot;https://fast.wistia.net/embed/iframe/c9mxbcrled?web_component=true&amp;seo=false&quot; title=&quot;1.14 Quick Look&quot; allow=&quot;autoplay; fullscreen&quot; allowtransparency=&quot;true&quot; frameborder=&quot;0&quot; scrolling=&quot;no&quot; class=&quot;wistia_embed&quot; name=&quot;wistia_embed&quot; width=&quot;100%&quot; height=&quot;100%&quot;&gt;&lt;/iframe&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;Added the “Open file from outside the vault…” command. Pick a Markdown file on your computer and view it in the app.&lt;/li&gt;
+&lt;li&gt;Obsidian now appears in your operating system’s &lt;strong&gt;Open with&lt;/strong&gt; menu, and you can set it as the default app for Markdown files.&lt;/li&gt;
+&lt;li&gt;On macOS you can use Quick Look previews for Markdown files even when Obsidian is closed.&lt;/li&gt;
+&lt;li&gt;Added document icons on macOS and Windows for &lt;code&gt;.md&lt;/code&gt;, &lt;code&gt;.base&lt;/code&gt; and &lt;code&gt;.canvas&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Image embeds and links to other local files resolve relative to the Markdown file’s folder.&lt;/li&gt;
+&lt;li&gt;Use &lt;strong&gt;Outline&lt;/strong&gt; to navigate headings and &lt;strong&gt;Outgoing links&lt;/strong&gt; to browse linked files.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Kanban view and group options for Bases&lt;/h2&gt;
+&lt;p&gt;Bases now has a &lt;a href=&quot;https://obsidian.md/help/bases/views/kanban&quot;&gt;kanban&lt;/a&gt; view. Organize your notes into columns and drag cards between groups. You can also reorder and hide groups in any Bases view using the new &lt;strong&gt;Group&lt;/strong&gt; menu.&lt;/p&gt;
+&lt;div style=&quot;padding:75.63% 0 0 0;position:relative;&quot;&gt;&lt;div class=&quot;interface&quot; style=&quot;height:100%;left:0;position:absolute;top:0;width:100%;&quot;&gt;&lt;iframe src=&quot;https://fast.wistia.net/embed/iframe/qk8iuqz6k1?web_component=true&amp;seo=false&quot; title=&quot;1.14 Kanban&quot; allow=&quot;autoplay; fullscreen&quot; allowtransparency=&quot;true&quot; frameborder=&quot;0&quot; scrolling=&quot;no&quot; class=&quot;wistia_embed&quot; name=&quot;wistia_embed&quot; width=&quot;100%&quot; height=&quot;100%&quot;&gt;&lt;/iframe&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;Use the &lt;strong&gt;Group&lt;/strong&gt; menu to choose a grouping property and reorder, hide, or add groups.&lt;/li&gt;
+&lt;li&gt;Groups are now collapsible in the table, cards, and list layouts.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Highlight colors&lt;/h2&gt;
+&lt;p&gt;Bring color to your notes with six highlight colors.&lt;/p&gt;
+&lt;div style=&quot;padding:76.25% 0 0 0;position:relative;&quot;&gt;&lt;div class=&quot;interface&quot; style=&quot;height:100%;left:0;position:absolute;top:0;width:100%;&quot;&gt;&lt;iframe src=&quot;https://fast.wistia.net/embed/iframe/e7qahtvla4?web_component=true&amp;seo=false&quot; title=&quot;1.14 Highlight colors&quot; allow=&quot;autoplay; fullscreen&quot; allowtransparency=&quot;true&quot; frameborder=&quot;0&quot; scrolling=&quot;no&quot; class=&quot;wistia_embed&quot; name=&quot;wistia_embed&quot; width=&quot;100%&quot; height=&quot;100%&quot;&gt;&lt;/iframe&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;Add a color emoji (🔴, 🟠, 🟡, 🟢, 🔵, 🟣) at the start of a highlight, or choose a color from the formatting menu.&lt;/li&gt;
+&lt;li&gt;Typing &lt;code&gt;==&lt;/code&gt; in the editor now suggests highlight colors.&lt;/li&gt;
+&lt;li&gt;Live Preview: When the cursor overlaps a highlight, an inline swatch now appears. Click it to quickly change the highlight color.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Improvements&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Improved fuzzy search in the quick switcher and suggestions. Matches where your letters start words now rank higher.&lt;/li&gt;
+&lt;li&gt;Link suggestions and the quick switcher now use fuzzy matching in vaults of any size.&lt;/li&gt;
+&lt;li&gt;Improved search in the File Explorer, Bookmarks, Outline, Tags, and Sync views. Search now matches the full path of each item, and everything inside a matching item stays visible. Groups with nothing to show are hidden.&lt;/li&gt;
+&lt;li&gt;Excluding a search term (e.g. &lt;code&gt;-Archive&lt;/code&gt;) in the File Explorer, Bookmarks, Outline, and Sync views now hides a matching folder and everything inside it.&lt;/li&gt;
+&lt;li&gt;Improved drag and drop in the File Explorer. The view now smoothly scrolls when dragging near the edge.&lt;/li&gt;
+&lt;li&gt;The entire workspace, including the sidebars, now flips when Obsidian is set to a right-to-left (RTL) language. Commands stay the same, so “Toggle left sidebar” now refers to the visual left sidebar, even when the interface is flipped.&lt;/li&gt;
+&lt;li&gt;Redesigned the empty state and added “New base” and “New canvas” when their plugins are enabled.&lt;/li&gt;
+&lt;li&gt;Added “Increase font size” and “Decrease font size” commands.&lt;/li&gt;
+&lt;li&gt;Base font size is now saved per device and no longer syncs through Obsidian Sync.&lt;/li&gt;
+&lt;li&gt;Added an update notice in &lt;strong&gt;Settings → General&lt;/strong&gt; when a newer installer is available.&lt;/li&gt;
+&lt;li&gt;All in-app links now take you to the localized version of the Obsidian website.&lt;/li&gt;
+&lt;li&gt;When opening an untrusted vault, themes and snippets are temporarily disabled while the “Do you trust the author of this vault” dialog is on screen.&lt;/li&gt;
+&lt;li&gt;Format converter: Removed old formats from the converter plugin.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Performance&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Fixed periodic input lag in large vaults caused by properties getting recomputed in the background.&lt;/li&gt;
+&lt;li&gt;Fixed the app freezing when searching headings across all notes (&lt;code&gt;[[##&lt;/code&gt;) in large vaults.&lt;/li&gt;
+&lt;li&gt;Fuzzy search in the quick switcher and suggestions is now faster in large vaults.&lt;/li&gt;
+&lt;li&gt;Closing popout windows (such as Settings) is now much faster.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Bases&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Added right-to-left (RTL) support to table views, including keyboard navigation, selections, and horizontal scrolling.&lt;/li&gt;
+&lt;li&gt;Improved how dates and times are rendered in group headers and in read-only layouts (e.g. Cards, Kanban).&lt;/li&gt;
+&lt;li&gt;A base made with “Create new base” now names its first view “View” instead of “Table”.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Editor&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Pasting a list item onto a line that already contains a list marker (e.g. &lt;code&gt;- [ ] &lt;/code&gt;) no longer duplicates the marker.&lt;/li&gt;
+&lt;li&gt;In Source mode, pressing &lt;code&gt;↑&lt;/code&gt; on the first line of a note now moves the cursor to the inline title, like in Live Preview.&lt;/li&gt;
+&lt;li&gt;Improved the inline formatting commands. For example, “Toggle bold” on this line:&lt;pre&gt;&lt;code&gt;some **bold |text** on the line|
+&lt;/code&gt;&lt;/pre&gt;
+now results in:&lt;pre&gt;&lt;code&gt;some **bold text on the line**
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;No longer broken&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Fixed copy and paste not working correctly in popout windows, including copying and pasting notes in Canvas.&lt;/li&gt;
+&lt;li&gt;Fixed property suggestions sometimes showing results for an earlier query, which made &lt;code&gt;Enter&lt;/code&gt; pick an old link instead of what you typed.&lt;/li&gt;
+&lt;li&gt;Fixed pressing &lt;code&gt;Enter&lt;/code&gt; on an invalid title in an embedded note (e.g. a new note from Bases) reverting the title and moving focus out of it. The title now stays focused so you can fix the name.&lt;/li&gt;
+&lt;li&gt;Fixed tooltips briefly disappearing when moving between adjacent items.&lt;/li&gt;
+&lt;li&gt;Fixed page preview showing behind Bases toolbar menus.&lt;/li&gt;
+&lt;li&gt;Fixed a potential iframe injection in the Slides plugin.&lt;/li&gt;
+&lt;li&gt;Fixed incorrect language code used for Khmer.&lt;/li&gt;
+&lt;li&gt;Web viewer: Fixed Google sign-in failing.&lt;/li&gt;
+&lt;li&gt;Note composer: Fixed “Extract this heading” not preserving the newline when there is only one newline between the section and the next heading.&lt;/li&gt;
+&lt;li&gt;Canvas: Fixed a card narrowed to a heading or block still showing that section after using &lt;strong&gt;Swap file…&lt;/strong&gt; to pick the same file.&lt;/li&gt;
+&lt;li&gt;Vim: Fixed deleting and pasting a numbered list item inserting blank lines and empty numbered items.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Bases&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Fixed the “+” button not generating correct frontmatter for unresolved links, e.g. &lt;code&gt;file.hasLink(&amp;quot;[[unresolved]]&amp;quot;)&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Fixed a long property name in a filter rule pushing the operator and value out of view.&lt;/li&gt;
+&lt;li&gt;Fixed “Hide all” causing the properties menu to render incorrectly.&lt;/li&gt;
+&lt;li&gt;Fixed “Copy path” showing up below “Delete” when you right-click a file in a table or cards view.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Editor&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Fixed &lt;code&gt;Option-Shift-↑&lt;/code&gt; and &lt;code&gt;Option-Shift-↓&lt;/code&gt; not working consistently on macOS in long paragraphs, where the scroll position would sometimes reset and the text selection would be incorrect.&lt;/li&gt;
+&lt;li&gt;Fixed incorrect cursor placement when moving the cursor to the end of the line with multiple formatting markers (e.g. &lt;code&gt;**__text__**&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;Fixed &lt;code&gt;↑&lt;/code&gt; not moving from the editor to the inline title when there are no properties.&lt;/li&gt;
+&lt;li&gt;Fixed &lt;code&gt;Home&lt;/code&gt; and &lt;code&gt;End&lt;/code&gt; keys in right-to-left languages.&lt;/li&gt;
+&lt;li&gt;Fixed a parser issue where &lt;code&gt;![](&lt;/code&gt; caused all following text in the document to be treated as part of the image.&lt;/li&gt;
+&lt;li&gt;Fixed Markdown formatting characters not parsing correctly around emails (e.g. &lt;code&gt;*Some email: random@example.com*&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;Fixed clicking on collapsed reference links (e.g. &lt;code&gt;[link][]&lt;/code&gt;) going to the wrong destination.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Third-party libraries&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Math rendering now uses MathJax 4.1.3, replacing MathJax 3.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Developers&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;The installer has been updated to use Electron v43.7.5. To upgrade, visit the &lt;a href=&quot;https://obsidian.md/download&quot;&gt;Obsidian download page&lt;/a&gt; and reinstall Obsidian.&lt;/li&gt;
+&lt;li&gt;Editor: Each line of a math block (&lt;code&gt;$$&lt;/code&gt;) now has the &lt;code&gt;.HyperMD-math&lt;/code&gt; class.&lt;/li&gt;
+&lt;li&gt;Settings: Added optional &lt;code&gt;SettingDefinitionItem#id&lt;/code&gt; for setting a unique ID on individual settings. Think of it like &lt;code&gt;&amp;lt;div key={key} /&amp;gt;&lt;/code&gt; in React. Use it to differentiate between sibling settings that share a name, or to keep a stable reference when a setting or setting page is renamed.&lt;/li&gt;
+&lt;li&gt;Added CSS variables for tooltips, notices, hotkeys, and tabs, using the prefixes &lt;code&gt;--tooltip-&lt;/code&gt;, &lt;code&gt;--notice-&lt;/code&gt;, &lt;code&gt;--hotkey&lt;/code&gt;, &lt;code&gt;--tab-inner-&lt;/code&gt; and &lt;code&gt;--tab-container-&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+	</entry>
+	
+	<entry>
+		<title>Obsidian 1.14.4 Mobile (Early access)</title>
+		<link href="https://obsidian.md/changelog/2026-10-01-mobile-v1.14.4/"/>
+		<updated>2026-10-01T00:00:00Z</updated>
+		<id>https://obsidian.md/changelog/2026-10-01-mobile-v1.14.4/</id>
+		<content type="html">&lt;ul&gt;
+&lt;li&gt;Includes all new features and bug fixes up to Obsidian Desktop 1.14.4.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;No longer broken&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Bases: Fixed kanban view not scrolling horizontally when every card is hidden.&lt;/li&gt;
+&lt;li&gt;Bases: Fixed table view losing its horizontal scroll position when the pull-down action is triggered.&lt;/li&gt;
+&lt;li&gt;Bases: Fixed kanban columns resizing on mobile when the keyboard opens or closes.&lt;/li&gt;
+&lt;li&gt;Bases: Opening the view configuration page no longer automatically focuses the view name.&lt;/li&gt;
+&lt;li&gt;Bases: “Add view” command now automatically focuses the view name input.&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+	</entry>
+	
+	<entry>
+		<title>Obsidian 1.14.4 Desktop (Early access)</title>
+		<link href="https://obsidian.md/changelog/2026-10-01-desktop-v1.14.4/"/>
+		<updated>2026-10-01T00:00:00Z</updated>
+		<id>https://obsidian.md/changelog/2026-10-01-desktop-v1.14.4/</id>
+		<content type="html">&lt;h2&gt;Improvements&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Bases: Added “Hide column” to the right-click menu of a kanban column.&lt;/li&gt;
+&lt;li&gt;Bases: A base made with “Create new base” now names its first view “View” instead of “Table”.&lt;/li&gt;
+&lt;li&gt;Search in the File Explorer, Bookmarks, Outline, and Sync views now matches the full path of each item. Excluding a term (e.g. &lt;code&gt;-Archive&lt;/code&gt;) now hides a matching folder and everything inside it.&lt;/li&gt;
+&lt;li&gt;The &lt;strong&gt;Outline&lt;/strong&gt; and &lt;strong&gt;Outgoing links&lt;/strong&gt; views now work for files opened from outside the vault.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;No longer broken&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Bases: Fixed “Copy path” showing up below “Delete” when you right-click a file in a table, cards, or kanban view.&lt;/li&gt;
+&lt;li&gt;Bases: Fixed a base failing to load when a view’s &lt;code&gt;groupOrder&lt;/code&gt; is not a list.&lt;/li&gt;
+&lt;li&gt;Bases: Fixed “Add group” in the &lt;strong&gt;Group&lt;/strong&gt; menu not adding a group when selecting a link suggestion.&lt;/li&gt;
+&lt;li&gt;Fixed property suggestions sometimes showing results for an earlier query, which made &lt;code&gt;Enter&lt;/code&gt; pick an old link instead of what you typed.&lt;/li&gt;
+&lt;li&gt;Fixed a memory leak in the metadata cache after opening and editing external files.&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+	</entry>
+	
+	<entry>
+		<title>Obsidian 1.14.3 Mobile (Early access)</title>
+		<link href="https://obsidian.md/changelog/2026-09-29-mobile-v1.14.3/"/>
+		<updated>2026-09-29T00:00:00Z</updated>
+		<id>https://obsidian.md/changelog/2026-09-29-mobile-v1.14.3/</id>
+		<content type="html">&lt;ul&gt;
+&lt;li&gt;Includes all new features and bug fixes up to Obsidian Desktop 1.14.3.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;New&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;iOS: Added template support to Quick Capture when its behavior is set to daily note or a selected note.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Improvements&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Bases: Improved the toolbar layout. Groups, Sort, Properties, and Results now appear inside a single “Display” toolbar menu item.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;No longer broken&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;iOS: Fixed a crash when launching the app on iOS 17 and earlier.&lt;/li&gt;
+&lt;li&gt;iOS: Fixed Quick Capture saving new notes in the same folder as the current file when the vault root is selected.&lt;/li&gt;
+&lt;li&gt;iOS: Fixed the Quick Capture location sheet not matching the active color scheme.&lt;/li&gt;
+&lt;li&gt;iOS: Fixed syllables sometimes disappearing while typing in Korean.&lt;/li&gt;
+&lt;li&gt;Fixed “Setup Obsidian Sync” on the vault chooser screen loading forever after your login expired.&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+	</entry>
+</feed>

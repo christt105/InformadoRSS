@@ -1,4 +1,5 @@
 using InformadoRSS;
+using InformadoRSS.Sources;
 using InformadoRSS.Storage;
 
 if (args.Length > 0 && args[0] == HealthCheckCommand.Flag)
@@ -25,6 +26,7 @@ builder.Services.ConfigureHttpJsonOptions(options =>
     options.SerializerOptions.TypeInfoResolverChain.Insert(0, AppJsonContext.Default));
 
 builder.Services.AddStorage();
+builder.Services.AddRssAtomSource();
 
 var app = builder.Build();
 
