@@ -6,27 +6,6 @@ using InformadoRSS.Core;
 
 namespace InformadoRSS.Sources;
 
-/// <summary>A parsed feed document.</summary>
-public sealed record ParsedFeed(string? Title, IReadOnlyList<FeedItem> Items);
-
-/// <summary>The document is not well-formed XML or not an RSS or Atom feed.</summary>
-public sealed class FeedParseException : Exception
-{
-    public FeedParseException()
-    {
-    }
-
-    public FeedParseException(string message)
-        : base(message)
-    {
-    }
-
-    public FeedParseException(string message, Exception innerException)
-        : base(message, innerException)
-    {
-    }
-}
-
 /// <summary>Parses RSS 2.0 (and 0.9x/1.0) and Atom documents into <see cref="FeedItem"/>s.</summary>
 public static class FeedParser
 {
