@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>mixx.io</title>
+	<atom:link href="https://mixx.io/feed/" rel="self" type="application/rss+xml" />
+	<link>https://mixx.io/</link>
+	<description>Boletín y podcast diario sobre tecnología que te explica lo que ocurre en el mundo de una forma amena y concisa.</description>
+	<lastBuildDate>Mon, 12 Oct 2026 17:28:57 +0000</lastBuildDate>
+	<language>es</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	
+
+<image>
+	<url>https://mixx.io/wp-content/uploads/2017/02/cropped-mixx_io_podcast-2-32x32.png</url>
+	<title>mixx.io</title>
+	<link>https://mixx.io/</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>Una casita hecha de manzanitas</title>
+		<link>https://mixx.io/2026/10/una-casita-hecha-de-manzanitas/</link>
+		
+		<dc:creator><![CDATA[Álex Barredo]]></dc:creator>
+		<pubDate>Mon, 12 Oct 2026 14:20:09 +0000</pubDate>
+				<category><![CDATA[Cupertino]]></category>
+		<guid isPermaLink="false">https://mixx.io/?p=19619</guid>
+
+					<description><![CDATA[<p>Apple tiene un octubre bastante más cargado de lo esperado. Hablamos de la «Apple Experience» del 13 de octubre y de los posibles nuevos productos para el hogar: Apple TV, HomePod mini y el esperado hub con HomeOS. También comentamos las cámaras, timbres y accesorios conectados que podrían acompañar esta nueva etapa de la domótica [&#8230;]</p>
+<p>Este artículo <a href="https://mixx.io/2026/10/una-casita-hecha-de-manzanitas/">Una casita hecha de manzanitas</a> está escrito para <a href="https://mixx.io">mixx.io</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<p>Apple tiene un octubre bastante más cargado de lo esperado. Hablamos de la «Apple Experience» del 13 de octubre y de los posibles nuevos productos para el hogar: Apple TV, HomePod mini y el esperado hub con HomeOS. También comentamos las cámaras, timbres y accesorios conectados que podrían acompañar esta nueva etapa de la domótica de Apple.</p>
+<p>Para finales de mes también esperamos novedades en los Mac, con un posible MacBook Pro M6 con pantalla OLED y táctil. Debatimos qué sentido tendría llevar por fin el tacto a macOS, cómo podría cambiar el diseño del portátil y qué otros dispositivos, como un nuevo iPad mini OLED, podrían aparecer junto a él.</p>
+<p>Ángel prueba además las nuevas tabletas de Amazon, ahora más cercanas a Android convencional y con Alexa en el centro de la experiencia. Aprovechamos para hablar de Panos Panay, nuevos procesadores ARM para Windows, Nvidia, Microsoft y algunos accesorios curiosos que recuerdan inevitablemente a ideas que Apple lleva años utilizando.</p>
+<p>Terminamos repasando las ventas de los nuevos iPhone, el regreso de la financiación a través de operadoras, las herramientas para eliminar Apple Intelligence de macOS y el debate sobre cuánto debería integrar Apple la IA en sus sistemas. Y, como siempre, cerramos con Apple TV+, Ted Lasso, Slow Horses y las últimas novedades de sus series.</p>
+<ul>
+<li><a href="https://www.elmundo.es/tecnologia/2026/10/08/6ac7a28ce85ece13048b45b4.html">Amazon jubila la marca Fire y abre sus tabletas a Google Play | Tecnología</a></li>
+<li><a href="https://www.reuters.com/business/retail-consumer/apple-cuts-iphone-18-pro-orders-due-soft-demand-nikkei-asia-reports-2026-10-09/">Apple cuts iPhone 18 Pro orders due to soft demand, Nikkei Asia reports | Reuters</a></li>
+<li><a href="https://github.com/nullmoth/nvidia-macos-driver">nullmoth/nvidia-macos-driver: Metal driver for NVIDIA GeForce RTX cards on macOS 15 Sequoia (Intel / OpenCore). Free, source included.</a></li>
+<li><a href="https://www.bloomberg.com/news/articles/2026-10-08/apple-set-to-debut-touch-screen-macbook-and-new-ipad-mini-in-late-october?accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb3VyY2UiOiJTdWJzY3JpYmVyR2lmdGVkQXJ0aWNsZSIsImlhdCI6MTc5MTQ5MDMwMCwiZXhwIjoxNzkyMDk1MTAwLCJhcnRpY2xlSWQiOiJUTUtNUllLSVVQU1cwMCIsImJjb25uZWN0SWQiOiJDNEVEQ0FFMUZBMDU0MEJFQTI0QTlGMjExQzFFOTA4MCJ9.FtH_qR7-ZMoCNHSPZzDhdIAtFuxSSOo7BPD87jeDEW4&amp;leadSource=article-gifting">Apple to Launch Touch-Screen MacBook, New iPad Mini at October Event &#8211; Bloomberg</a></li>
+<li><a href="https://www.bloomberg.com/news/features/2026-10-08/amazon-launches-alexa-tablet-features-ipad-comparison-prices-keyboard?accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb3VyY2UiOiJTdWJzY3JpYmVyR2lmdGVkQXJ0aWNsZSIsImlhdCI6MTc5MTQ2NDU4NiwiZXhwIjoxNzkyMDY5Mzg2LCJhcnRpY2xlSWQiOiJUTUxBU1FOM04wOTcwMCIsImJjb25uZWN0SWQiOiJDOTYyQ0UxOUMyOTc0NDBGQkMyNEQxQkQ2RDQ4MjczNSJ9.4iOHBQKhkP6uD8Oyi1p5LAsZ20DPZ3MjtK0VRHAvbuo&amp;leadSource=article-gifting">Amazon Launches Alexa+ Tablet: Features, iPad Comparison, Prices, Keyboard &#8211; Bloomberg</a></li>
+<li><a href="https://archive.ph/PWRqY">New leaks provide our first look at Apple and LG’s smart home devices | The Verge</a></li>
+<li><a href="https://www.mt.co.kr/en/tech/2026/10/08/2026100709554237233">[Exclusive] «There is no profit even if we sell»…Samsung to cut smartphone production by 30% &#8211; MoneyToday</a></li>
+<li><a href="https://9to5mac.com/2026/10/07/apple-may-have-to-officially-support-apple-intelligence-removal-on-macs-to-protect-sales/">Apple may have to officially support Apple Intelligence removal on Macs to protect sales</a></li>
+<li><a href="https://9to5mac.com/2026/10/06/apple-overtakes-samsung-to-lead-european-carrier-smartphone-sales-in-q2-per-report/">Apple overtakes Samsung to lead European carrier smartphone sales in Q2 &#8211; 9to5Mac</a></li>
+<li><a href="https://github.com/omlahore/RemoveMacAI">omlahore/RemoveMacAI: Debloat macOS: turn off Apple Intelligence, analytics, ads and pop-ups. A native app and CLI, and every change can be undone.</a></li>
+<li><a href="https://www.applesfera.com/apple-1/oficial-habra-lanzamiento-apple-13-octubre">Es oficial: habrá lanzamiento de Apple el 13 de octubre</a></li>
+</ul>
+<p>Este artículo <a href="https://mixx.io/2026/10/una-casita-hecha-de-manzanitas/">Una casita hecha de manzanitas</a> está escrito para <a href="https://mixx.io">mixx.io</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Ya no hay más «iPhones calientes en tu zona»</title>
+		<link>https://mixx.io/2026/10/ya-no-hay-mas-iphones-calientes-en-tu-zona/</link>
+		
+		<dc:creator><![CDATA[Álex Barredo]]></dc:creator>
+		<pubDate>Tue, 06 Oct 2026 14:36:30 +0000</pubDate>
+				<category><![CDATA[Cupertino]]></category>
+		<guid isPermaLink="false">https://mixx.io/?p=19615</guid>
+
+					<description><![CDATA[<p>Álex lleva ya varios días utilizando el nuevo iPhone 18 Pro y hay una mejora que le ha sorprendido por encima de todas: la gestión térmica. Comentamos cómo Apple ha conseguido mantener el rendimiento y, sobre todo, el brillo de la pantalla incluso bajo el sol y con temperaturas elevada. Repasamos además el desmontaje de [&#8230;]</p>
+<p>Este artículo <a href="https://mixx.io/2026/10/ya-no-hay-mas-iphones-calientes-en-tu-zona/">Ya no hay más «iPhones calientes en tu zona»</a> está escrito para <a href="https://mixx.io">mixx.io</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<p>Álex lleva ya varios días utilizando el nuevo iPhone 18 Pro y hay una mejora que le ha sorprendido por encima de todas: la gestión térmica. Comentamos cómo Apple ha conseguido mantener el rendimiento y, sobre todo, el brillo de la pantalla incluso bajo el sol y con temperaturas elevada.</p>
+<p>Repasamos además el desmontaje de los nuevos AirPods 5 y las pequeñas mejoras de reparabilidad introducidas por Apple, aunque seguimos echando en falta lo más importante: poder sustituir fácilmente unas baterías.</p>
+<p>En software, descubrimos las nuevas herramientas para crear pases de Apple Wallet y nos metemos de lleno en una pequeña moda entre desarrolladores: personalizar el aspecto de las tarjetas que aparecen al pagar con el iPhone.</p>
+<p>También repasamos cómo la inteligencia artificial está acelerando proyectos de ingeniería inversa y emulación que hasta hace poco parecían imposibles. Desde los avances de Linux en los nuevos Apple Silicon hasta macOS funcionando en un iPhone, macOS completo en un iPad, Windows en dispositivos de Apple o los rápidos progresos en la emulación de PlayStation 5. Incluso empiezan a aparecer proyectos que utilizan un iPhone conectado por USB como motor adicional para ejecutar modelos de inteligencia artificial en local.</p>
+<p>Terminamos hablando del futuro de Vision Pro y de si unas gafas más baratas conseguirán finalmente ampliar este mercado más allá de sus usuarios más entusiastas, de la deriva de Meta tras años gastando miles de millones en realidad virtual y, cómo no, de Apple TV, las nuevas temporadas de algunas de nuestras series favoritas y la inesperada presencia del AFC Richmond de Ted Lasso en FC 27.</p>
+<ul>
+<li><a href="https://rickytakkar.com/blog_a20_pro_ai.html?source=apple_sr">Blog: A20 Pro and on-device AI | Ricky Takkar</a></li>
+<li><a href="https://www.phoronix.com/news/Linux-7.4-Apple-Device-Trees">Linux 7.4 To Introduce Initial Device Trees For Apple M4, A18 Pro For MacBook Neo &#8211; Phoronix</a></li>
+<li><a href="https://walletwallet.alen.ro/">WalletWallet — Create Apple Passes for Free</a></li>
+<li><a href="https://developer.apple.com/pass-designer/">Pass Designer &#8211; Apple Developer</a></li>
+<li><a href="https://developer.apple.com/news/?id=p6zjojqw">Updates to Full Disk Access in macOS &#8211; Latest News &#8211; Apple Developer</a></li>
+<li><a href="https://github.com/StayLameBro/backburner">StayLameBro/backburner: Your iPhone helps your Mac run a 27B model: faster prompt reading and more context over a USB-C cable</a></li>
+<li><a href="https://www.404media.co/cops-can-bypass-iphone-automatic-inactivity-reboot-graykey/">Cops Can Bypass iPhone’s Automatic Reboot to Get Into Locked Phones, Leaked Video Claims</a></li>
+<li><a href="https://podcasts.apple.com/us/podcast/apple-wants-to-take-over-your-home-is-siri-finally-ready/id6817744297?i=1000792537082">Apple Wants to Take Over Your … &#8211; Power On with Mark Gurman &#8211; Apple Podcasts</a></li>
+<li><a href="https://github.com/willfaust/Madeira">willfaust/Madeira: Run x86-64 Windows PC games on jailed iOS via FEX-Emu + Wine + DXMT</a></li>
+<li><a href="https://mustafaakin.dev/blog/windows-on-tart/">Running Windows 11 and Server 2025 with macOS Virtualization.framework — Mustafa Akın</a></li>
+<li><a href="https://developer.altstore.io/">Developers — AltStore</a></li>
+<li><a href="https://9to5mac.com/2026/09/29/ifixit-teardown-of-the-new-airpods-5-reveals-first-real-repairability-improvement/">iFixit teardown of the new AirPods 5 reveals first real repairability improvement &#8211; 9to5Mac</a></li>
+<li><a href="https://www.bloomberg.com/news/articles/2026-09-30/apple-is-finally-ready-to-enter-its-next-big-category-the-smart-home?accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb3VyY2UiOiJTdWJzY3JpYmVyR2lmdGVkQXJ0aWNsZSIsImlhdCI6MTc5MDc3MDk0MywiZXhwIjoxNzkxMzc1NzQzLCJhcnRpY2xlSWQiOiJUTTM0SDRUOTZPU0cwMCIsImJjb25uZWN0SWQiOiJDNEVEQ0FFMUZBMDU0MEJFQTI0QTlGMjExQzFFOTA4MCJ9.11wEtJfuMwCkznTkepXugZ2wuZTmxO9CdsNJLAcBd1M">Apple Is Finally Ready to Enter Its Next Big Category: the Smart Home &#8211; Bloomberg</a></li>
+<li><a href="https://x.com/appledry05/status/2105249708067147852">(2) Bas vT on X: «Your iPhone stays your iPhone. But underneath it, there’s a whole other system running Android. ✓ Any iPhone ✓ Any iOS ✓ Full phone features ✓ Full hardware &amp;amp; graphics acceleration One iPhone. Two Ecosystems. #AndroidOniOS #iPhone #iOS #Tech #Apple #Android #Prototype https://t.co/67LBDs9ucK» / X</a></li>
+<li><a href="https://techybuff.com/flekstore-ios/">Flekstore for iOS TechyBuff</a></li>
+<li><a href="https://www.bloomberg.com/news/articles/2026-09-29/apple-s-new-ceo-moves-to-overhaul-company-to-run-faster-and-leaner?accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb3VyY2UiOiJTdWJzY3JpYmVyR2lmdGVkQXJ0aWNsZSIsImlhdCI6MTc5MDY5NDk4NiwiZXhwIjoxNzkxMjk5Nzg2LCJhcnRpY2xlSWQiOiJUTTMzNUxLSzNOWTgwMCIsImJjb25uZWN0SWQiOiJDNEVEQ0FFMUZBMDU0MEJFQTI0QTlGMjExQzFFOTA4MCJ9.KFGEydCKPxmKC3i9zoFSxY8tOf8ZEWg4OiSi_L1yAb4&amp;leadSource=article-gifting">What Is Ternus’ Strategy for Apple? Running Faster and Leaner &#8211; Bloomberg</a></li>
+<li><a href="https://github.com/LiveContainer/LiveContainer">LiveContainer/LiveContainer: Run iOS apps without actually installing them!</a></li>
+<li><a href="https://9to5mac.com/2026/09/27/apple-working-on-new-lighter-vision-pro-version/">Report: Apple working on new Vision Pro, with different form factors on the table &#8211; 9to5Mac</a></li>
+</ul>
+<p>Este artículo <a href="https://mixx.io/2026/10/ya-no-hay-mas-iphones-calientes-en-tu-zona/">Ya no hay más «iPhones calientes en tu zona»</a> está escrito para <a href="https://mixx.io">mixx.io</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>¿Nos querría Apple si fuéramos gusanos?</title>
+		<link>https://mixx.io/2026/09/nos-querria-apple-si-fueramos-gusanos/</link>
+		
+		<dc:creator><![CDATA[Álex Barredo]]></dc:creator>
+		<pubDate>Mon, 21 Sep 2026 14:16:00 +0000</pubDate>
+				<category><![CDATA[Cupertino]]></category>
+		<guid isPermaLink="false">https://mixx.io/?p=19607</guid>
+
+					<description><![CDATA[<p>Con Ángel en Hawaii y Álex en otro sitio que no es Hawaii, nos enfrentamos a nuestro mayor reto: no usar refritos semánticos. En este contexto, compartimos nuestras pruebas de uso del nuevo iPhone 18 Pro, coincidiendo en que es un dispositivo con autonomía y cámaras excelentes, pero que representa una evolución continuista. En fin, [&#8230;]</p>
+<p>Este artículo <a href="https://mixx.io/2026/09/nos-querria-apple-si-fueramos-gusanos/">¿Nos querría Apple si fuéramos gusanos?</a> está escrito para <a href="https://mixx.io">mixx.io</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<p>Con Ángel en Hawaii y Álex en otro sitio que no es Hawaii, nos enfrentamos a nuestro mayor reto: no usar refritos semánticos.</p>
+<p>En este contexto, compartimos nuestras pruebas de uso del nuevo iPhone 18 Pro, coincidiendo en que es un dispositivo con autonomía y cámaras excelentes, pero que representa una evolución continuista.</p>
+<p>En fin, que debatimos el cambio de paradigma en la comunicación de Apple y el periodismo tecnológico, y si la compañía prioriza cada vez más a creadores de contenido e influencers frente a la prensa tradicional para maximizar el impacto visual en redes sociales.</p>
+<p>Repasamos las recientes actualizaciones de iOS 27 y macOS 27 debido a su estabilidad y buen rendimiento, aunque explicamos algunos pequeños errores de interfaz gráficos que aún deben pulirse.</p>
+<p>También profundizamos en las sorprendentes filtraciones de los procesadores M6 y M5 Ultra de los inminentes ordenadores Mac; detallamos cómo este salto de arquitectura alcanza niveles de potencia equiparables a las tarjetas gráficas de escritorio más altas de gama.</p>
+<p>Cerramos con el rotundo éxito creativo de Apple TV+ en la reciente gala de los premios Emmy, reflexionando sobre el grave problema de visibilidad comercial que sigue arrastrando el servicio frente a sus competidores.</p>
+<ul>
+<li><a href="https://www.applesfera.com/analisis/iphone-18-pro-analisis-caracteristicas-precio-especificaciones">iPhone 18 Pro: análisis, review a fondo de sus características y precio</a></li>
+<li><a href="https://www.elmundo.es/tecnologia/gadgets/2026/09/16/6aaa95ebe85ece19588b45b0.html">iPhone 18 Pro: el mismo cuerpo, otro teléfono | Gadgets</a></li>
+<li><a href="https://www.apple.com/es/newsroom/2026/08/apple-introduces-m6-and-m5-ultra-for-a-big-leap-in-performance-and-ai-compute/">Apple presenta el M6 y el M5 Ultra, un gran salto en rendimiento y procesamiento de IA &#8211; Apple (ES)</a></li>
+<li><a href="https://www.infobae.com/entretenimiento/2026/09/20/la-verdad-detras-de-la-extrana-fotografia-de-rose-de-blackpink-con-el-iphone-18-pro/">La verdad detrás de la extraña fotografía de Rosé, de BLACKPINK, con el iPhone 18 Pro &#8211; Infobae</a></li>
+<li><a href="https://www.youtube.com/watch?v=z8HiBWeVwkA">iShowSpeed Meets The New Apple CEO John Ternus 🤯 &#8211; YouTube</a></li>
+<li><a href="https://x.com/markgurman/status/2101442649421173158">Mark Gurman on X: «Apple’s new focus on influencers for events and product “reviews” — people who say nothing but positive things and never ask a legitimate question of Apple executives in exchange for free devices, travel and more, is a serious issue. This echo chamber will lead to mediocrity.» / X</a></li>
+<li><a href="https://www.macrumors.com/2026/09/18/m5-ultra-and-m6-chip-gpu-benchmarks/">M5 Ultra and M6 Chip Benchmark Results Reveal Graphics Performance &#8211; MacRumors</a></li>
+<li><a href="https://www.facebook.com/kienyke/videos/la-emoci%C3%B3n-por-tener-el-primer-iphone-18-pro-termin%C3%B3-en-un-momento-inc%C3%B3modo-en-a/1442704771108367/">La emoción por tener el primer iPhone 18 Pro terminó en un momento incómodo en Australia. Un joven celebraba ante las cámaras asegurando que había sido el primero en comprar el nuevo teléfono, pero apareció alguien asegurando que él era el primero, por lo que decidió insultar a los presentes. La escena ocurrió durante el inicio de ventas de los iPhone 18 Pro y Pro Max este 18 de septiembre, una jornada que volvió a generar largas filas frente a tiendas Apple en diferentes países. #Iphone18 #Iphone #Australia #Apple | Kienyke | Facebook</a></li>
+</ul>
+<p>Este artículo <a href="https://mixx.io/2026/09/nos-querria-apple-si-fueramos-gusanos/">¿Nos querría Apple si fuéramos gusanos?</a> está escrito para <a href="https://mixx.io">mixx.io</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>¿Quién necesita dos riñones?</title>
+		<link>https://mixx.io/2026/09/quien-necesita-dos-rinones/</link>
+		
+		<dc:creator><![CDATA[Álex Barredo]]></dc:creator>
+		<pubDate>Mon, 14 Sep 2026 18:35:56 +0000</pubDate>
+				<category><![CDATA[Cupertino]]></category>
+		<guid isPermaLink="false">https://mixx.io/?p=19602</guid>
+
+					<description><![CDATA[<p>El nuevo iPhone Duo ha logrado resolver los problemas clásicos de este formato, consiguiendo que el pliegue central sea casi imperceptible gracias a una pantalla mate especial y a una bisagra de ingeniería asombrosa. Comentamos que su precio superior a los 2300 euros es prohibitivo y echamos en falta la integración de Face ID, destacamos [&#8230;]</p>
+<p>Este artículo <a href="https://mixx.io/2026/09/quien-necesita-dos-rinones/">¿Quién necesita dos riñones?</a> está escrito para <a href="https://mixx.io">mixx.io</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<p>El nuevo iPhone Duo ha logrado resolver los problemas clásicos de este formato, consiguiendo que el pliegue central sea casi imperceptible gracias a una pantalla mate especial y a una bisagra de ingeniería asombrosa.</p>
+<p>Comentamos que su precio superior a los 2300 euros es prohibitivo y echamos en falta la integración de Face ID, destacamos su excelente interfaz adaptada, la tecnología para ocultar la cámara bajo el panel y su innovador ecosistema de fundas magnéticas expansibles.</p>
+<p>No nos olvidamos del iPhone 18 Pro, que da un salto de rendimiento espectacular con el nuevo procesador A20 Pro de 2 nanómetros y una cámara de vapor rediseñada que soluciona de raíz los problemas de disipación térmica.</p>
+<p>Comentamos también las innovaciones fotográficas, como la nueva lente de apertura variable y la capacidad de aplicar el modo cinemático a posteriori.</p>
+<p>Asimismo, abordamos cómo Apple está impulsando un modelo de leasing financiero directo en Estados Unidos para facilitar la adquisición de estos iPhones tan costosos sin fomentar la reventa.</p>
+<p>Finalmente, repasamos las actualizaciones en los accesorios, deteniéndonos en los nuevos AirPods 5, Apple Watch Series 12 y Ultra 4,con una llamativa función de inteligencia artificial que transcribe y resume nuestro día a día mediante un micrófono siempre alerta, cuidando la privacidad al no almacenar grabaciones reales.</p>
+<ul>
+<li><a href="https://www.elmundo.es/economia/empresas/2026/09/09/6aa1a67c21efa052358b45cc.html">Apple presenta el iPhone Duo, su primer móvil plegable y el primer dispositivo de la era Ternus | Empresas</a></li>
+<li><a href="https://www.apple.com/es/iphone-18-pro/">iPhone 18 Pro y iPhone 18 Pro Max &#8211; Apple (ES)</a></li>
+<li><a href="https://www.apple.com/es/iphone-duo/">iPhone Duo &#8211; Apple (ES)</a></li>
+<li><a href="https://www.apple.com/es/apple-watch-series-12/">Apple Watch Series 12 &#8211; Apple (ES)</a></li>
+<li><a href="https://www.apple.com/es/apple-watch-ultra-4/">Apple Watch Ultra 4 &#8211; Apple (ES)</a></li>
+<li><a href="https://www.apple.com/es/airpods-5/">AirPods 5 &#8211; Apple (ES)</a></li>
+<li><a href="https://www.instagram.com/angeljimenezz/?hl=es">Angel Jimenez (@angeljimenezz) • Fotos y videos de Instagram</a></li>
+<li><a href="https://es.wikipedia.org/wiki/Mi_cena_con_Andr%C3%A9#/languages">Mi cena con André &#8211; Wikipedia, la enciclopedia libre</a></li>
+<li><a href="https://www.applesfera.com/iphone/chip-a20-pro-arrasa-sus-primeros-benchmarks">El chip A20 Pro arrasa en sus primeros benchmarks</a></li>
+<li><a href="https://www.3dnatives.com/es/apple-impresion-3d-iphone-duo-11092026/#!">La impresión 3D en la bisagra del iPhone Duo de Apple &#8211; 3Dnatives</a></li>
+<li><a href="https://es.ifixit.com/News/119205/will-the-iphone-duo-be-repairable-were-skeptical">Will the iPhone Duo Be Repairable? We’re Skeptical &#8211; iFixit</a></li>
+<li><a href="https://www.apple.com/shop/apple-upgrade">Apple Upgrade &#8211; Lease iPhone, Mac, iPad, Watch &#8211; Apple</a></li>
+<li><a href="https://es.wikipedia.org/wiki/Borgo%C3%B1a">Borgoña &#8211; Wikipedia, la enciclopedia libre</a></li>
+</ul>
+<p>Este artículo <a href="https://mixx.io/2026/09/quien-necesita-dos-rinones/">¿Quién necesita dos riñones?</a> está escrito para <a href="https://mixx.io">mixx.io</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Vuelta al cole con nuevo profesor</title>
+		<link>https://mixx.io/2026/09/vuelta-al-cole-con-nuevo-profesor/</link>
+		
+		<dc:creator><![CDATA[Álex Barredo]]></dc:creator>
+		<pubDate>Mon, 07 Sep 2026 19:20:03 +0000</pubDate>
+				<category><![CDATA[Cupertino]]></category>
+		<guid isPermaLink="false">https://mixx.io/?p=19599</guid>
+
+					<description><![CDATA[<p>Se acaban las vacaciones y comienza el nuevo curso. Analizamos el inminente evento de presentación de los nuevos iPhone, el cual estará fuertemente marcado por un acontecimiento histórico: la llegada de John Ternus como nuevo consejero delegado tras el paso a un rol secundario de Tim Cook. Comentamos el lanzamiento casi por sorpresa de los [&#8230;]</p>
+<p>Este artículo <a href="https://mixx.io/2026/09/vuelta-al-cole-con-nuevo-profesor/">Vuelta al cole con nuevo profesor</a> está escrito para <a href="https://mixx.io">mixx.io</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<p>Se acaban las vacaciones y comienza el nuevo curso. Analizamos el inminente evento de presentación de los nuevos iPhone, el cual estará fuertemente marcado por un acontecimiento histórico: la llegada de John Ternus como nuevo consejero delegado tras el paso a un rol secundario de Tim Cook. </p>
+<p>Comentamos el lanzamiento casi por sorpresa de los nuevos ordenadores Mac Mini y Mac Studio equipados con los procesadores M5 Ultra y M6, debatiendo sobre la preocupante y drástica escalada de precios, especialmente a la hora de ampliar la memoria RAM y el almacenamiento SSD. </p>
+<p>También exploramos una de las filtraciones más llamativas para el futuro hardware de la marca: la integración de cámaras en los AirPods, detallando que no estarán destinadas a tomar fotografías, sino a funcionar como sensores espaciales para que la inteligencia artificial de Siri pueda reconocer el entorno del usuario.</p>
+<p>Abordamos la subida de precios en la suscripción de Apple TV+ y analizamos cómo el insostenible mercado del streaming empuja a los usuarios hacia los paquetes combinados. A su vez, reflexionamos sobre el futuro de la App Store tras la salida de Phil Schiller del día a día ejecutivo para convertirse en consejero honorífico, y explicamos cómo las constantes presiones legislativas en la Unión Europea obligarán a replantear por completo el modelo de distribución de software y las comisiones impuestas a los desarrolladores.</p>
+<ul>
+<li><a href="https://variety.com/2026/tv/news/apple-tv-price-increase-streaming-service-monthly-plan-1236845906/">Apple TV Raises Price of Streaming Service in US Effective Immediately</a></li>
+<li><a href="https://www.macrumors.com/2026/08/31/tim-cook-messages-on-final-day-as-apple-ceo/">Tim Cook Comments on His Final Day as Apple CEO &#8211; MacRumors</a></li>
+<li><a href="https://www.macrumors.com/guide/top-stories/">Top Stories on MacRumors</a></li>
+<li><a href="https://finance.yahoo.com/technology/ai/articles/john-ternus-becomes-apple-ceo-111908957.html?guccounter=1">John Ternus becomes Apple CEO, with AI as first big challenge</a></li>
+<li><a href="https://www.engadget.com/2247924/phil-schiller-reportedly-steps-down-as-apple-app-store-and-product-event-chief/">Phil Schiller Reportedly Steps Down As Apple&#8217;s App Store And Product Event Chief</a></li>
+<li><a href="https://es.wikipedia.org/wiki/John_Ternus">John Ternus &#8211; Wikipedia, la enciclopedia libre</a></li>
+<li><a href="https://www.apple.com/es/leadership/john-ternus/">Directivos de Apple &#8211; John Ternus &#8211; Apple (ES)</a></li>
+<li><a href="https://efe.com/ciencia-y-tecnologia/2026-09-01/apple-nuevo-consejero-delegado-john-ternus-ceo/">Así es John Ternus, el relevo de Tim Cook al frente de Apple</a></li>
+<li><a href="https://www.apple.com/es/mac-mini/specs/">Mac mini &#8211; Especificaciones técnicas &#8211; Apple (ES)</a></li>
+<li><a href="https://www.apple.com/es/mac-studio/specs/">Mac Studio &#8211; Especificaciones técnicas &#8211; Apple (ES)</a></li>
+</ul>
+<p>Este artículo <a href="https://mixx.io/2026/09/vuelta-al-cole-con-nuevo-profesor/">Vuelta al cole con nuevo profesor</a> está escrito para <a href="https://mixx.io">mixx.io</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+	</channel>
+</rss>
