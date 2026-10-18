@@ -4,7 +4,10 @@ namespace InformadoRSS.Scheduling;
 /// <param name="Succeeded">Whether the fetch succeeded (a <c>304 Not Modified</c> counts as success).</param>
 /// <param name="ConsecutiveFailures">Failures in a row including this cycle; zero after a success.</param>
 /// <param name="RetryAfter">Delay requested by the server, if any.</param>
-public sealed record FeedOutcome(bool Succeeded, int ConsecutiveFailures, TimeSpan? RetryAfter = null)
+/// <param name="DeliveryRetryAfter">
+/// When the soonest destination left waiting by a sink <c>Retry-After</c> may be tried again, if any.
+/// </param>
+public sealed record FeedOutcome(bool Succeeded, int ConsecutiveFailures, TimeSpan? RetryAfter = null, TimeSpan? DeliveryRetryAfter = null)
 {
     public static FeedOutcome Success { get; } = new(true, 0);
 }

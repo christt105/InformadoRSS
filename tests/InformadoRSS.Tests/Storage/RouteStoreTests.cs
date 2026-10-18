@@ -79,7 +79,7 @@ public sealed class RouteStoreTests : IAsyncLifetime
         Assert.False(await _db.Routes.UpdateAsync(route.Id + 1, changed, ct));
 
         AssertSettingsEqual(changed, (await _db.Routes.GetAsync(route.Id, ct))!.Settings);
-        Assert.True(await _db.SeenItems.HasAnyAsync(route.Id, ct));
+        Assert.Empty(await _db.SeenItems.FilterUnseenAsync(route.Id, ["item"], ct));
     }
 
     [Fact]
@@ -91,6 +91,33 @@ public sealed class RouteStoreTests : IAsyncLifetime
         Assert.True(await _db.Routes.DeleteAsync(route!.Id, ct));
         Assert.False(await _db.Routes.DeleteAsync(route.Id, ct));
         Assert.Empty(await _db.Routes.ListByFeedAsync(_feedId, ct));
+    }
+
+    [Fact]
+    public async Task BrokenDestinationsAreListedUntilClearedOrReplaced()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var first = await _db.Routes.AddAsync(_feedId, new RouteSettings("A", null, null, true, [Ntfy, Panas]), ct);
+        var second = await _db.Routes.AddAsync(_feedId, new RouteSettings("B", null, null, true, [Panas]), ct);
+        var since = new DateTimeOffset(2026, 10, 18, 4, 0, 0, TimeSpan.Zero);
+
+        Assert.Empty(await _db.Routes.ListBrokenDestinationsAsync(ct));
+
+        await _db.Routes.SetDestinationBrokenAsync(first!.Id, 1, since, "Unknown Channel", ct);
+        await _db.Routes.SetDestinationBrokenAsync(first.Id, 1, since.AddHours(1), "Missing Access", ct);
+        await _db.Routes.SetDestinationBrokenAsync(second!.Id, 0, since, "Missing Permissions", ct);
+
+        var broken = await _db.Routes.ListBrokenDestinationsAsync(ct);
+        Assert.Equal(
+            [(first.Id, _feedId, 1, since, "Missing Access"), (second.Id, _feedId, 0, since, "Missing Permissions")],
+            broken.Select(b => (b.RouteId, b.FeedId, b.Position, b.Since, b.Reason)));
+        Assert.Equal("discord", broken[0].Destination.Sink);
+        Assert.Equal(Panas.Parameters, broken[0].Destination.Parameters);
+
+        await _db.Routes.SetDestinationBrokenAsync(first.Id, 1, since, null, ct);
+        await _db.Routes.UpdateAsync(second.Id, second.Settings, ct);
+
+        Assert.Empty(await _db.Routes.ListBrokenDestinationsAsync(ct));
     }
 
     [Fact]

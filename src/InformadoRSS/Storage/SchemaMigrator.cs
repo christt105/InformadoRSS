@@ -62,6 +62,17 @@ public static class SchemaMigrator
         ALTER TABLE destinations ADD COLUMN broken_since INTEGER;
         ALTER TABLE destinations ADD COLUMN broken_reason TEXT;
         """,
+        """
+        ALTER TABLE routes ADD COLUMN seeded_at INTEGER;
+        UPDATE routes SET seeded_at = (SELECT MIN(seen_at) FROM seen_items WHERE seen_items.route_id = routes.id);
+
+        CREATE TABLE destination_items (
+            destination_id INTEGER NOT NULL REFERENCES destinations (id) ON DELETE CASCADE,
+            item_id TEXT NOT NULL,
+            done_at INTEGER NOT NULL,
+            PRIMARY KEY (destination_id, item_id)
+        ) WITHOUT ROWID;
+        """,
     ];
 
     /// <summary>The schema version this build expects.</summary>

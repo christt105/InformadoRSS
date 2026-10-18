@@ -20,6 +20,8 @@ public sealed class PipelineHarness : IAsyncDisposable
 
     public ManualTimeProvider Time { get; } = new(Start);
 
+    public DestinationBackoff Backoff { get; }
+
     public FakeSource Source { get; } = new();
 
     public FakeSink Discord { get; } = new("discord");
@@ -41,6 +43,11 @@ public sealed class PipelineHarness : IAsyncDisposable
 
     public static FeedItem Item(string id, DateTimeOffset? published = null, string? title = null) =>
         new(id, title ?? id, $"https://example.com/{id}", null, null, null, published, [], null);
+
+    private PipelineHarness()
+    {
+        Backoff = new DestinationBackoff(Time);
+    }
 
     public static async Task<PipelineHarness> CreateAsync()
     {
@@ -66,7 +73,7 @@ public sealed class PipelineHarness : IAsyncDisposable
     public async Task<Feed> ReloadAsync(Feed feed) => (await Feeds.GetAsync(feed.Id, TestContext.Current.CancellationToken))!;
 
     public FeedProcessor CreateProcessor() =>
-        new(Source, Feeds, Routes, SeenItems, new FakeRenderer(), [Discord, Ntfy], Options, Time, NullLogger<FeedProcessor>.Instance);
+        new(Source, Feeds, Routes, SeenItems, new FakeRenderer(), [Discord, Ntfy], Backoff, Options, Time, NullLogger<FeedProcessor>.Instance);
 
     /// <summary>Reloads the feed from storage and runs one cycle, like the scheduler does.</summary>
     public async Task<FeedOutcome> RunCycleAsync(Feed feed) =>
@@ -82,6 +89,7 @@ public sealed class PipelineHarness : IAsyncDisposable
             .AddSingleton<IMessageRenderer, FakeRenderer>()
             .AddSingleton<ISink>(Discord)
             .AddSingleton<ISink>(Ntfy)
+            .AddSingleton(Backoff)
             .AddSingleton(Options)
             .AddSingleton<TimeProvider>(Time)
             .AddSingleton(typeof(ILogger<>), typeof(NullLogger<>))

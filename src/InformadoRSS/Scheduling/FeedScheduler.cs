@@ -5,7 +5,8 @@ namespace InformadoRSS.Scheduling;
 /// <summary>
 /// Decides which feeds are due and runs a <see cref="FeedProcessor"/> for each of them, never two at the same time for
 /// the same feed and at most <see cref="SchedulerOptions.MaxConcurrency"/> overall. Due times live in memory; after a
-/// restart they are rebuilt from the last success or failure stored with each feed.
+/// restart they are rebuilt from the last success or failure stored with each feed. Due times follow the current feed
+/// interval, so an interval change applies from the next <see cref="StartDueAsync"/> on.
 /// </summary>
 public sealed class FeedScheduler : IDisposable
 {
@@ -16,7 +17,7 @@ public sealed class FeedScheduler : IDisposable
     private readonly ILogger<FeedScheduler> _logger;
     private readonly SemaphoreSlim _slots;
     private readonly Lock _lock = new();
-    private readonly Dictionary<long, DateTimeOffset> _due = [];
+    private readonly Dictionary<long, Schedule> _schedules = [];
     private readonly HashSet<long> _running = [];
     private readonly List<Task> _tasks = [];
 
@@ -43,9 +44,9 @@ public sealed class FeedScheduler : IDisposable
         lock (_lock)
         {
             var ids = feeds.Select(feed => feed.Id).ToHashSet();
-            foreach (var stale in _due.Keys.Where(id => !ids.Contains(id)).ToList())
+            foreach (var stale in _schedules.Keys.Where(id => !ids.Contains(id)).ToList())
             {
-                _due.Remove(stale);
+                _schedules.Remove(stale);
             }
 
             _tasks.RemoveAll(task => task.IsCompleted);
@@ -57,13 +58,12 @@ public sealed class FeedScheduler : IDisposable
                     continue;
                 }
 
-                if (!_due.TryGetValue(feed.Id, out var at))
-                {
-                    at = InitialDue(feed, now);
-                    _due[feed.Id] = at;
-                }
+                var schedule = _schedules.TryGetValue(feed.Id, out var known)
+                    ? known with { Interval = feed.Settings.Interval }
+                    : InitialSchedule(feed);
+                _schedules[feed.Id] = schedule;
 
-                if (at <= now)
+                if (DueAt(schedule) <= now)
                 {
                     _running.Add(feed.Id);
                     due.Add(feed);
@@ -95,15 +95,22 @@ public sealed class FeedScheduler : IDisposable
     /// <summary>When the feed is due next, or <c>null</c> if it is unknown to the scheduler or being processed.</summary>
     public DateTimeOffset? NextDue(long feedId)
     {
+        var now = _time.GetUtcNow();
         lock (_lock)
         {
-            return !_running.Contains(feedId) && _due.TryGetValue(feedId, out var at) ? at : null;
+            if (_running.Contains(feedId) || !_schedules.TryGetValue(feedId, out var schedule))
+            {
+                return null;
+            }
+
+            var at = DueAt(schedule);
+            return at < now ? now : at;
         }
     }
 
     public void Dispose() => _slots.Dispose();
 
-    private DateTimeOffset InitialDue(Feed feed, DateTimeOffset now)
+    private static Schedule InitialSchedule(Feed feed)
     {
         var health = feed.Health;
         var last = (health.LastSuccessAt, health.LastErrorAt) switch
@@ -112,19 +119,22 @@ public sealed class FeedScheduler : IDisposable
             (var success, null) => success,
             (var success, var error) => success > error ? success : error,
         };
-        if (last is null)
-        {
-            return now;
-        }
+        return new Schedule(last, feed.Settings.Interval, health.ConsecutiveFailures, null, null);
+    }
 
-        var at = last.Value + FetchBackoff.NextDelay(
-            feed.Settings.Interval, health.ConsecutiveFailures, _options.MaxBackoff, null, _options.MaxRetryAfter);
-        return at < now ? now : at;
+    private DateTimeOffset DueAt(Schedule schedule) =>
+        schedule.From is { } from ? from + Delay(schedule) : DateTimeOffset.MinValue;
+
+    private TimeSpan Delay(Schedule schedule)
+    {
+        var delay = FetchBackoff.NextDelay(
+            schedule.Interval, schedule.ConsecutiveFailures, _options.MaxBackoff, schedule.RetryAfter, _options.MaxRetryAfter);
+        return schedule.DeliveryRetryAfter is { } retry && retry < delay ? retry : delay;
     }
 
     private async Task RunAsync(Feed feed, CancellationToken cancellationToken)
     {
-        var delay = feed.Settings.Interval;
+        var schedule = new Schedule(null, feed.Settings.Interval, 0, null, null);
         var acquired = false;
         try
         {
@@ -134,8 +144,12 @@ public sealed class FeedScheduler : IDisposable
             await using var scope = _scopes.CreateAsyncScope();
             var processor = scope.ServiceProvider.GetRequiredService<FeedProcessor>();
             var outcome = await processor.ProcessAsync(feed, cancellationToken);
-            delay = FetchBackoff.NextDelay(
-                feed.Settings.Interval, outcome.ConsecutiveFailures, _options.MaxBackoff, outcome.RetryAfter, _options.MaxRetryAfter);
+            schedule = schedule with
+            {
+                ConsecutiveFailures = outcome.ConsecutiveFailures,
+                RetryAfter = outcome.RetryAfter,
+                DeliveryRetryAfter = outcome.DeliveryRetryAfter,
+            };
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
@@ -143,8 +157,7 @@ public sealed class FeedScheduler : IDisposable
         catch (Exception ex)
         {
             _logger.FeedCrashed(ex, feed.Id, feed.Settings.Name);
-            delay = FetchBackoff.NextDelay(
-                feed.Settings.Interval, feed.Health.ConsecutiveFailures + 1, _options.MaxBackoff, null, _options.MaxRetryAfter);
+            schedule = schedule with { ConsecutiveFailures = feed.Health.ConsecutiveFailures + 1 };
         }
         finally
         {
@@ -153,13 +166,20 @@ public sealed class FeedScheduler : IDisposable
                 _slots.Release();
             }
 
+            schedule = schedule with { From = _time.GetUtcNow() };
+            var delay = Delay(schedule);
             lock (_lock)
             {
                 _running.Remove(feed.Id);
-                _due[feed.Id] = _time.GetUtcNow() + delay;
+                _schedules[feed.Id] = schedule;
             }
 
             _logger.NextFetch(feed.Id, delay);
         }
     }
+
+    /// <summary>What the next fetch of a feed is computed from; the due time is derived with the current interval.</summary>
+    /// <param name="From">When the last run ended, or <c>null</c> if the feed was never fetched (due immediately).</param>
+    private readonly record struct Schedule(
+        DateTimeOffset? From, TimeSpan Interval, int ConsecutiveFailures, TimeSpan? RetryAfter, TimeSpan? DeliveryRetryAfter);
 }

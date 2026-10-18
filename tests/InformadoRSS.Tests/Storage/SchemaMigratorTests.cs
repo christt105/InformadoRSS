@@ -37,6 +37,33 @@ public sealed class SchemaMigratorTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task UpgradeFromVersion2MarksRoutesWithSeenItemsAsSeeded()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var feed = await _db.Feeds.AddAsync(
+            new FeedSettings(new Uri("https://example.com/feed.xml"), "Feed", TimeSpan.FromMinutes(10)), ct);
+        var seen = (await _db.Routes.AddAsync(feed.Id, new RouteSettings("Seen", null, null, true, []), ct))!.Id;
+        var fresh = (await _db.Routes.AddAsync(feed.Id, new RouteSettings("Fresh", null, null, true, []), ct))!.Id;
+        await _db.SeenItems.MarkSeenAsync(seen, ["a"], DateTimeOffset.UnixEpoch, ct);
+
+        await using (var connection = await _db.Database.OpenAsync(ct))
+        await using (var command = connection.CreateCommand())
+        {
+            command.CommandText = """
+                DROP TABLE destination_items;
+                ALTER TABLE routes DROP COLUMN seeded_at;
+                PRAGMA user_version = 2;
+                """;
+            await command.ExecuteNonQueryAsync(ct);
+        }
+
+        await SchemaMigrator.MigrateAsync(_db.Database, ct);
+
+        Assert.True(await _db.SeenItems.IsSeededAsync(seen, ct));
+        Assert.False(await _db.SeenItems.IsSeededAsync(fresh, ct));
+    }
+
+    [Fact]
     public async Task ConnectionsEnforceForeignKeys()
     {
         var ct = TestContext.Current.CancellationToken;

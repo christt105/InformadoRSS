@@ -109,6 +109,33 @@ public sealed class SqliteRouteStore(SqliteDatabase database) : IRouteStore
         await command.ExecuteNonQueryAsync(cancellationToken);
     }
 
+    public async Task<IReadOnlyList<BrokenDestination>> ListBrokenDestinationsAsync(CancellationToken cancellationToken)
+    {
+        await using var connection = await database.OpenAsync(cancellationToken);
+        await using var command = connection.CreateCommand();
+        command.CommandText = """
+            SELECT r.id, r.feed_id, d.position, d.sink, d.parameters, d.broken_since, d.broken_reason
+            FROM destinations d JOIN routes r ON r.id = d.route_id
+            WHERE d.broken_since IS NOT NULL
+            ORDER BY r.id, d.position
+            """;
+
+        var broken = new List<BrokenDestination>();
+        await using var reader = await command.ExecuteReaderAsync(cancellationToken);
+        while (await reader.ReadAsync(cancellationToken))
+        {
+            broken.Add(new BrokenDestination(
+                reader.GetInt64(0),
+                reader.GetInt64(1),
+                reader.GetInt32(2),
+                new Destination(reader.GetString(3), DeserializeParameters(reader.GetString(4))),
+                DateTimeOffset.FromUnixTimeMilliseconds(reader.GetInt64(5)),
+                SqliteValues.GetString(reader, 6) ?? string.Empty));
+        }
+
+        return broken;
+    }
+
     internal static async Task<long> InsertAsync(
         SqliteConnection connection, SqliteTransaction transaction, long feedId, RouteSettings settings, CancellationToken cancellationToken)
     {

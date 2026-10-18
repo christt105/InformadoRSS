@@ -49,7 +49,7 @@ public sealed class FeedProcessorTests : IAsyncLifetime
         Assert.Equal(["b"], _h.Discord.Contents);
         Assert.Empty(_h.Ntfy.Attempts);
         Assert.Null(_h.Source.Requests.Last().Validators);
-        Assert.True(await _h.SeenItems.HasAnyAsync(second.Id, ct));
+        Assert.True(await _h.SeenItems.IsSeededAsync(second.Id, ct));
         Assert.Empty(await _h.SeenItems.FilterUnseenAsync(first.Id, ["a", "b"], ct));
 
         await _h.RunCycleAsync(feed);
@@ -168,10 +168,135 @@ public sealed class FeedProcessorTests : IAsyncLifetime
         _h.Ntfy.Handler = (_, _) => DeliveryResult.Delivered;
         await _h.RunCycleAsync(feed);
 
-        Assert.Equal(["a", "a"], _h.Discord.Contents);
+        Assert.Equal(["a"], _h.Discord.Contents);
         Assert.Equal(["a", "a"], _h.Ntfy.Contents);
         Assert.Empty(await _h.SeenItems.FilterUnseenAsync(route.Id, ["a"], ct));
     }
+
+    [Fact]
+    public async Task FailingDestinationDoesNotHoldTheItemBackFromTheOthers()
+    {
+        var feed = await _h.AddFeedAsync();
+        await _h.AddRouteAsync(feed, destinations: [NtfyTopic("t"), DiscordChannel("1"), DiscordChannel("2")]);
+        _h.Source.ReturnsItems(Item("seed"));
+        await _h.RunCycleAsync(feed);
+
+        _h.Ntfy.Handler = (_, _) => DeliveryResult.Transient("down");
+        _h.Discord.Handler = (destination, _) => destination.Parameters["channelId"] == "2"
+            ? DeliveryResult.Transient("down")
+            : DeliveryResult.Delivered;
+        _h.Source.ReturnsItems(Item("b", Day(2)), Item("a", Day(1)), Item("seed"));
+        await _h.RunCycleAsync(feed);
+
+        Assert.Equal(["a"], _h.Ntfy.Contents);
+        Assert.Equal([("1", "a"), ("2", "a")], DiscordAttempts());
+
+        _h.Ntfy.Handler = (_, _) => DeliveryResult.Delivered;
+        await _h.RunCycleAsync(feed);
+
+        Assert.Equal(["a", "a"], _h.Ntfy.Contents);
+        Assert.Equal([("1", "a"), ("2", "a"), ("2", "a")], DiscordAttempts());
+
+        _h.Discord.Handler = (_, _) => DeliveryResult.Delivered;
+        await _h.RunCycleAsync(feed);
+        await _h.RunCycleAsync(feed);
+
+        Assert.Equal(["a", "a", "b"], _h.Ntfy.Contents);
+        Assert.Equal([("1", "a"), ("2", "a"), ("2", "a"), ("2", "a"), ("1", "b"), ("2", "b")], DiscordAttempts());
+    }
+
+    [Fact]
+    public async Task RejectedMessageIsSkippedForThatDestinationWithoutFlaggingIt()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var feed = await _h.AddFeedAsync();
+        var route = await _h.AddRouteAsync(feed, destinations: [DiscordChannel("1"), NtfyTopic("t")]);
+        _h.Source.ReturnsItems(Item("seed"));
+        await _h.RunCycleAsync(feed);
+
+        _h.Discord.Handler = (_, message) => message.Content == "a"
+            ? DeliveryResult.Rejected("Invalid Form Body")
+            : DeliveryResult.Delivered;
+        _h.Source.ReturnsItems(Item("b", Day(2)), Item("a", Day(1)), Item("seed"));
+        await _h.RunCycleAsync(feed);
+        await _h.RunCycleAsync(feed);
+
+        Assert.Equal(["a", "b"], _h.Discord.Contents);
+        Assert.Equal(["a", "b"], _h.Ntfy.Contents);
+        Assert.Empty(await _h.SeenItems.FilterUnseenAsync(route.Id, ["a", "b"], ct));
+        Assert.Empty(await _h.Routes.ListBrokenDestinationsAsync(ct));
+    }
+
+    [Fact]
+    public async Task RouteSeededOnAnEmptyFeedSendsTheFirstItemThatAppears()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var feed = await _h.AddFeedAsync();
+        var route = await _h.AddRouteAsync(feed);
+        _h.Source.ReturnsItems();
+        await _h.RunCycleAsync(feed);
+
+        Assert.True(await _h.SeenItems.IsSeededAsync(route.Id, ct));
+
+        _h.Source.ReturnsItems(FakeSource.V2, Item("a"));
+        await _h.RunCycleAsync(feed);
+
+        Assert.Equal(["a"], _h.Discord.Contents);
+        Assert.Equal(FakeSource.V1, _h.Source.Requests.Last().Validators);
+    }
+
+    [Fact]
+    public async Task SinkRetryAfterHoldsTheDestinationBackAndIsReported()
+    {
+        _h.Options = _h.Options with { MaxRetryAfter = TimeSpan.FromMinutes(30) };
+        var feed = await _h.AddFeedAsync();
+        await _h.AddRouteAsync(feed, destinations: [DiscordChannel("1"), NtfyTopic("t")]);
+        await _h.AddRouteAsync(feed, destinations: NtfyTopic("other"));
+        _h.Source.ReturnsItems(Item("seed"));
+        await _h.RunCycleAsync(feed);
+
+        _h.Discord.Handler = (_, _) => DeliveryResult.Transient("rate limited", TimeSpan.FromMinutes(2));
+        _h.Source.ReturnsItems(Item("a"), Item("seed"));
+        var outcome = await _h.RunCycleAsync(feed);
+
+        Assert.Equal(TimeSpan.FromMinutes(2), outcome.DeliveryRetryAfter);
+        Assert.Single(_h.Discord.Attempts);
+        Assert.Equal(2, _h.Ntfy.Attempts.Count);
+
+        _h.Discord.Handler = (_, _) => DeliveryResult.Delivered;
+        _h.Time.Advance(TimeSpan.FromMinutes(1));
+        outcome = await _h.RunCycleAsync(feed);
+
+        Assert.Equal(TimeSpan.FromMinutes(1), outcome.DeliveryRetryAfter);
+        Assert.Single(_h.Discord.Attempts);
+
+        _h.Time.Advance(TimeSpan.FromMinutes(1));
+        outcome = await _h.RunCycleAsync(feed);
+
+        Assert.Equal(FeedOutcome.Success, outcome);
+        Assert.Equal(["a", "a"], _h.Discord.Contents);
+        Assert.Equal(2, _h.Ntfy.Attempts.Count);
+    }
+
+    [Fact]
+    public async Task SinkRetryAfterIsCappedByMaxRetryAfter()
+    {
+        _h.Options = _h.Options with { MaxRetryAfter = TimeSpan.FromMinutes(5) };
+        var feed = await _h.AddFeedAsync();
+        var route = await _h.AddRouteAsync(feed);
+        _h.Source.ReturnsItems(Item("seed"));
+        await _h.RunCycleAsync(feed);
+
+        _h.Discord.Handler = (_, _) => DeliveryResult.Transient("rate limited", TimeSpan.FromDays(3));
+        _h.Source.ReturnsItems(Item("a"), Item("seed"));
+        var outcome = await _h.RunCycleAsync(feed);
+
+        Assert.Equal(TimeSpan.FromMinutes(5), outcome.DeliveryRetryAfter);
+        Assert.Equal(TimeSpan.FromMinutes(5), _h.Backoff.Remaining(route.Id, 0));
+    }
+
+    private List<(string Channel, string Content)> DiscordAttempts() =>
+        [.. _h.Discord.Attempts.Select(attempt => (attempt.Destination.Parameters["channelId"], attempt.Content))];
 
     [Fact]
     public async Task UnregisteredSinkKeepsItemsUnseen()
@@ -255,7 +380,7 @@ public sealed class FeedProcessorTests : IAsyncLifetime
 
         await _h.RunCycleAsync(feed);
 
-        Assert.False(await _h.SeenItems.HasAnyAsync(route.Id, ct));
+        Assert.False(await _h.SeenItems.IsSeededAsync(route.Id, ct));
         Assert.Empty(_h.Discord.Attempts);
     }
 

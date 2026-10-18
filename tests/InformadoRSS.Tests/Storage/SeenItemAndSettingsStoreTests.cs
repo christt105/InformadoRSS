@@ -1,3 +1,4 @@
+using InformadoRSS.Core;
 using InformadoRSS.Storage;
 
 namespace InformadoRSS.Tests.Storage;
@@ -24,16 +25,75 @@ public sealed class SeenItemAndSettingsStoreTests : IAsyncLifetime
     public async Task SeenItemsAreTrackedPerRoute()
     {
         var ct = TestContext.Current.CancellationToken;
-        Assert.False(await _db.SeenItems.HasAnyAsync(_routeA, ct));
-
         Assert.Equal(2, await _db.SeenItems.MarkSeenAsync(_routeA, ["1", "2"], DateTimeOffset.UnixEpoch, ct));
         Assert.Equal(1, await _db.SeenItems.MarkSeenAsync(_routeA, ["2", "3", "3"], DateTimeOffset.UnixEpoch, ct));
 
-        Assert.True(await _db.SeenItems.HasAnyAsync(_routeA, ct));
-        Assert.False(await _db.SeenItems.HasAnyAsync(_routeB, ct));
         Assert.Equal(["4", "0"], await _db.SeenItems.FilterUnseenAsync(_routeA, ["4", "1", "0", "3"], ct));
         Assert.Equal(["1", "2"], await _db.SeenItems.FilterUnseenAsync(_routeB, ["1", "2"], ct));
         Assert.Empty(await _db.SeenItems.FilterUnseenAsync(_routeA, [], ct));
+    }
+
+    [Fact]
+    public async Task SeedingIsTrackedPerRouteEvenWithoutItems()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        Assert.False(await _db.SeenItems.IsSeededAsync(_routeA, ct));
+
+        Assert.Equal(0, await _db.SeenItems.SeedAsync(_routeA, [], DateTimeOffset.UnixEpoch, ct));
+        await _db.SeenItems.MarkSeenAsync(_routeB, ["1"], DateTimeOffset.UnixEpoch, ct);
+
+        Assert.True(await _db.SeenItems.IsSeededAsync(_routeA, ct));
+        Assert.False(await _db.SeenItems.IsSeededAsync(_routeB, ct));
+
+        Assert.Equal(2, await _db.SeenItems.SeedAsync(_routeB, ["1", "2", "3"], DateTimeOffset.UnixEpoch, ct));
+        Assert.True(await _db.SeenItems.IsSeededAsync(_routeB, ct));
+        Assert.Empty(await _db.SeenItems.FilterUnseenAsync(_routeB, ["1", "2", "3"], ct));
+    }
+
+    [Fact]
+    public async Task DestinationProgressIsKeptUntilTheItemIsSeen()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var route = await AddRouteWithDestinationsAsync(3);
+
+        await _db.SeenItems.MarkDestinationDoneAsync(route, 0, "a", DateTimeOffset.UnixEpoch, ct);
+        await _db.SeenItems.MarkDestinationDoneAsync(route, 2, "a", DateTimeOffset.UnixEpoch, ct);
+        await _db.SeenItems.MarkDestinationDoneAsync(route, 2, "a", DateTimeOffset.UnixEpoch, ct);
+        await _db.SeenItems.MarkDestinationDoneAsync(route, 1, "b", DateTimeOffset.UnixEpoch, ct);
+        await _db.SeenItems.MarkDestinationDoneAsync(route, 7, "b", DateTimeOffset.UnixEpoch, ct);
+
+        Assert.Equal([0, 2], (await _db.SeenItems.ListDoneDestinationsAsync(route, "a", ct)).Order());
+        Assert.Equal([1], await _db.SeenItems.ListDoneDestinationsAsync(route, "b", ct));
+        Assert.Empty(await _db.SeenItems.ListDoneDestinationsAsync(_routeA, "a", ct));
+
+        await _db.SeenItems.MarkSeenAsync(route, ["a"], DateTimeOffset.UnixEpoch, ct);
+
+        Assert.Empty(await _db.SeenItems.ListDoneDestinationsAsync(route, "a", ct));
+        Assert.Equal([1], await _db.SeenItems.ListDoneDestinationsAsync(route, "b", ct));
+    }
+
+    [Fact]
+    public async Task ReplacingDestinationsForgetsTheirProgress()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var route = await AddRouteWithDestinationsAsync(2);
+        await _db.SeenItems.MarkDestinationDoneAsync(route, 0, "a", DateTimeOffset.UnixEpoch, ct);
+
+        var settings = (await _db.Routes.GetAsync(route, ct))!.Settings;
+        await _db.Routes.UpdateAsync(route, settings, ct);
+
+        Assert.Empty(await _db.SeenItems.ListDoneDestinationsAsync(route, "a", ct));
+    }
+
+    private async Task<long> AddRouteWithDestinationsAsync(int count)
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var feed = await _db.Feeds.AddAsync(
+            new FeedSettings(new Uri("https://example.com/other.xml"), "Other", TimeSpan.FromMinutes(10)), ct);
+        var destinations = Enumerable.Range(0, count)
+            .Select(i => new Destination("discord", new Dictionary<string, string> { ["channelId"] = $"{i + 1}" }))
+            .ToList();
+        return (await _db.Routes.AddAsync(feed.Id, new RouteSettings("Multi", null, null, true, destinations), ct))!.Id;
     }
 
     [Fact]

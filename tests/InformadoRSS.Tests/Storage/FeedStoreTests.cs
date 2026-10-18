@@ -106,6 +106,6 @@ public sealed class FeedStoreTests : IAsyncLifetime
         Assert.False(await _db.Feeds.DeleteAsync(feed.Id, ct));
 
         Assert.Null(await _db.Routes.GetAsync(route.Id, ct));
-        Assert.False(await _db.SeenItems.HasAnyAsync(route.Id, ct));
+        Assert.Equal(["a"], await _db.SeenItems.FilterUnseenAsync(route.Id, ["a"], ct));
     }
 }

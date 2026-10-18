@@ -18,6 +18,7 @@ public sealed class FeedProcessor
     private readonly ISeenItemStore _seenItems;
     private readonly IMessageRenderer _renderer;
     private readonly Dictionary<string, ISink> _sinks = new(StringComparer.Ordinal);
+    private readonly DestinationBackoff _backoff;
     private readonly SchedulerOptions _options;
     private readonly TimeProvider _time;
     private readonly ILogger<FeedProcessor> _logger;
@@ -29,6 +30,7 @@ public sealed class FeedProcessor
         ISeenItemStore seenItems,
         IMessageRenderer renderer,
         IEnumerable<ISink> sinks,
+        DestinationBackoff backoff,
         SchedulerOptions options,
         TimeProvider time,
         ILogger<FeedProcessor> logger)
@@ -39,6 +41,7 @@ public sealed class FeedProcessor
         _routes = routes;
         _seenItems = seenItems;
         _renderer = renderer;
+        _backoff = backoff;
         _options = options;
         _time = time;
         _logger = logger;
@@ -62,7 +65,7 @@ public sealed class FeedProcessor
         {
             if (route.Settings.Enabled)
             {
-                routes.Add((route, await _seenItems.HasAnyAsync(route.Id, cancellationToken)));
+                routes.Add((route, await _seenItems.IsSeededAsync(route.Id, cancellationToken)));
             }
         }
 
@@ -91,7 +94,9 @@ public sealed class FeedProcessor
 
                 var validators = complete ? ToStorage(fetched.Validators) : feed.Validators;
                 await _feeds.RecordSuccessAsync(feed.Id, _time.GetUtcNow(), validators, cancellationToken);
-                return FeedOutcome.Success;
+                return !complete && SoonestRetry(routes) is { } retry
+                    ? FeedOutcome.Success with { DeliveryRetryAfter = retry }
+                    : FeedOutcome.Success;
 
             default:
                 throw new InvalidOperationException($"Unsupported fetch result {result.GetType().Name}.");
@@ -106,7 +111,7 @@ public sealed class FeedProcessor
 
         if (!seeded)
         {
-            var count = await _seenItems.MarkSeenAsync(route.Id, ids, _time.GetUtcNow(), cancellationToken);
+            var count = await _seenItems.SeedAsync(route.Id, ids, _time.GetUtcNow(), cancellationToken);
             _logger.RouteSeeded(route.Id, name, count);
             return true;
         }
@@ -190,17 +195,36 @@ public sealed class FeedProcessor
         return pending == 0;
     }
 
-    /// <returns>Whether every destination is done with the item (delivered or permanently rejected).</returns>
+    /// <summary>
+    /// Sends the item to every destination of the route that is not done with it yet. Each destination is tracked on its
+    /// own, so a destination that already got the item is not sent it again while another one is retried.
+    /// </summary>
+    /// <returns>Whether every destination is done with the item (delivered, rejected, or broken).</returns>
     private async Task<bool> DeliverAsync(Route route, FeedItem item, RenderedMessage message, CancellationToken cancellationToken)
     {
         var destinations = route.Settings.Destinations;
+        var done = await _seenItems.ListDoneDestinationsAsync(route.Id, item.Id, cancellationToken);
+        var complete = true;
         for (var position = 0; position < destinations.Count; position++)
         {
+            if (done.Contains(position))
+            {
+                continue;
+            }
+
             var destination = destinations[position];
             if (!_sinks.TryGetValue(destination.Sink, out var sink))
             {
                 _logger.UnknownSink(route.Id, route.Settings.Name, destination.Sink);
-                return false;
+                complete = false;
+                continue;
+            }
+
+            if (_backoff.Remaining(route.Id, position) is { } wait)
+            {
+                _logger.DeliveryDeferred(route.Id, route.Settings.Name, item.Id, destination.Sink, position, wait);
+                complete = false;
+                continue;
             }
 
             DeliveryResult result;
@@ -223,13 +247,42 @@ public sealed class FeedProcessor
                     await _routes.SetDestinationBrokenAsync(
                         route.Id, position, _time.GetUtcNow(), result.Error ?? "Rejected permanently", cancellationToken);
                     break;
+                case DeliveryStatus.Rejected:
+                    _logger.DeliveryRejected(route.Id, route.Settings.Name, item.Id, destination.Sink, position, result.Error);
+                    break;
                 default:
                     _logger.DeliveryTransient(route.Id, route.Settings.Name, item.Id, destination.Sink, position, result.Error);
-                    return false;
+                    if (result.RetryAfter is { } retryAfter && retryAfter > TimeSpan.Zero)
+                    {
+                        _backoff.Defer(route.Id, position, retryAfter < _options.MaxRetryAfter ? retryAfter : _options.MaxRetryAfter);
+                    }
+
+                    complete = false;
+                    continue;
+            }
+
+            await _seenItems.MarkDestinationDoneAsync(route.Id, position, item.Id, _time.GetUtcNow(), cancellationToken);
+        }
+
+        return complete;
+    }
+
+    /// <summary>How long until the first destination waiting on a sink <c>Retry-After</c> may be tried again.</summary>
+    private TimeSpan? SoonestRetry(List<(Route Route, bool Seeded)> routes)
+    {
+        TimeSpan? soonest = null;
+        foreach (var (route, _) in routes)
+        {
+            for (var position = 0; position < route.Settings.Destinations.Count; position++)
+            {
+                if (_backoff.Remaining(route.Id, position) is { } wait && (soonest is null || wait < soonest))
+                {
+                    soonest = wait;
+                }
             }
         }
 
-        return true;
+        return soonest;
     }
 
     /// <summary>

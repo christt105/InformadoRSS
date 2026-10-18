@@ -9,4 +9,6 @@ public sealed record DeliveryResult(DeliveryStatus Status, string? Error = null,
         new(DeliveryStatus.Transient, error, retryAfter);
 
     public static DeliveryResult Permanent(string error) => new(DeliveryStatus.Permanent, error);
+
+    public static DeliveryResult Rejected(string error) => new(DeliveryStatus.Rejected, error);
 }
