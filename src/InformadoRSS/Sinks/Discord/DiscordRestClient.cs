@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -20,6 +21,9 @@ public sealed class DiscordRestClient(
 
     public static string UserAgent { get; } = $"DiscordBot (https://github.com/christt105/InformadoRSS, {AppInfo.Version})";
 
+    /// <summary>The largest page <see cref="GetCurrentUserGuildsAsync"/> accepts.</summary>
+    public const int MaxGuildsPerPage = 200;
+
     /// <summary>Posts a message to a channel (<c>POST /channels/{channel.id}/messages</c>).</summary>
     public Task<DiscordApiResponse> CreateMessageAsync(string channelId, DiscordMessagePayload payload, CancellationToken cancellationToken)
     {
@@ -34,6 +38,58 @@ public sealed class DiscordRestClient(
                 Content = JsonContent.Create(payload, DiscordJsonContext.Default.DiscordMessagePayload),
             },
             cancellationToken);
+    }
+
+    /// <summary>Gets the bot's own user (<c>GET /users/@me</c>).</summary>
+    public Task<DiscordApiResponse> GetCurrentUserAsync(CancellationToken cancellationToken) =>
+        GetAsync("users/@me", "GET users/@me", cancellationToken);
+
+    /// <summary>
+    /// Gets one page of the bot's guilds (<c>GET /users/@me/guilds</c>), sorted by id, starting after <paramref name="after"/>.
+    /// </summary>
+    public Task<DiscordApiResponse> GetCurrentUserGuildsAsync(string? after, int limit, CancellationToken cancellationToken)
+    {
+        ArgumentOutOfRangeException.ThrowIfLessThan(limit, 1);
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(limit, MaxGuildsPerPage);
+
+        var query = after is null
+            ? $"?limit={limit.ToString(CultureInfo.InvariantCulture)}"
+            : $"?limit={limit.ToString(CultureInfo.InvariantCulture)}&after={Uri.EscapeDataString(after)}";
+        return GetAsync($"users/@me/guilds{query}", "GET users/@me/guilds", cancellationToken);
+    }
+
+    /// <summary>Gets a guild, including its roles and owner (<c>GET /guilds/{guild.id}</c>).</summary>
+    public Task<DiscordApiResponse> GetGuildAsync(string guildId, CancellationToken cancellationToken)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(guildId);
+        return GetAsync($"guilds/{Uri.EscapeDataString(guildId)}", $"GET guilds/{{guild.id}}:{guildId}", cancellationToken);
+    }
+
+    /// <summary>Lists a guild's channels, without threads (<c>GET /guilds/{guild.id}/channels</c>).</summary>
+    public Task<DiscordApiResponse> GetGuildChannelsAsync(string guildId, CancellationToken cancellationToken)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(guildId);
+        return GetAsync(
+            $"guilds/{Uri.EscapeDataString(guildId)}/channels",
+            $"GET guilds/{{guild.id}}/channels:{guildId}",
+            cancellationToken);
+    }
+
+    /// <summary>Gets a member of a guild (<c>GET /guilds/{guild.id}/members/{user.id}</c>).</summary>
+    public Task<DiscordApiResponse> GetGuildMemberAsync(string guildId, string userId, CancellationToken cancellationToken)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(guildId);
+        ArgumentException.ThrowIfNullOrWhiteSpace(userId);
+        return GetAsync(
+            $"guilds/{Uri.EscapeDataString(guildId)}/members/{Uri.EscapeDataString(userId)}",
+            $"GET guilds/{{guild.id}}/members/{{user.id}}:{guildId}",
+            cancellationToken);
+    }
+
+    private Task<DiscordApiResponse> GetAsync(string path, string bucket, CancellationToken cancellationToken)
+    {
+        var uri = new Uri(BaseUri, path);
+        return SendAsync(bucket, () => new HttpRequestMessage(HttpMethod.Get, uri), cancellationToken);
     }
 
     private async Task<DiscordApiResponse> SendAsync(

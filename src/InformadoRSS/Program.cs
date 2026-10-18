@@ -32,6 +32,7 @@ builder.Services.AddStorage();
 builder.Services.AddRssAtomSource();
 builder.Services.AddTemplates();
 builder.Services.AddDiscordSink();
+builder.Services.AddDiscordDirectory();
 builder.Services.AddScheduler();
 
 var app = builder.Build();
@@ -42,6 +43,7 @@ app.UseDefaultFiles();
 app.UseStaticFiles();
 
 app.MapGet("/health", () => new HealthResponse("ok", AppInfo.Version));
+app.MapDiscordApi();
 
 app.Map("/api/{**path}", () => Results.NotFound());
 app.MapFallbackToFile("index.html");
