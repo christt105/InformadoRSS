@@ -6,5 +6,5 @@ public interface ISink
     /// <summary>Identifier matched against <see cref="Destination.Sink"/>.</summary>
     string Name { get; }
 
-    Task DeliverAsync(Destination destination, RenderedMessage message, CancellationToken cancellationToken);
+    Task<DeliveryResult> DeliverAsync(Destination destination, RenderedMessage message, CancellationToken cancellationToken);
 }
