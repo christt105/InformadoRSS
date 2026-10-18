@@ -1,4 +1,5 @@
 using InformadoRSS;
+using InformadoRSS.Scheduling;
 using InformadoRSS.Sinks.Discord;
 using InformadoRSS.Sources;
 using InformadoRSS.Storage;
@@ -31,6 +32,7 @@ builder.Services.AddStorage();
 builder.Services.AddRssAtomSource();
 builder.Services.AddTemplates();
 builder.Services.AddDiscordSink();
+builder.Services.AddScheduler();
 
 var app = builder.Build();
 

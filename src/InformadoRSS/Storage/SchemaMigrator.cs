@@ -58,6 +58,10 @@ public static class SchemaMigrator
             value TEXT NOT NULL
         ) WITHOUT ROWID;
         """,
+        """
+        ALTER TABLE destinations ADD COLUMN broken_since INTEGER;
+        ALTER TABLE destinations ADD COLUMN broken_reason TEXT;
+        """,
     ];
 
     /// <summary>The schema version this build expects.</summary>

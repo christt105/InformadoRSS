@@ -88,6 +88,27 @@ public sealed class SqliteRouteStore(SqliteDatabase database) : IRouteStore
         return await command.ExecuteNonQueryAsync(cancellationToken) > 0;
     }
 
+    public async Task SetDestinationBrokenAsync(
+        long routeId, int position, DateTimeOffset at, string? reason, CancellationToken cancellationToken)
+    {
+        await using var connection = await database.OpenAsync(cancellationToken);
+        await using var command = connection.CreateCommand();
+        command.CommandText = reason is null
+            ? """
+              UPDATE destinations SET broken_since = NULL, broken_reason = NULL
+              WHERE route_id = $routeId AND position = $position AND broken_since IS NOT NULL
+              """
+            : """
+              UPDATE destinations SET broken_since = COALESCE(broken_since, $at), broken_reason = $reason
+              WHERE route_id = $routeId AND position = $position
+              """;
+        command.Parameters.AddWithValue("$routeId", routeId);
+        command.Parameters.AddWithValue("$position", position);
+        command.Parameters.AddWithValue("$at", at.ToUnixTimeMilliseconds());
+        command.Parameters.AddWithValue("$reason", SqliteValues.OrDbNull(reason));
+        await command.ExecuteNonQueryAsync(cancellationToken);
+    }
+
     internal static async Task<long> InsertAsync(
         SqliteConnection connection, SqliteTransaction transaction, long feedId, RouteSettings settings, CancellationToken cancellationToken)
     {

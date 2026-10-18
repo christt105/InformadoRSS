@@ -13,4 +13,10 @@ public interface IRouteStore
     Task<bool> UpdateAsync(long id, RouteSettings settings, CancellationToken cancellationToken);
 
     Task<bool> DeleteAsync(long id, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Flags the destination at <paramref name="position"/> of the route as broken because a sink rejected it permanently,
+    /// or clears the flag when <paramref name="reason"/> is <c>null</c>. Replacing the destinations of a route clears every flag.
+    /// </summary>
+    Task SetDestinationBrokenAsync(long routeId, int position, DateTimeOffset at, string? reason, CancellationToken cancellationToken);
 }
