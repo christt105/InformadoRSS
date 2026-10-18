@@ -1,0 +1,14 @@
+**/bin/
+**/obj/
+**/node_modules/
+web/dist/
+src/InformadoRSS/wwwroot/
+.git/
+.github/
+.vs/
+.vscode/
+.idea/
+*.md
+!README.md
+Dockerfile
+.dockerignore

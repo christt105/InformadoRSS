@@ -1,0 +1,17 @@
+bin/
+obj/
+*.user
+*.suo
+.vs/
+.vscode/
+.idea/
+TestResults/
+
+node_modules/
+web/dist/
+src/InformadoRSS/wwwroot/
+
+*.db
+*.db-shm
+*.db-wal
+.env
