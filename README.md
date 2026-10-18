@@ -25,11 +25,11 @@ npm ci
 npm run build
 cd ..
 
-# Backend
-dotnet run --project src/InformadoRSS
+# Backend, with the database in the working directory instead of /data
+Database__Path=./informadorss.db dotnet run --project src/InformadoRSS
 ```
 
-The app listens on <http://localhost:8420>. `GET /health` returns `{"status":"ok","version":"..."}`.
+The SQLite database path comes from the `Database:Path` setting (default `/data/informadorss.db`); the schema is created or upgraded on startup. The app listens on <http://localhost:8420>. `GET /health` returns `{"status":"ok","version":"..."}`.
 
 For frontend work, run the backend and `npm run dev` in `web/`; the Vite dev server proxies `/api` and `/health` to port 8420.
 

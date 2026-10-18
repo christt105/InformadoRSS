@@ -9,13 +9,14 @@ public sealed class SpaFallbackTests : IDisposable
     private const string IndexHtml = "<!doctype html><title>InformadoRSS</title>";
 
     private readonly string _webRoot = Directory.CreateTempSubdirectory("informadorss-wwwroot-").FullName;
+    private readonly AppFactory _app = new();
     private readonly WebApplicationFactory<Program> _factory;
 
     public SpaFallbackTests()
     {
         File.WriteAllText(Path.Combine(_webRoot, "index.html"), IndexHtml);
         File.WriteAllText(Path.Combine(_webRoot, "app.js"), "console.log(1)");
-        _factory = new WebApplicationFactory<Program>().WithWebHostBuilder(builder => builder.UseWebRoot(_webRoot));
+        _factory = _app.WithWebHostBuilder(builder => builder.UseWebRoot(_webRoot));
     }
 
     [Theory]
@@ -55,6 +56,7 @@ public sealed class SpaFallbackTests : IDisposable
     public void Dispose()
     {
         _factory.Dispose();
+        _app.Dispose();
         Directory.Delete(_webRoot, recursive: true);
     }
 }

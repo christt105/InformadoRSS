@@ -1,4 +1,5 @@
 using InformadoRSS;
+using InformadoRSS.Storage;
 
 if (args.Length > 0 && args[0] == HealthCheckCommand.Flag)
 {
@@ -23,7 +24,11 @@ if (string.IsNullOrEmpty(builder.Configuration["urls"]) && string.IsNullOrEmpty(
 builder.Services.ConfigureHttpJsonOptions(options =>
     options.SerializerOptions.TypeInfoResolverChain.Insert(0, AppJsonContext.Default));
 
+builder.Services.AddStorage();
+
 var app = builder.Build();
+
+await app.Services.MigrateDatabaseAsync();
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
