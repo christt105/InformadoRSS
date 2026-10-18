@@ -211,9 +211,9 @@ public sealed class RssAtomSourceTests
     }
 
     [Fact]
-    public void IsRegisteredAsSourceInTheApplication()
+    public async Task IsRegisteredAsSourceInTheApplication()
     {
-        using var factory = new WebApplicationFactory<Program>();
+        await using var factory = new AppFactory();
 
         var source = factory.Services.GetRequiredService<ISource>();
 
