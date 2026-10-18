@@ -1,6 +1,8 @@
 using InformadoRSS;
+using InformadoRSS.Sinks.Discord;
 using InformadoRSS.Sources;
 using InformadoRSS.Storage;
+using InformadoRSS.Templates;
 
 if (args.Length > 0 && args[0] == HealthCheckCommand.Flag)
 {
@@ -27,6 +29,8 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 
 builder.Services.AddStorage();
 builder.Services.AddRssAtomSource();
+builder.Services.AddTemplates();
+builder.Services.AddDiscordSink();
 
 var app = builder.Build();
 
