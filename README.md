@@ -1,6 +1,6 @@
 # InformadoRSS
 
-Lightweight single-container RSS/Atom to Discord forwarder, built as a replacement for [MonitoRSS](https://github.com/synzen/MonitoRSS).
+Lightweight single-container RSS/Atom to Discord forwarder.
 
 It polls feeds, filters items per route and posts them to Discord channels through the bot REST API (no gateway connection, no bot commands). Configuration lives in SQLite and is edited from a small web UI served by the same binary.
 
