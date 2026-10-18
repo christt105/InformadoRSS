@@ -2,13 +2,6 @@ using Microsoft.Data.Sqlite;
 
 namespace InformadoRSS.Storage;
 
-internal static class SqliteErrors
-{
-    public const int ConstraintForeignKey = 787;
-
-    public const int ConstraintUnique = 2067;
-}
-
 internal static class SqliteValues
 {
     public static string? GetString(SqliteDataReader reader, int ordinal) =>
