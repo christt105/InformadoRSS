@@ -149,6 +149,59 @@ public sealed class FeedSchedulerTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task IntervalChangeAppliesBeforeTheNextFetch()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var feed = await _h.AddFeedAsync(intervalMinutes: 60);
+        using var scheduler = _h.CreateScheduler();
+        await scheduler.StartDueAsync(ct);
+        await scheduler.WhenIdleAsync();
+        var ranAt = _h.Time.GetUtcNow();
+
+        await _h.Feeds.UpdateAsync(feed.Id, feed.Settings with { Interval = TimeSpan.FromMinutes(5) }, ct);
+        _h.Time.Advance(TimeSpan.FromMinutes(4));
+        Assert.Equal(0, await scheduler.StartDueAsync(ct));
+        Assert.Equal(ranAt + TimeSpan.FromMinutes(5), scheduler.NextDue(feed.Id));
+
+        await _h.Feeds.UpdateAsync(feed.Id, feed.Settings with { Interval = TimeSpan.FromMinutes(3) }, ct);
+        Assert.Equal(1, await scheduler.StartDueAsync(ct));
+        await scheduler.WhenIdleAsync();
+
+        await _h.Feeds.UpdateAsync(feed.Id, feed.Settings with { Interval = TimeSpan.FromMinutes(30) }, ct);
+        _h.Time.Advance(TimeSpan.FromMinutes(3));
+        Assert.Equal(0, await scheduler.StartDueAsync(ct));
+        Assert.Equal(2, _h.Source.Requests.Count);
+    }
+
+    [Fact]
+    public async Task SinkRetryAfterShorterThanTheIntervalBringsTheNextCycleForward()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var feed = await _h.AddFeedAsync();
+        await _h.AddRouteAsync(feed);
+        _h.Source.ReturnsItems(Item("seed"));
+        using var scheduler = _h.CreateScheduler();
+        await scheduler.StartDueAsync(ct);
+        await scheduler.WhenIdleAsync();
+
+        _h.Discord.Handler = (_, _) => DeliveryResult.Transient("rate limited", TimeSpan.FromMinutes(2));
+        _h.Source.ReturnsItems(Item("a"), Item("seed"));
+        _h.Time.Advance(TimeSpan.FromMinutes(10));
+        await scheduler.StartDueAsync(ct);
+        await scheduler.WhenIdleAsync();
+
+        Assert.Equal(_h.Time.GetUtcNow() + TimeSpan.FromMinutes(2), scheduler.NextDue(feed.Id));
+
+        _h.Discord.Handler = (_, _) => DeliveryResult.Delivered;
+        _h.Time.Advance(TimeSpan.FromMinutes(2));
+        Assert.Equal(1, await scheduler.StartDueAsync(ct));
+        await scheduler.WhenIdleAsync();
+
+        Assert.Equal(["a", "a"], _h.Discord.Contents);
+        Assert.Equal(_h.Time.GetUtcNow() + TimeSpan.FromMinutes(10), scheduler.NextDue(feed.Id));
+    }
+
+    [Fact]
     public async Task FetchAndDeliveryRunEndToEnd()
     {
         var ct = TestContext.Current.CancellationToken;

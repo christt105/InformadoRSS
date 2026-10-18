@@ -92,7 +92,7 @@ public sealed class DiscordSink(DiscordRestClient client) : ISink
             return DeliveryResult.Transient($"Discord is unavailable ({detail})");
         }
 
-        return DeliveryResult.Permanent($"Discord rejected the message ({detail})");
+        return DeliveryResult.Rejected($"Discord rejected the message ({detail})");
     }
 
     private static string Describe(DiscordApiResponse response)

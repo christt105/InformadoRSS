@@ -184,7 +184,9 @@ public sealed class DiscordSinkTests
     [InlineData(HttpStatusCode.Forbidden, """{"message":"Missing Access","code":50001}""", DeliveryStatus.Permanent, "code 50001")]
     [InlineData(HttpStatusCode.Forbidden, """{"message":"Missing Permissions","code":50013}""", DeliveryStatus.Permanent, "Missing Permissions")]
     [InlineData(HttpStatusCode.NotFound, """{"message":"Unknown Channel","code":10003}""", DeliveryStatus.Permanent, "Unknown Channel")]
-    [InlineData(HttpStatusCode.BadRequest, """{"message":"Invalid Form Body","code":50035}""", DeliveryStatus.Permanent, "rejected the message")]
+    [InlineData(HttpStatusCode.BadRequest, """{"message":"Invalid Form Body","code":50035}""", DeliveryStatus.Rejected, "rejected the message")]
+    [InlineData(HttpStatusCode.RequestEntityTooLarge, "", DeliveryStatus.Rejected, "HTTP 413")]
+    [InlineData(HttpStatusCode.BadRequest, """{"message":"Unknown Channel","code":10003}""", DeliveryStatus.Permanent, "not usable")]
     [InlineData(HttpStatusCode.InternalServerError, "", DeliveryStatus.Transient, "HTTP 500")]
     [InlineData(HttpStatusCode.BadGateway, "<html>bad gateway</html>", DeliveryStatus.Transient, "HTTP 502")]
     public async Task MapsErrorResponses(HttpStatusCode status, string body, DeliveryStatus expected, string errorPart)

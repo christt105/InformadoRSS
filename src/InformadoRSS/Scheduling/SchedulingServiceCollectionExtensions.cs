@@ -15,6 +15,7 @@ public static class SchedulingServiceCollectionExtensions
         services.TryAddSingleton(TimeProvider.System);
         services.TryAddSingleton(provider => SchedulerOptions.FromConfiguration(provider.GetRequiredService<IConfiguration>()));
         services.TryAddSingleton<IMessageRenderer, PlainTextMessageRenderer>();
+        services.TryAddSingleton<DestinationBackoff>();
         services.TryAddTransient<FeedProcessor>();
         services.TryAddSingleton<FeedScheduler>();
         services.AddHostedService<SchedulerService>();

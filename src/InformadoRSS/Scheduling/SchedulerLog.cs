@@ -38,8 +38,16 @@ internal static partial class SchedulerLog
     [LoggerMessage(Level = LogLevel.Warning, Message = "Route {RouteId} ({RouteName}): no sink named '{Sink}' is registered; retrying next cycle")]
     public static partial void UnknownSink(this ILogger logger, long routeId, string routeName, string sink);
 
-    [LoggerMessage(Level = LogLevel.Warning, Message = "Route {RouteId} ({RouteName}): temporary failure delivering item {ItemId} to {Sink} destination #{Position}: {Error}; retrying next cycle")]
+    [LoggerMessage(Level = LogLevel.Warning, Message = "Route {RouteId} ({RouteName}): temporary failure delivering item {ItemId} to {Sink} destination #{Position}: {Error}; retrying later")]
     public static partial void DeliveryTransient(
+        this ILogger logger, long routeId, string routeName, string itemId, string sink, int position, string? error);
+
+    [LoggerMessage(Level = LogLevel.Debug, Message = "Route {RouteId} ({RouteName}): item {ItemId} held back for {Sink} destination #{Position}, which asked to wait {Wait}")]
+    public static partial void DeliveryDeferred(
+        this ILogger logger, long routeId, string routeName, string itemId, string sink, int position, TimeSpan wait);
+
+    [LoggerMessage(Level = LogLevel.Warning, Message = "Route {RouteId} ({RouteName}): {Sink} destination #{Position} rejected item {ItemId}: {Error}; item skipped for that destination")]
+    public static partial void DeliveryRejected(
         this ILogger logger, long routeId, string routeName, string itemId, string sink, int position, string? error);
 
     [LoggerMessage(Level = LogLevel.Error, Message = "Route {RouteId} ({RouteName}): {Sink} destination #{Position} is broken and rejected item {ItemId}: {Error}")]
