@@ -1,10 +1,9 @@
 using System.Net;
 using System.Net.Http.Json;
-using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace InformadoRSS.Tests;
 
-public sealed class HealthTests(WebApplicationFactory<Program> factory) : IClassFixture<WebApplicationFactory<Program>>
+public sealed class HealthTests(AppFactory factory) : IClassFixture<AppFactory>
 {
     [Fact]
     public async Task HealthReturnsOkStatusAndVersion()
