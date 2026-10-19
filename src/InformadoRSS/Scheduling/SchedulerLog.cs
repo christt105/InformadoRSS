@@ -16,6 +16,9 @@ internal static partial class SchedulerLog
     [LoggerMessage(Level = LogLevel.Error, Message = "Processing feed {FeedId} ({FeedName}) failed unexpectedly")]
     public static partial void FeedCrashed(this ILogger logger, Exception exception, long feedId, string feedName);
 
+    [LoggerMessage(Level = LogLevel.Error, Message = "Feed {FeedId} ({FeedName}): cycle observer {Observer} failed")]
+    public static partial void ObserverFailed(this ILogger logger, Exception exception, long feedId, string feedName, string observer);
+
     [LoggerMessage(Level = LogLevel.Warning, Message = "Fetching feed {FeedId} ({FeedName}) failed ({Kind} {StatusCode}, {ConsecutiveFailures} in a row): {Error}")]
     public static partial void FetchFailed(
         this ILogger logger, long feedId, string feedName, Core.FetchErrorKind kind, HttpStatusCode? statusCode, int consecutiveFailures, string error);

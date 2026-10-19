@@ -45,6 +45,24 @@ Native AOT binary:
 dotnet publish src/InformadoRSS -c Release -r linux-x64 -o out
 ```
 
+## Alerts and ntfy
+
+InformadoRSS sends one alert when a feed or destination breaks and one when it recovers. A feed counts as broken after it has failed continuously for a while (6 hours by default, so short daily outages such as YouTube feeds answering 404 for a few hours stay quiet); a destination counts as broken when its sink rejects it permanently (for example a deleted Discord channel). What was alerted is stored in the database, so restarts do not repeat alerts. Without a configured target, alerts are only logged.
+
+Settings (in the `settings` table):
+
+| Key | Meaning |
+|---|---|
+| `alerts.target` | `discord` (default) or `ntfy` |
+| `alerts.discordChannelId` | Discord channel that receives alerts |
+| `alerts.discordUserId` | Discord user that receives alerts by direct message, used when no channel is set |
+| `alerts.ntfyTopic` | ntfy topic that receives alerts |
+| `alerts.feedBrokenAfterMinutes` | Minutes without a successful fetch before a feed is reported, default `360` |
+| `ntfy.url` | Base URL of the ntfy server, e.g. `http://192.168.1.15:8094` |
+| `ntfy.token` | Optional access token (`tk_...`), or `user:password` for basic auth |
+
+ntfy also works as a route destination: sink `ntfy` with a `topic` parameter.
+
 ## Docker
 
 ```sh

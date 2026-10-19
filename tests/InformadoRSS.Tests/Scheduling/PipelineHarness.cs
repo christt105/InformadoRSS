@@ -28,6 +28,9 @@ public sealed class PipelineHarness : IAsyncDisposable
 
     public FakeSink Ntfy { get; } = new("ntfy");
 
+    /// <summary>Cycle observers registered in the scheduler services; add them before the first <see cref="CreateScheduler"/>.</summary>
+    public List<IFeedCycleObserver> Observers { get; } = [];
+
     public IFeedStore Feeds => _db.Feeds;
 
     public IRouteStore Routes => _db.Routes;
@@ -81,7 +84,23 @@ public sealed class PipelineHarness : IAsyncDisposable
 
     public FeedScheduler CreateScheduler()
     {
-        _services ??= new ServiceCollection()
+        if (_services is null)
+        {
+            var services = new ServiceCollection();
+            foreach (var observer in Observers)
+            {
+                services.AddSingleton(observer);
+            }
+
+            _services = BuildServices(services);
+        }
+
+        return new FeedScheduler(
+            Feeds, _services.GetRequiredService<IServiceScopeFactory>(), Options, Time, NullLogger<FeedScheduler>.Instance);
+    }
+
+    private ServiceProvider BuildServices(ServiceCollection services) =>
+        services
             .AddSingleton<ISource>(Source)
             .AddSingleton(Feeds)
             .AddSingleton(Routes)
@@ -95,9 +114,6 @@ public sealed class PipelineHarness : IAsyncDisposable
             .AddSingleton(typeof(ILogger<>), typeof(NullLogger<>))
             .AddTransient<FeedProcessor>()
             .BuildServiceProvider();
-        return new FeedScheduler(
-            Feeds, _services.GetRequiredService<IServiceScopeFactory>(), Options, Time, NullLogger<FeedScheduler>.Instance);
-    }
 
     public async ValueTask DisposeAsync()
     {

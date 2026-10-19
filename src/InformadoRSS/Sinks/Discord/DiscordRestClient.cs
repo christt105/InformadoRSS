@@ -40,6 +40,24 @@ public sealed class DiscordRestClient(
             cancellationToken);
     }
 
+    /// <summary>
+    /// Opens (or returns the existing) direct message channel with a user (<c>POST /users/@me/channels</c>). The body of a
+    /// successful response is a <see cref="DiscordChannel"/>.
+    /// </summary>
+    public Task<DiscordApiResponse> CreateDmChannelAsync(string userId, CancellationToken cancellationToken)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(userId);
+
+        var uri = new Uri(BaseUri, "users/@me/channels");
+        return SendAsync(
+            "POST users/@me/channels",
+            () => new HttpRequestMessage(HttpMethod.Post, uri)
+            {
+                Content = JsonContent.Create(new DiscordCreateDmPayload(userId), DiscordJsonContext.Default.DiscordCreateDmPayload),
+            },
+            cancellationToken);
+    }
+
     /// <summary>Gets the bot's own user (<c>GET /users/@me</c>).</summary>
     public Task<DiscordApiResponse> GetCurrentUserAsync(CancellationToken cancellationToken) =>
         GetAsync("users/@me", "GET users/@me", cancellationToken);

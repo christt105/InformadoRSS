@@ -6,7 +6,8 @@ namespace InformadoRSS.Scheduling;
 /// Decides which feeds are due and runs a <see cref="FeedProcessor"/> for each of them, never two at the same time for
 /// the same feed and at most <see cref="SchedulerOptions.MaxConcurrency"/> overall. Due times live in memory; after a
 /// restart they are rebuilt from the last success or failure stored with each feed. Due times follow the current feed
-/// interval, so an interval change applies from the next <see cref="StartDueAsync"/> on.
+/// interval, so an interval change applies from the next <see cref="StartDueAsync"/> on. Every registered
+/// <see cref="IFeedCycleObserver"/> is notified after each completed cycle.
 /// </summary>
 public sealed class FeedScheduler : IDisposable
 {
@@ -150,6 +151,8 @@ public sealed class FeedScheduler : IDisposable
                 RetryAfter = outcome.RetryAfter,
                 DeliveryRetryAfter = outcome.DeliveryRetryAfter,
             };
+
+            await NotifyObserversAsync(scope.ServiceProvider, feed, outcome, cancellationToken);
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
@@ -175,6 +178,21 @@ public sealed class FeedScheduler : IDisposable
             }
 
             _logger.NextFetch(feed.Id, delay);
+        }
+    }
+
+    private async Task NotifyObserversAsync(IServiceProvider services, Feed feed, FeedOutcome outcome, CancellationToken cancellationToken)
+    {
+        foreach (var observer in services.GetServices<IFeedCycleObserver>())
+        {
+            try
+            {
+                await observer.OnFeedProcessedAsync(feed, outcome, cancellationToken);
+            }
+            catch (Exception ex) when (ex is not OperationCanceledException || !cancellationToken.IsCancellationRequested)
+            {
+                _logger.ObserverFailed(ex, feed.Id, feed.Settings.Name, observer.GetType().Name);
+            }
         }
     }
 
