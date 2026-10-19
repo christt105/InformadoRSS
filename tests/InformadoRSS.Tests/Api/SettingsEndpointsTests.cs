@@ -1,6 +1,7 @@
 using System.Net;
 using System.Text.Json;
 using InformadoRSS.Alerts;
+using InformadoRSS.Backups;
 using InformadoRSS.Sinks.Discord;
 using InformadoRSS.Sinks.Ntfy;
 using InformadoRSS.Storage;
@@ -40,6 +41,7 @@ public sealed class SettingsEndpointsTests : IAsyncDisposable
 
         Assert.Equal("Alerts", settings[AlertSettings.TargetKey].GetProperty("group").GetString());
         Assert.True(settings[AlertSettings.FeedBrokenAfterMinutesKey].GetProperty("defined").GetBoolean());
+        Assert.True(settings[BackupSettings.DirectoryKey].GetProperty("defined").GetBoolean());
         Assert.False(settings[NtfySettings.UrlKey].GetProperty("secret").GetBoolean());
         Assert.True(settings[NtfySettings.TokenKey].GetProperty("secret").GetBoolean());
     }

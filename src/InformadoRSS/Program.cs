@@ -1,6 +1,7 @@
 using InformadoRSS;
 using InformadoRSS.Alerts;
 using InformadoRSS.Api;
+using InformadoRSS.Backups;
 using InformadoRSS.Import;
 using InformadoRSS.Scheduling;
 using InformadoRSS.Sinks.Discord;
@@ -45,6 +46,7 @@ builder.Services.AddDiscordDirectory();
 builder.Services.AddNtfySink();
 builder.Services.AddScheduler();
 builder.Services.AddAlerts();
+builder.Services.AddBackups();
 builder.Services.AddMonitorssImport();
 
 var app = builder.Build();

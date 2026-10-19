@@ -65,11 +65,25 @@ Settings (in the `settings` table):
 
 ntfy also works as a route destination: sink `ntfy` with a `topic` parameter.
 
+## Backups
+
+InformadoRSS can copy its database to a folder on a schedule. Backups are off until `backups.directory` is set, usually to a mounted volume such as `/backups`. A backup is taken when the newest one in the folder is older than the interval, so restarts do not add extra copies; after each one the oldest files beyond the configured count are deleted. Copies are written with SQLite's `VACUUM INTO`, which is consistent while the app keeps running, and named `informadorss-yyyyMMddTHHmmssZ.db` after their UTC time. Other files in the folder are left alone.
+
+| Key | Meaning |
+| --- | --- |
+| `backups.directory` | Folder inside the container that receives the backups; empty disables them |
+| `backups.intervalHours` | Hours between two backups, default `24` |
+| `backups.keep` | Number of backups to keep, default `14` |
+
+A failed backup is retried every 15 minutes and raises one alert through the alert target above, plus one more when it works again.
+
+To restore, stop the container, replace `informadorss.db` in the data folder with the chosen backup (and delete any `informadorss.db-wal` and `informadorss.db-shm` next to it), then start the container again.
+
 ## Docker
 
 ```sh
 docker build -t informadorss .
-docker run -d --name informadorss -p 8420:8420 -v informadorss-data:/data informadorss
+docker run -d --name informadorss -p 8420:8420 -v informadorss-data:/data -v informadorss-backups:/backups informadorss
 ```
 
 Images are published to `ghcr.io/christt105/informadorss`: `X.Y.Z` and `latest` for releases, `pr-N` for each pull request.

@@ -60,6 +60,21 @@ public static class AlertMessages
         return new Alert(AlertKind.DestinationRecovered, Title($"Destination working again: {destination.RouteName}"), message, now);
     }
 
+    public static Alert BackupFailed(string directory, string error, DateTimeOffset failingSince, DateTimeOffset now)
+    {
+        var message =
+            $"The database backup to {directory} has been failing since " +
+            $"{failingSince.UtcDateTime.ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture)} UTC; it is retried until it works.\n" +
+            $"Error: {Truncate(error, MaxReasonLength)}";
+        return new Alert(AlertKind.BackupFailed, "Backup failing", message, now);
+    }
+
+    public static Alert BackupRecovered(string directory, DateTimeOffset failingSince, DateTimeOffset now)
+    {
+        var message = $"The database backup to {directory} works again after failing for {FormatDuration(now - failingSince)}.";
+        return new Alert(AlertKind.BackupRecovered, "Backup working again", message, now);
+    }
+
     /// <summary>A coarse human duration such as <c>6h 5m</c> or <c>2d 3h</c>.</summary>
     public static string FormatDuration(TimeSpan duration)
     {
