@@ -6,5 +6,5 @@ namespace InformadoRSS.Alerts;
 public sealed record Alert(AlertKind Kind, string Title, string Message, DateTimeOffset At)
 {
     /// <summary>Whether the alert reports something broken rather than a recovery.</summary>
-    public bool IsProblem => Kind is AlertKind.FeedBroken or AlertKind.DestinationBroken;
+    public bool IsProblem => Kind is AlertKind.FeedBroken or AlertKind.DestinationBroken or AlertKind.BackupFailed;
 }
