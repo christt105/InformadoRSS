@@ -13,6 +13,7 @@ const feed = ref<Feed | null>(null)
 const url = ref('')
 const name = ref('')
 const minutes = ref(10)
+const identityPattern = ref('')
 const error = ref<string | null>(null)
 const fieldErrors = ref<FieldError[]>([])
 const saved = ref(false)
@@ -23,6 +24,7 @@ function fill(value: Feed) {
   url.value = value.url
   name.value = value.name
   minutes.value = value.intervalSeconds / 60
+  identityPattern.value = value.identityPattern ?? ''
 }
 
 async function load() {
@@ -39,7 +41,14 @@ async function save() {
   error.value = null
   fieldErrors.value = []
   try {
-    fill(await api.updateFeed(Number(props.feedId), { url: url.value, name: name.value, intervalSeconds: Math.round(minutes.value * 60) }))
+    fill(
+      await api.updateFeed(Number(props.feedId), {
+        url: url.value,
+        name: name.value,
+        intervalSeconds: Math.round(minutes.value * 60),
+        identityPattern: identityPattern.value,
+      }),
+    )
     saved.value = true
   } catch (e) {
     error.value = errorMessage(e)
@@ -125,6 +134,13 @@ watch(() => props.feedId, load)
         <label>Name <input v-model="name" type="text" maxlength="200" /></label>
         <label>Check every (minutes) <input v-model.number="minutes" type="number" min="1" max="10080" required /></label>
       </div>
+      <label>
+        Identity pattern <input v-model="identityPattern" type="text" maxlength="500" placeholder="optional regular expression" />
+        <span class="muted">
+          For feeds that rewrite an entry instead of adding a new one. The part of the description it matches becomes part of
+          the item id, so a change there is sent as a new item. Changing it marks the current items as seen without sending them.
+        </span>
+      </label>
       <div class="row">
         <button class="primary" type="submit" :disabled="saving">Save</button>
         <span v-if="saved" class="ok">Saved</span>

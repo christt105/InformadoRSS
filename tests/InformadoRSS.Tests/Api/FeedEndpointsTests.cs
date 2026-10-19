@@ -52,6 +52,7 @@ public sealed class FeedEndpointsTests : IAsyncDisposable
     [InlineData("""{"url":"ftp://example.com/feed"}""", "$.url")]
     [InlineData("""{"url":""}""", "$.url")]
     [InlineData("""{"url":"https://example.com/feed","intervalSeconds":5}""", "$.intervalSeconds")]
+    [InlineData("""{"url":"https://example.com/feed","identityPattern":"("}""", "$.identityPattern")]
     public async Task InvalidFeedIsRejected(string body, string path)
     {
         using var response = await _api.PostAsync("/api/feeds", body);
@@ -88,11 +89,13 @@ public sealed class FeedEndpointsTests : IAsyncDisposable
         var id = await _api.CreateFeedAsync();
 
         using var updated = await _api.PutAsync(
-            $"/api/feeds/{id}", """{"url":"https://example.com/other.xml","name":"Other","intervalSeconds":900}""");
+            $"/api/feeds/{id}",
+            """{"url":"https://example.com/other.xml","name":"Other","intervalSeconds":900,"identityPattern":"^[^-]+"}""");
         Assert.Equal(HttpStatusCode.OK, updated.StatusCode);
         var feed = await ReadAsync(updated);
         Assert.Equal("Other", feed.GetProperty("name").GetString());
         Assert.Equal(900, feed.GetProperty("intervalSeconds").GetInt64());
+        Assert.Equal("^[^-]+", feed.GetProperty("identityPattern").GetString());
 
         using var deleted = await _api.DeleteAsync($"/api/feeds/{id}");
         Assert.Equal(HttpStatusCode.NoContent, deleted.StatusCode);

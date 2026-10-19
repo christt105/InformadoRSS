@@ -34,6 +34,28 @@ public sealed class FeedProcessorTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task IdentityPatternSendsStatusChangesOfTheSameEntry()
+    {
+        var feed = await _h.Feeds.AddAsync(
+            new FeedSettings(new Uri("https://example.com/list.xml"), "List", TimeSpan.FromMinutes(10), "^[^-]+"),
+            TestContext.Current.CancellationToken);
+        await _h.AddRouteAsync(
+            feed, """{"type":"condition","field":"description","operator":"startsWith","value":"Completed"}""");
+        _h.Source.ReturnsItems(Entry("a", "Watching - 1 of 12 episodes"), Entry("b", "Completed - 12 of 12 episodes"));
+        await _h.RunCycleAsync(feed);
+
+        _h.Source.ReturnsItems(Entry("a", "Watching - 2 of 12 episodes"), Entry("b", "Completed - 12 of 12 episodes"));
+        await _h.RunCycleAsync(feed);
+        Assert.Empty(_h.Discord.Attempts);
+
+        _h.Source.ReturnsItems(Entry("a", "Completed - 12 of 12 episodes"), Entry("b", "Completed - 12 of 12 episodes"));
+        await _h.RunCycleAsync(feed);
+        Assert.Equal(["a#Completed"], _h.Discord.Contents);
+    }
+
+    private static FeedItem Entry(string id, string description) => Item(id) with { DescriptionText = description };
+
+    [Fact]
     public async Task NewestItemIsRememberedEvenWithoutRoutes()
     {
         var ct = TestContext.Current.CancellationToken;

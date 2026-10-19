@@ -108,4 +108,41 @@ public sealed class FeedStoreTests : IAsyncLifetime
         Assert.Null(await _db.Routes.GetAsync(route.Id, ct));
         Assert.Equal(["a"], await _db.SeenItems.FilterUnseenAsync(route.Id, ["a"], ct));
     }
+
+    [Fact]
+    public async Task IdentityPatternIsStored()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var settings = Blog with { IdentityPattern = "^[^-]+" };
+
+        var feed = await _db.Feeds.AddAsync(settings, ct);
+        Assert.Equal(settings, (await _db.Feeds.GetAsync(feed.Id, ct))!.Settings);
+
+        await _db.Feeds.UpdateAsync(feed.Id, Blog, ct);
+        Assert.Null((await _db.Feeds.GetAsync(feed.Id, ct))!.Settings.IdentityPattern);
+    }
+
+    [Fact]
+    public async Task ChangingIdentityPatternUnseedsRoutes()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var feed = await _db.Feeds.AddAsync(Blog, ct);
+        var other = await _db.Feeds.AddAsync(Blog with { Url = new Uri("https://example.com/other.xml") }, ct);
+        var route = await _db.Routes.AddAsync(feed.Id, new RouteSettings("All", null, null, true, []), ct);
+        var otherRoute = await _db.Routes.AddAsync(other.Id, new RouteSettings("All", null, null, true, []), ct);
+        await _db.SeenItems.SeedAsync(route!.Id, ["a"], DateTimeOffset.UnixEpoch, ct);
+        await _db.SeenItems.SeedAsync(otherRoute!.Id, ["a"], DateTimeOffset.UnixEpoch, ct);
+
+        await _db.Feeds.UpdateAsync(feed.Id, Blog with { Name = "Renamed" }, ct);
+        Assert.True(await _db.SeenItems.IsSeededAsync(route.Id, ct));
+
+        await _db.Feeds.UpdateAsync(feed.Id, Blog with { IdentityPattern = "^[^-]+" }, ct);
+        Assert.False(await _db.SeenItems.IsSeededAsync(route.Id, ct));
+        Assert.True(await _db.SeenItems.IsSeededAsync(otherRoute.Id, ct));
+        Assert.Empty(await _db.SeenItems.FilterUnseenAsync(route.Id, ["a"], ct));
+
+        await _db.SeenItems.SeedAsync(route.Id, ["a#Watching"], DateTimeOffset.UnixEpoch, ct);
+        await _db.Feeds.UpdateAsync(feed.Id, Blog with { IdentityPattern = "^[^-]+" }, ct);
+        Assert.True(await _db.SeenItems.IsSeededAsync(route.Id, ct));
+    }
 }

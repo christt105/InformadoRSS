@@ -217,6 +217,7 @@ public static class FeedEndpoints
             feed.Settings.Url.AbsoluteUri,
             feed.Settings.Name,
             (long)feed.Settings.Interval.TotalSeconds,
+            feed.Settings.IdentityPattern,
             feed.Health,
             latest.GetValueOrDefault(feed.Id),
             scheduler.NextDue(feed.Id),

@@ -105,6 +105,7 @@ export interface Feed {
   url: string
   name: string
   intervalSeconds: number
+  identityPattern: string | null
   health: FeedHealth
   latestItem: LatestItem | null
   nextFetchAt: string | null
@@ -115,6 +116,7 @@ export interface FeedInput {
   url: string
   name: string
   intervalSeconds: number
+  identityPattern?: string | null
 }
 
 export interface FeedCategory {

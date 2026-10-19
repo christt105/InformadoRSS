@@ -1,6 +1,7 @@
 using System.Text.RegularExpressions;
 using InformadoRSS.Core;
 using InformadoRSS.Filters;
+using InformadoRSS.Sources;
 using InformadoRSS.Storage;
 using Route = InformadoRSS.Storage.Route;
 
@@ -89,9 +90,10 @@ public sealed class FeedProcessor
                 return FeedOutcome.Success;
 
             case FeedFetched fetched:
-                if (fetched.Items.Count > 0)
+                var items = ItemIdentity.Apply(fetched.Items, feed.Settings.IdentityPattern);
+                if (items.Count > 0)
                 {
-                    var newest = OldestFirst(fetched.Items)[^1];
+                    var newest = OldestFirst(items)[^1];
                     await _latestItems.SetAsync(
                         feed.Id,
                         new LatestItem(newest.Id, newest.Title, newest.Link, newest.Published, _time.GetUtcNow()),
@@ -101,7 +103,7 @@ public sealed class FeedProcessor
                 var complete = true;
                 foreach (var (route, seeded) in routes)
                 {
-                    complete &= await ProcessRouteAsync(route, seeded, fetched.Items, cancellationToken);
+                    complete &= await ProcessRouteAsync(route, seeded, items, cancellationToken);
                 }
 
                 var validators = complete ? ToStorage(fetched.Validators) : feed.Validators;

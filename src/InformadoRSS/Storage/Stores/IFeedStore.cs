@@ -9,6 +9,10 @@ public interface IFeedStore
     /// <exception cref="DuplicateFeedException">Another feed already uses the same URL.</exception>
     Task<Feed> AddAsync(FeedSettings settings, CancellationToken cancellationToken);
 
+    /// <summary>
+    /// Replaces the feed settings. Changing the identity pattern unseeds every route of the feed, so the next fetch
+    /// marks the items under their new ids as seen instead of sending them all again.
+    /// </summary>
     /// <returns><c>false</c> when the feed does not exist.</returns>
     /// <exception cref="DuplicateFeedException">Another feed already uses the same URL.</exception>
     Task<bool> UpdateAsync(long id, FeedSettings settings, CancellationToken cancellationToken);
