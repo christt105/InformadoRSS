@@ -73,6 +73,18 @@ public static class SchemaMigrator
             PRIMARY KEY (destination_id, item_id)
         ) WITHOUT ROWID;
         """,
+        """
+        CREATE TABLE feed_alerts (
+            feed_id INTEGER PRIMARY KEY REFERENCES feeds (id) ON DELETE CASCADE,
+            failing_since INTEGER NOT NULL,
+            alerted_at INTEGER
+        );
+
+        CREATE TABLE destination_alerts (
+            destination_id INTEGER PRIMARY KEY REFERENCES destinations (id) ON DELETE CASCADE,
+            alerted_at INTEGER NOT NULL
+        );
+        """,
     ];
 
     /// <summary>The schema version this build expects.</summary>

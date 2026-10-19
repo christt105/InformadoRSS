@@ -15,4 +15,6 @@ namespace InformadoRSS.Sinks.Discord;
 [JsonSerializable(typeof(List<DiscordChannel>))]
 [JsonSerializable(typeof(DiscordGuildMember))]
 [JsonSerializable(typeof(DiscordMessage))]
+[JsonSerializable(typeof(DiscordCreateDmPayload))]
+[JsonSerializable(typeof(DiscordChannel))]
 internal sealed partial class DiscordJsonContext : JsonSerializerContext;

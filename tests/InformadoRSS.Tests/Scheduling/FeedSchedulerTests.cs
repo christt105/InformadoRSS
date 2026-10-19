@@ -220,6 +220,28 @@ public sealed class FeedSchedulerTests : IAsyncLifetime
         Assert.Equal(["b"], _h.Discord.Contents);
     }
 
+    [Fact]
+    public async Task ObserversAreNotifiedAndTheirFailuresDoNotAffectScheduling()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var failing = new RecordingObserver(throws: true);
+        var recording = new RecordingObserver();
+        _h.Observers.AddRange([failing, recording]);
+        var feed = await _h.AddFeedAsync();
+        _h.Source.Returns(Failure);
+        using var scheduler = _h.CreateScheduler();
+
+        await scheduler.StartDueAsync(ct);
+        await scheduler.WhenIdleAsync();
+
+        var (feedId, outcome) = Assert.Single(recording.Calls);
+        Assert.Equal(feed.Id, feedId);
+        Assert.False(outcome.Succeeded);
+        Assert.Equal(1, outcome.ConsecutiveFailures);
+        Assert.Single(failing.Calls);
+        Assert.Equal(_h.Time.GetUtcNow() + TimeSpan.FromMinutes(10), scheduler.NextDue(feed.Id));
+    }
+
     private async Task<double> RunDueAndMeasureAsync(FeedScheduler scheduler, long feedId)
     {
         var ct = TestContext.Current.CancellationToken;
