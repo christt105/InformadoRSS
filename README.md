@@ -74,6 +74,30 @@ Images are published to `ghcr.io/christt105/informadorss`: `X.Y.Z` and `latest` 
 
 The image is based on a chiseled (distroless) runtime and runs as the non-root `app` user (UID 1654). When bind-mounting a host directory to `/data`, make sure that user can write to it. The container health check runs `InformadoRSS --healthcheck`, which requests `/health` and exits with 0 or 1; an optional URL argument overrides the default `http://localhost:8420/health`.
 
+## Importing from MonitoRSS
+
+Export MonitoRSS's `userfeeds` collection from its Mongo container (database `rss` in the default MonitoRSS stack):
+
+```sh
+docker exec <mongo-container> mongoexport --db rss --collection userfeeds --jsonArray --out /tmp/userfeeds.json
+docker cp <mongo-container>:/tmp/userfeeds.json .
+```
+
+Then run the importer against the same database the server uses, or post the file to `POST /api/import/monitorss`:
+
+```sh
+InformadoRSS import-monitorss userfeeds.json --dry-run
+InformadoRSS import-monitorss userfeeds.json --test-channel <channel id> [--test-guild <guild id>]
+InformadoRSS send-latest [--channel <channel id>] [--feed <feed id>] [--include-disabled]
+InformadoRSS import-monitorss userfeeds.json
+```
+
+Each MonitoRSS feed becomes a feed (feeds with the same URL are merged) and each Discord channel connection a route with one Discord destination. Templates, `CONTAINS`/`EQ`/`MATCHES` filters with `not`, and AND/OR groups are translated. Anything else is listed in the report: options that only change details (formatter flags, placeholder limits, mentions, date checks) are dropped with a note, while connections with embeds, buttons, webhooks, threads or an untranslatable filter are imported disabled, with their text content and without the filter, for review. Connections without a channel are skipped.
+
+Imported routes start unseeded, so the first fetch marks every current item as seen without posting it. `--test-channel` redirects every destination to one channel (and `--test-guild` sets its server). `send-latest` posts the newest item that passes each route filter, without touching the seen items, to check the result. Re-running the import is safe: routes are matched to their MonitoRSS connection, so running it again without `--test-channel` moves the test routes to their real channels and keeps their seen items.
+
+In the container, run the commands with `docker exec informadorss /app/InformadoRSS ...` after copying the file into `/data`.
+
 ## License
 
 [MIT](LICENSE)
