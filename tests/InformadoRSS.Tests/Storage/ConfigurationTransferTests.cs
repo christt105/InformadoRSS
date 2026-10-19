@@ -38,6 +38,7 @@ public sealed class ConfigurationTransferTests : IAsyncLifetime
         var movies = feeds.Single(f => f!["name"]!.GetValue<string>() == "Media Tracker")!["routes"]![0]!;
         Assert.Equal("movie", movies["filter"]!["value"]!.GetValue<string>());
         Assert.Equal("1", movies["destinations"]![0]!["parameters"]!["channelId"]!.GetValue<string>());
+        Assert.Equal("^[^-]+", feeds.Single(f => f!["name"]!.GetValue<string>() == "List")!["identityPattern"]!.GetValue<string>());
         Assert.Equal("t0k3n", root["settings"]!["discord.token"]!.GetValue<string>());
         Assert.DoesNotContain("etag", json, StringComparison.OrdinalIgnoreCase);
     }
@@ -112,7 +113,7 @@ public sealed class ConfigurationTransferTests : IAsyncLifetime
             ct);
         await db.SeenItems.MarkSeenAsync(movies!.Id, ["seen"], DateTimeOffset.UnixEpoch, ct);
         await db.Routes.AddAsync(tracker.Id, new RouteSettings("Games", null, null, false, []), ct);
-        await db.Feeds.AddAsync(new FeedSettings(new Uri("https://example.com/blog.xml"), "Blog", TimeSpan.FromHours(1)), ct);
+        await db.Feeds.AddAsync(new FeedSettings(new Uri("https://example.com/list.xml"), "List", TimeSpan.FromHours(1), "^[^-]+"), ct);
         await db.Settings.SetAsync("discord.token", "t0k3n", ct);
     }
 

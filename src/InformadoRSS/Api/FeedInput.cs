@@ -1,3 +1,4 @@
+using InformadoRSS.Sources;
 using InformadoRSS.Storage;
 
 namespace InformadoRSS.Api;
@@ -9,6 +10,7 @@ public static class FeedInput
     public const long DefaultIntervalSeconds = 600;
     public const long MaxIntervalSeconds = 7 * 24 * 60 * 60;
     public const int MaxNameLength = 200;
+    public const int MaxIdentityPatternLength = 500;
 
     /// <summary>Parses an absolute <c>http</c> or <c>https</c> URL.</summary>
     /// <returns>The problem with <paramref name="text"/>, or <see langword="null"/> when <paramref name="url"/> is set.</returns>
@@ -56,9 +58,28 @@ public static class FeedInput
                 "$.intervalSeconds", $"the interval must be between {MinIntervalSeconds} and {MaxIntervalSeconds} seconds"));
         }
 
+        var identityPattern = string.IsNullOrWhiteSpace(request.IdentityPattern) ? null : request.IdentityPattern;
+        if (identityPattern is { Length: > MaxIdentityPatternLength })
+        {
+            errors.Add(new ApiFieldError(
+                "$.identityPattern", $"the identity pattern must be at most {MaxIdentityPatternLength} characters"));
+        }
+        else if (identityPattern is not null)
+        {
+            try
+            {
+                _ = ItemIdentity.CreateRegex(identityPattern);
+            }
+            catch (ArgumentException ex)
+            {
+                errors.Add(new ApiFieldError("$.identityPattern", $"not a valid regular expression: {ex.Message}"));
+            }
+        }
+
         if (errors.Count == 0 && url is not null)
         {
-            settings = new FeedSettings(url, string.IsNullOrEmpty(name) ? url.Host : name, TimeSpan.FromSeconds(interval));
+            settings = new FeedSettings(
+                url, string.IsNullOrEmpty(name) ? url.Host : name, TimeSpan.FromSeconds(interval), identityPattern);
         }
 
         return errors;

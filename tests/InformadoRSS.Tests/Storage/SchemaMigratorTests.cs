@@ -55,6 +55,7 @@ public sealed class SchemaMigratorTests : IAsyncLifetime
                 DROP TABLE destination_alerts;
                 DROP TABLE destination_items;
                 ALTER TABLE routes DROP COLUMN seeded_at;
+                ALTER TABLE feeds DROP COLUMN identity_pattern;
                 PRAGMA user_version = 2;
                 """;
             await command.ExecuteNonQueryAsync(ct);

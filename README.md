@@ -47,6 +47,10 @@ Native AOT binary:
 dotnet publish src/InformadoRSS -c Release -r linux-x64 -o out
 ```
 
+## Feeds that rewrite entries
+
+Items are deduplicated by their id (`guid` or Atom `id`). Some feeds keep one entry per thing and rewrite it in place: a MyAnimeList list feed (`rss.php?type=rw&u=<user>`) has one entry per anime whose description goes from `Watching - 1 of 12 episodes` to `Completed - 12 of 12 episodes`, so the change is never sent. A feed can set an identity pattern, a regular expression over the plain-text description whose first match is appended to the item id. With `^[^-]+` on a MyAnimeList feed, each status (`Watching`, `Completed`, `Dropped`, ...) is a new item while episode progress inside a status is not. Changing the pattern marks the items currently in the feed as seen without sending them.
+
 ## Alerts and ntfy
 
 InformadoRSS sends one alert when a feed or destination breaks and one when it recovers. A feed counts as broken after it has failed continuously for a while (6 hours by default, so short daily outages such as YouTube feeds answering 404 for a few hours stay quiet); a destination counts as broken when its sink rejects it permanently (for example a deleted Discord channel). What was alerted is stored in the database, so restarts do not repeat alerts. Without a configured target, alerts are only logged.

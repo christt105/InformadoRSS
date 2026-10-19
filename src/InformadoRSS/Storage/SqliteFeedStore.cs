@@ -5,7 +5,7 @@ namespace InformadoRSS.Storage;
 public sealed class SqliteFeedStore(SqliteDatabase database) : IFeedStore
 {
     private const string SelectColumns =
-        "SELECT id, url, name, interval_seconds, consecutive_failures, last_success_at, last_error_at, last_error, etag, last_modified FROM feeds";
+        "SELECT id, url, name, interval_seconds, consecutive_failures, last_success_at, last_error_at, last_error, etag, last_modified, identity_pattern FROM feeds";
 
     public async Task<IReadOnlyList<Feed>> ListAsync(CancellationToken cancellationToken)
     {
@@ -35,10 +35,22 @@ public sealed class SqliteFeedStore(SqliteDatabase database) : IFeedStore
     public async Task<bool> UpdateAsync(long id, FeedSettings settings, CancellationToken cancellationToken)
     {
         await using var connection = await database.OpenAsync(cancellationToken);
+        await using var transaction = (SqliteTransaction)await connection.BeginTransactionAsync(cancellationToken);
+        await using var reseed = connection.CreateCommand();
+        reseed.Transaction = transaction;
+        reseed.CommandText = """
+            UPDATE routes SET seeded_at = NULL
+            WHERE feed_id = $id AND (SELECT identity_pattern IS NOT $identityPattern FROM feeds WHERE id = $id)
+            """;
+        reseed.Parameters.AddWithValue("$id", id);
+        reseed.Parameters.AddWithValue("$identityPattern", SqliteValues.OrDbNull(settings.IdentityPattern));
+        await reseed.ExecuteNonQueryAsync(cancellationToken);
+
         await using var command = connection.CreateCommand();
+        command.Transaction = transaction;
         command.CommandText = """
             UPDATE feeds
-            SET url = $url, name = $name, interval_seconds = $interval,
+            SET url = $url, name = $name, interval_seconds = $interval, identity_pattern = $identityPattern,
                 etag = CASE WHEN url = $url THEN etag END,
                 last_modified = CASE WHEN url = $url THEN last_modified END
             WHERE id = $id
@@ -47,7 +59,9 @@ public sealed class SqliteFeedStore(SqliteDatabase database) : IFeedStore
         AddSettingsParameters(command, settings);
         try
         {
-            return await command.ExecuteNonQueryAsync(cancellationToken) > 0;
+            var updated = await command.ExecuteNonQueryAsync(cancellationToken) > 0;
+            await transaction.CommitAsync(cancellationToken);
+            return updated;
         }
         catch (SqliteException ex) when (ex.SqliteExtendedErrorCode == SqliteErrors.ConstraintUnique)
         {
@@ -100,7 +114,11 @@ public sealed class SqliteFeedStore(SqliteDatabase database) : IFeedStore
     {
         await using var command = connection.CreateCommand();
         command.Transaction = transaction;
-        command.CommandText = "INSERT INTO feeds (url, name, interval_seconds) VALUES ($url, $name, $interval) RETURNING id";
+        command.CommandText = """
+            INSERT INTO feeds (url, name, interval_seconds, identity_pattern)
+            VALUES ($url, $name, $interval, $identityPattern)
+            RETURNING id
+            """;
         AddSettingsParameters(command, settings);
         try
         {
@@ -117,6 +135,7 @@ public sealed class SqliteFeedStore(SqliteDatabase database) : IFeedStore
         command.Parameters.AddWithValue("$url", settings.Url.AbsoluteUri);
         command.Parameters.AddWithValue("$name", settings.Name);
         command.Parameters.AddWithValue("$interval", (long)settings.Interval.TotalSeconds);
+        command.Parameters.AddWithValue("$identityPattern", SqliteValues.OrDbNull(settings.IdentityPattern));
     }
 
     private static async Task<IReadOnlyList<Feed>> ReadAllAsync(SqliteCommand command, CancellationToken cancellationToken)
@@ -127,7 +146,11 @@ public sealed class SqliteFeedStore(SqliteDatabase database) : IFeedStore
         {
             feeds.Add(new Feed(
                 reader.GetInt64(0),
-                new FeedSettings(new Uri(reader.GetString(1)), reader.GetString(2), TimeSpan.FromSeconds(reader.GetInt64(3))),
+                new FeedSettings(
+                    new Uri(reader.GetString(1)),
+                    reader.GetString(2),
+                    TimeSpan.FromSeconds(reader.GetInt64(3)),
+                    SqliteValues.GetString(reader, 10)),
                 new FeedHealth(
                     reader.GetInt32(4),
                     SqliteValues.GetTimestamp(reader, 5),

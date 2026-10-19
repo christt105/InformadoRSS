@@ -20,7 +20,8 @@ public sealed class ConfigurationTransfer(SqliteDatabase database, IFeedStore fe
                     ParseJson(r.Settings.TemplateJson)))
                 .ToList();
             feedSnapshots.Add(new FeedSnapshot(
-                feed.Settings.Url, feed.Settings.Name, (long)feed.Settings.Interval.TotalSeconds, routeSnapshots));
+                feed.Settings.Url, feed.Settings.Name, (long)feed.Settings.Interval.TotalSeconds, routeSnapshots,
+                feed.Settings.IdentityPattern));
         }
 
         return new ConfigurationSnapshot(
@@ -55,7 +56,7 @@ public sealed class ConfigurationTransfer(SqliteDatabase database, IFeedStore fe
             var feedId = await SqliteFeedStore.InsertAsync(
                 connection,
                 transaction,
-                new FeedSettings(feed.Url, feed.Name, TimeSpan.FromSeconds(feed.IntervalSeconds)),
+                new FeedSettings(feed.Url, feed.Name, TimeSpan.FromSeconds(feed.IntervalSeconds), feed.IdentityPattern),
                 cancellationToken);
 
             foreach (var route in feed.Routes)

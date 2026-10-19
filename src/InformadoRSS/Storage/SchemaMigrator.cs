@@ -95,6 +95,9 @@ public static class SchemaMigrator
             fetched_at INTEGER NOT NULL
         );
         """,
+        """
+        ALTER TABLE feeds ADD COLUMN identity_pattern TEXT;
+        """,
     ];
 
     /// <summary>The schema version this build expects.</summary>
