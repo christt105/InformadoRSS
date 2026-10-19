@@ -37,6 +37,8 @@ public sealed class PipelineHarness : IAsyncDisposable
 
     public ISeenItemStore SeenItems => _db.SeenItems;
 
+    public ILatestItemStore LatestItems => _db.LatestItems;
+
     public SqliteDatabase Database => _db.Database;
 
     public static Destination DiscordChannel(string channelId) =>
@@ -76,7 +78,7 @@ public sealed class PipelineHarness : IAsyncDisposable
     public async Task<Feed> ReloadAsync(Feed feed) => (await Feeds.GetAsync(feed.Id, TestContext.Current.CancellationToken))!;
 
     public FeedProcessor CreateProcessor() =>
-        new(Source, Feeds, Routes, SeenItems, new FakeRenderer(), [Discord, Ntfy], Backoff, Options, Time, NullLogger<FeedProcessor>.Instance);
+        new(Source, Feeds, Routes, SeenItems, LatestItems, new FakeRenderer(), [Discord, Ntfy], Backoff, Options, Time, NullLogger<FeedProcessor>.Instance);
 
     /// <summary>Reloads the feed from storage and runs one cycle, like the scheduler does.</summary>
     public async Task<FeedOutcome> RunCycleAsync(Feed feed) =>
@@ -105,6 +107,7 @@ public sealed class PipelineHarness : IAsyncDisposable
             .AddSingleton(Feeds)
             .AddSingleton(Routes)
             .AddSingleton(SeenItems)
+            .AddSingleton(LatestItems)
             .AddSingleton<IMessageRenderer, FakeRenderer>()
             .AddSingleton<ISink>(Discord)
             .AddSingleton<ISink>(Ntfy)

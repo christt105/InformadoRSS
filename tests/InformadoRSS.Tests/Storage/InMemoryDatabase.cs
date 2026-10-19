@@ -22,6 +22,7 @@ public sealed class InMemoryDatabase : IAsyncLifetime
         Routes = new SqliteRouteStore(Database);
         SeenItems = new SqliteSeenItemStore(Database);
         Settings = new SqliteSettingsStore(Database);
+        LatestItems = new SqliteLatestItemStore(Database);
         Transfer = new ConfigurationTransfer(Database, Feeds, Routes, Settings);
     }
 
@@ -34,6 +35,8 @@ public sealed class InMemoryDatabase : IAsyncLifetime
     public SqliteSeenItemStore SeenItems { get; }
 
     public SqliteSettingsStore Settings { get; }
+
+    public SqliteLatestItemStore LatestItems { get; }
 
     public ConfigurationTransfer Transfer { get; }
 

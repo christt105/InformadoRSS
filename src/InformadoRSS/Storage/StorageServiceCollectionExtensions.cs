@@ -16,7 +16,16 @@ public static class StorageServiceCollectionExtensions
         services.AddSingleton<IRouteStore, SqliteRouteStore>();
         services.AddSingleton<ISeenItemStore, SqliteSeenItemStore>();
         services.AddSingleton<ISettingsStore, SqliteSettingsStore>();
+        services.AddSingleton<ILatestItemStore, SqliteLatestItemStore>();
         services.AddSingleton<ConfigurationTransfer>();
+        return services;
+    }
+
+    /// <summary>Makes a setting known to the settings API and screen, so it can be edited before it has a value.</summary>
+    public static IServiceCollection AddSettingDefinition(this IServiceCollection services, SettingDefinition definition)
+    {
+        ArgumentNullException.ThrowIfNull(definition);
+        services.AddSingleton(definition);
         return services;
     }
 

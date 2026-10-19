@@ -50,6 +50,7 @@ public sealed class SchemaMigratorTests : IAsyncLifetime
         await using (var command = connection.CreateCommand())
         {
             command.CommandText = """
+                DROP TABLE latest_items;
                 DROP TABLE feed_alerts;
                 DROP TABLE destination_alerts;
                 DROP TABLE destination_items;
