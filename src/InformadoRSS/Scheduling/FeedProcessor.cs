@@ -16,6 +16,7 @@ public sealed class FeedProcessor
     private readonly IFeedStore _feeds;
     private readonly IRouteStore _routes;
     private readonly ISeenItemStore _seenItems;
+    private readonly ILatestItemStore _latestItems;
     private readonly IMessageRenderer _renderer;
     private readonly Dictionary<string, ISink> _sinks = new(StringComparer.Ordinal);
     private readonly DestinationBackoff _backoff;
@@ -28,6 +29,7 @@ public sealed class FeedProcessor
         IFeedStore feeds,
         IRouteStore routes,
         ISeenItemStore seenItems,
+        ILatestItemStore latestItems,
         IMessageRenderer renderer,
         IEnumerable<ISink> sinks,
         DestinationBackoff backoff,
@@ -40,6 +42,7 @@ public sealed class FeedProcessor
         _feeds = feeds;
         _routes = routes;
         _seenItems = seenItems;
+        _latestItems = latestItems;
         _renderer = renderer;
         _backoff = backoff;
         _options = options;
@@ -86,6 +89,15 @@ public sealed class FeedProcessor
                 return FeedOutcome.Success;
 
             case FeedFetched fetched:
+                if (fetched.Items.Count > 0)
+                {
+                    var newest = OldestFirst(fetched.Items)[^1];
+                    await _latestItems.SetAsync(
+                        feed.Id,
+                        new LatestItem(newest.Id, newest.Title, newest.Link, newest.Published, _time.GetUtcNow()),
+                        cancellationToken);
+                }
+
                 var complete = true;
                 foreach (var (route, seeded) in routes)
                 {

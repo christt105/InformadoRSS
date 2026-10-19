@@ -34,6 +34,27 @@ public sealed class FeedProcessorTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task NewestItemIsRememberedEvenWithoutRoutes()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var feed = await _h.AddFeedAsync();
+        _h.Source.ReturnsItems(Item("old", Day(1)), Item("new", Day(3), "Newest"), Item("mid", Day(2)));
+
+        await _h.RunCycleAsync(feed);
+
+        var latest = (await _h.LatestItems.ListAsync(ct))[feed.Id];
+        Assert.Equal("new", latest.Id);
+        Assert.Equal("Newest", latest.Title);
+        Assert.Equal(Day(3), latest.Published);
+        Assert.Equal(Start, latest.FetchedAt);
+
+        _h.Source.ReturnsItems();
+        await _h.RunCycleAsync(feed);
+
+        Assert.Equal("new", (await _h.LatestItems.ListAsync(ct))[feed.Id].Id);
+    }
+
+    [Fact]
     public async Task NewRouteOnExistingFeedIsSeededAndForcesFullFetch()
     {
         var ct = TestContext.Current.CancellationToken;

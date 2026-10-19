@@ -85,6 +85,16 @@ public static class SchemaMigrator
             alerted_at INTEGER NOT NULL
         );
         """,
+        """
+        CREATE TABLE latest_items (
+            feed_id INTEGER PRIMARY KEY REFERENCES feeds (id) ON DELETE CASCADE,
+            item_id TEXT NOT NULL,
+            title TEXT,
+            link TEXT,
+            published_at INTEGER,
+            fetched_at INTEGER NOT NULL
+        );
+        """,
     ];
 
     /// <summary>The schema version this build expects.</summary>

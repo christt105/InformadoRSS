@@ -6,7 +6,9 @@ It polls feeds, filters items per route and posts them to Discord channels throu
 
 ## Status
 
-Early development. Only the project skeleton exists so far: the server, the `/health` endpoint and an empty web page. It does not deliver anything yet.
+Early development, not deployed yet. Feeds are polled, filtered per route and delivered to Discord or ntfy, with alerts for broken feeds and destinations. The web UI manages feeds, routes (filter builder, template editor, Discord server and channel picker) and settings; it has no login and is meant for a trusted LAN.
+
+The UI talks to a JSON API under `/api`: `/api/feeds` (list with health, newest item and routes; create, read, replace, delete; `POST /api/feeds/validate` to check a URL without saving), `/api/feeds/{feedId}/routes` and `/api/routes/{id}` (plus `POST /api/routes/validate`), `/api/settings` (secrets such as the bot token are write-only), `/api/meta`, `/api/discord/...` and `/api/import/...`.
 
 ## Stack
 

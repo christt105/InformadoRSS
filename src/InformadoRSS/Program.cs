@@ -1,5 +1,6 @@
 using InformadoRSS;
 using InformadoRSS.Alerts;
+using InformadoRSS.Api;
 using InformadoRSS.Import;
 using InformadoRSS.Scheduling;
 using InformadoRSS.Sinks.Discord;
@@ -56,6 +57,7 @@ app.UseStaticFiles();
 app.MapGet("/health", () => new HealthResponse("ok", AppInfo.Version));
 app.MapDiscordApi();
 app.MapImportApi();
+app.MapApplicationApi();
 
 app.Map("/api/{**path}", () => Results.NotFound());
 app.MapFallbackToFile("index.html");
