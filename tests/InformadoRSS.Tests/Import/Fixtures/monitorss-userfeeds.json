@@ -1,0 +1,1655 @@
+[
+  {
+    "_id": {
+      "$oid": "6a0000000000000000000003"
+    },
+    "title": "Blog de Christian",
+    "url": "https://blog.example.com/index.xml",
+    "inputUrl": "https://blog.example.com/index.xml",
+    "connections": {
+      "discordChannels": [
+        {
+          "id": {
+            "$oid": "6a0000000000000000000001"
+          },
+          "name": "blog",
+          "filters": null,
+          "rateLimits": [],
+          "customPlaceholders": [],
+          "details": {
+            "embeds": [],
+            "channel": {
+              "id": "200000000000000001",
+              "guildId": "100000000000000001"
+            },
+            "placeholderLimits": [],
+            "formatter": {
+              "formatTables": false,
+              "stripImages": false,
+              "disableImageLinkPreviews": false,
+              "ignoreNewLines": false
+            },
+            "componentRows": [],
+            "forumThreadTags": [],
+            "content": "**{{title}}**\n{{link}}"
+          },
+          "createdAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          },
+          "updatedAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          }
+        },
+        {
+          "id": {
+            "$oid": "6a0000000000000000000002"
+          },
+          "name": "blog",
+          "filters": null,
+          "rateLimits": [],
+          "customPlaceholders": [],
+          "details": {
+            "embeds": [],
+            "channel": {
+              "id": "200000000000000002",
+              "guildId": "100000000000000002"
+            },
+            "placeholderLimits": [],
+            "formatter": {
+              "formatTables": false,
+              "stripImages": false,
+              "disableImageLinkPreviews": false,
+              "ignoreNewLines": false
+            },
+            "componentRows": [],
+            "forumThreadTags": [],
+            "content": "**{{title}}**\n{{link}}"
+          },
+          "createdAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          },
+          "updatedAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          }
+        }
+      ],
+      "createdAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      },
+      "updatedAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      }
+    },
+    "user": {
+      "id": {
+        "$oid": "6a0000000000000000000004"
+      },
+      "discordUserId": "300000000000000001"
+    },
+    "healthStatus": "ok",
+    "refreshRateSeconds": 600,
+    "slotOffsetMs": 12345,
+    "maxDailyArticles": 500,
+    "blockingComparisons": [],
+    "passingComparisons": [],
+    "externalProperties": [],
+    "formatOptions": {},
+    "dateCheckOptions": {
+      "oldArticleDateDiffMsThreshold": 604800000
+    },
+    "createdAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6a0000000000000000000007"
+    },
+    "title": "Media Tracker (acabados)",
+    "url": "https://tracker.example.com/MediaTracker/finished.xml",
+    "inputUrl": "https://tracker.example.com/MediaTracker/finished.xml",
+    "connections": {
+      "discordChannels": [
+        {
+          "id": {
+            "$oid": "6a0000000000000000000005"
+          },
+          "name": "media",
+          "filters": null,
+          "rateLimits": [],
+          "customPlaceholders": [],
+          "details": {
+            "embeds": [],
+            "channel": {
+              "id": "200000000000000003",
+              "guildId": "100000000000000002"
+            },
+            "placeholderLimits": [],
+            "formatter": {
+              "formatTables": false,
+              "stripImages": false,
+              "disableImageLinkPreviews": false,
+              "ignoreNewLines": false
+            },
+            "componentRows": [],
+            "forumThreadTags": [],
+            "content": "**{{title}}**\n{{link}}"
+          },
+          "createdAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          },
+          "updatedAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          }
+        },
+        {
+          "id": {
+            "$oid": "6a0000000000000000000006"
+          },
+          "name": "animu-pelis-series",
+          "filters": null,
+          "rateLimits": [],
+          "customPlaceholders": [],
+          "details": {
+            "embeds": [],
+            "channel": {
+              "id": "200000000000000004",
+              "guildId": "100000000000000001"
+            },
+            "placeholderLimits": [],
+            "formatter": {
+              "formatTables": false,
+              "stripImages": false,
+              "disableImageLinkPreviews": false,
+              "ignoreNewLines": false
+            },
+            "componentRows": [],
+            "forumThreadTags": [],
+            "content": "**{{title}}**\n{{link}}"
+          },
+          "createdAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          },
+          "updatedAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          }
+        }
+      ],
+      "createdAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      },
+      "updatedAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      }
+    },
+    "user": {
+      "id": {
+        "$oid": "6a0000000000000000000008"
+      },
+      "discordUserId": "300000000000000001"
+    },
+    "healthStatus": "ok",
+    "refreshRateSeconds": 600,
+    "slotOffsetMs": 12345,
+    "maxDailyArticles": 500,
+    "blockingComparisons": [],
+    "passingComparisons": [],
+    "externalProperties": [],
+    "formatOptions": {},
+    "dateCheckOptions": {
+      "oldArticleDateDiffMsThreshold": 604800000
+    },
+    "createdAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6a000000000000000000000a"
+    },
+    "title": "Comet Engine Blog",
+    "url": "https://comet.example.com/feed.xml",
+    "inputUrl": "https://comet.example.com/feed.xml",
+    "connections": {
+      "discordChannels": [
+        {
+          "id": {
+            "$oid": "6a0000000000000000000009"
+          },
+          "name": "comet",
+          "filters": null,
+          "rateLimits": [],
+          "customPlaceholders": [],
+          "details": {
+            "embeds": [],
+            "channel": {
+              "id": "200000000000000005",
+              "guildId": "100000000000000001"
+            },
+            "placeholderLimits": [],
+            "formatter": {
+              "formatTables": false,
+              "stripImages": false,
+              "disableImageLinkPreviews": false,
+              "ignoreNewLines": false
+            },
+            "componentRows": [],
+            "forumThreadTags": [],
+            "content": "**{{title}}**\n{{link}}"
+          },
+          "createdAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          },
+          "updatedAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          }
+        }
+      ],
+      "createdAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      },
+      "updatedAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      }
+    },
+    "user": {
+      "id": {
+        "$oid": "6a000000000000000000000b"
+      },
+      "discordUserId": "300000000000000001"
+    },
+    "healthStatus": "ok",
+    "refreshRateSeconds": 600,
+    "slotOffsetMs": 12345,
+    "maxDailyArticles": 500,
+    "blockingComparisons": [],
+    "passingComparisons": [],
+    "externalProperties": [],
+    "formatOptions": {},
+    "dateCheckOptions": {
+      "oldArticleDateDiffMsThreshold": 604800000
+    },
+    "createdAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6a000000000000000000000d"
+    },
+    "title": "Obsidian Blog",
+    "url": "https://obsidian.example.com/blog/rss.xml",
+    "inputUrl": "https://obsidian.example.com/blog/rss.xml",
+    "connections": {
+      "discordChannels": [
+        {
+          "id": {
+            "$oid": "6a000000000000000000000c"
+          },
+          "name": "obsidian",
+          "filters": null,
+          "rateLimits": [],
+          "customPlaceholders": [],
+          "details": {
+            "embeds": [],
+            "channel": {
+              "id": "200000000000000006",
+              "guildId": "100000000000000001"
+            },
+            "placeholderLimits": [],
+            "formatter": {
+              "formatTables": false,
+              "stripImages": false,
+              "disableImageLinkPreviews": false,
+              "ignoreNewLines": false
+            },
+            "componentRows": [],
+            "forumThreadTags": [],
+            "content": ""
+          },
+          "createdAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          },
+          "updatedAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          }
+        }
+      ],
+      "createdAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      },
+      "updatedAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      }
+    },
+    "user": {
+      "id": {
+        "$oid": "6a000000000000000000000e"
+      },
+      "discordUserId": "300000000000000001"
+    },
+    "healthStatus": "ok",
+    "refreshRateSeconds": 600,
+    "slotOffsetMs": 12345,
+    "maxDailyArticles": 500,
+    "blockingComparisons": [],
+    "passingComparisons": [],
+    "externalProperties": [],
+    "formatOptions": {},
+    "dateCheckOptions": {
+      "oldArticleDateDiffMsThreshold": 604800000
+    },
+    "createdAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6a0000000000000000000010"
+    },
+    "title": "Godot Engine Official",
+    "url": "https://godot.example.com/rss.xml",
+    "inputUrl": "https://godot.example.com/rss.xml",
+    "connections": {
+      "discordChannels": [
+        {
+          "id": {
+            "$oid": "6a000000000000000000000f"
+          },
+          "name": "godot",
+          "filters": null,
+          "rateLimits": [],
+          "customPlaceholders": [],
+          "details": {
+            "embeds": [],
+            "channel": {
+              "id": "200000000000000007",
+              "guildId": "100000000000000001"
+            },
+            "placeholderLimits": [],
+            "formatter": {
+              "formatTables": false,
+              "stripImages": false,
+              "disableImageLinkPreviews": false,
+              "ignoreNewLines": false
+            },
+            "componentRows": [],
+            "forumThreadTags": []
+          },
+          "createdAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          },
+          "updatedAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          }
+        }
+      ],
+      "createdAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      },
+      "updatedAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      }
+    },
+    "user": {
+      "id": {
+        "$oid": "6a0000000000000000000011"
+      },
+      "discordUserId": "300000000000000001"
+    },
+    "healthStatus": "ok",
+    "refreshRateSeconds": 600,
+    "slotOffsetMs": 12345,
+    "maxDailyArticles": 500,
+    "blockingComparisons": [],
+    "passingComparisons": [],
+    "externalProperties": [],
+    "formatOptions": {},
+    "dateCheckOptions": {
+      "oldArticleDateDiffMsThreshold": 604800000
+    },
+    "createdAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6a0000000000000000000013"
+    },
+    "title": "MAL anime de Ori",
+    "url": "https://myanimelist.example.net/rss.php?type=rwa&u=ori",
+    "inputUrl": "https://myanimelist.example.net/rss.php?type=rwa&u=ori",
+    "connections": {
+      "discordChannels": [
+        {
+          "id": {
+            "$oid": "6a0000000000000000000012"
+          },
+          "name": "animu-pelis-series",
+          "filters": {
+            "expression": {
+              "type": "LOGICAL",
+              "op": "AND",
+              "children": [
+                {
+                  "type": "RELATIONAL",
+                  "op": "CONTAINS",
+                  "left": {
+                    "type": "ARTICLE",
+                    "value": "description"
+                  },
+                  "right": {
+                    "type": "STRING",
+                    "value": "Completed"
+                  },
+                  "not": null
+                }
+              ]
+            }
+          },
+          "rateLimits": [],
+          "customPlaceholders": [],
+          "details": {
+            "embeds": [],
+            "channel": {
+              "id": "200000000000000008",
+              "guildId": "100000000000000001"
+            },
+            "placeholderLimits": [],
+            "formatter": {
+              "formatTables": false,
+              "stripImages": false,
+              "disableImageLinkPreviews": false,
+              "ignoreNewLines": false
+            },
+            "componentRows": [],
+            "forumThreadTags": [],
+            "content": "Ori se ha visto **{{title}}**\n{{link}}"
+          },
+          "createdAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          },
+          "updatedAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          },
+          "mentions": {
+            "targets": []
+          }
+        }
+      ],
+      "createdAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      },
+      "updatedAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      }
+    },
+    "user": {
+      "id": {
+        "$oid": "6a0000000000000000000014"
+      },
+      "discordUserId": "300000000000000001"
+    },
+    "healthStatus": "ok",
+    "refreshRateSeconds": 600,
+    "slotOffsetMs": 12345,
+    "maxDailyArticles": 500,
+    "blockingComparisons": [],
+    "passingComparisons": [],
+    "externalProperties": [],
+    "formatOptions": {},
+    "dateCheckOptions": {
+      "oldArticleDateDiffMsThreshold": 604800000
+    },
+    "createdAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6a0000000000000000000016"
+    },
+    "title": "MAL manga de Ori",
+    "url": "https://myanimelist.example.net/rss.php?type=rwm&u=ori",
+    "inputUrl": "https://myanimelist.example.net/rss.php?type=rwm&u=ori",
+    "connections": {
+      "discordChannels": [
+        {
+          "id": {
+            "$oid": "6a0000000000000000000015"
+          },
+          "name": "animu-pelis-series",
+          "filters": {
+            "expression": {
+              "type": "LOGICAL",
+              "op": "AND",
+              "children": [
+                {
+                  "type": "RELATIONAL",
+                  "op": "CONTAINS",
+                  "left": {
+                    "type": "ARTICLE",
+                    "value": "description"
+                  },
+                  "right": {
+                    "type": "STRING",
+                    "value": "Completed"
+                  },
+                  "not": null
+                }
+              ]
+            }
+          },
+          "rateLimits": [],
+          "customPlaceholders": [],
+          "details": {
+            "embeds": [],
+            "channel": {
+              "id": "200000000000000009",
+              "guildId": "100000000000000001"
+            },
+            "placeholderLimits": [],
+            "formatter": {
+              "formatTables": false,
+              "stripImages": false,
+              "disableImageLinkPreviews": false,
+              "ignoreNewLines": false
+            },
+            "componentRows": [],
+            "forumThreadTags": [],
+            "content": "Ori se ha leido **{{title}}**\n{{link}}"
+          },
+          "createdAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          },
+          "updatedAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          },
+          "mentions": {
+            "targets": []
+          }
+        }
+      ],
+      "createdAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      },
+      "updatedAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      }
+    },
+    "user": {
+      "id": {
+        "$oid": "6a0000000000000000000017"
+      },
+      "discordUserId": "300000000000000001"
+    },
+    "healthStatus": "ok",
+    "refreshRateSeconds": 600,
+    "slotOffsetMs": 12345,
+    "maxDailyArticles": 500,
+    "blockingComparisons": [],
+    "passingComparisons": [],
+    "externalProperties": [],
+    "formatOptions": {},
+    "dateCheckOptions": {
+      "oldArticleDateDiffMsThreshold": 604800000
+    },
+    "createdAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6a0000000000000000000019"
+    },
+    "title": "MAL anime de Pol",
+    "url": "https://myanimelist.example.net/rss.php?type=rwa&u=pol",
+    "inputUrl": "https://myanimelist.example.net/rss.php?type=rwa&u=pol",
+    "connections": {
+      "discordChannels": [
+        {
+          "id": {
+            "$oid": "6a0000000000000000000018"
+          },
+          "name": "animu-pelis-series",
+          "filters": {
+            "expression": {
+              "type": "LOGICAL",
+              "op": "AND",
+              "children": [
+                {
+                  "type": "RELATIONAL",
+                  "op": "CONTAINS",
+                  "left": {
+                    "type": "ARTICLE",
+                    "value": "description"
+                  },
+                  "right": {
+                    "type": "STRING",
+                    "value": "Completed"
+                  },
+                  "not": null
+                }
+              ]
+            }
+          },
+          "rateLimits": [],
+          "customPlaceholders": [],
+          "details": {
+            "embeds": [],
+            "channel": {
+              "id": "200000000000000010",
+              "guildId": "100000000000000001"
+            },
+            "placeholderLimits": [],
+            "formatter": {
+              "formatTables": false,
+              "stripImages": false,
+              "disableImageLinkPreviews": false,
+              "ignoreNewLines": false
+            },
+            "componentRows": [],
+            "forumThreadTags": [],
+            "content": "Pol se ha visto **{{title}}**\n{{link}}"
+          },
+          "createdAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          },
+          "updatedAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          },
+          "mentions": {
+            "targets": []
+          }
+        }
+      ],
+      "createdAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      },
+      "updatedAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      }
+    },
+    "user": {
+      "id": {
+        "$oid": "6a000000000000000000001a"
+      },
+      "discordUserId": "300000000000000001"
+    },
+    "healthStatus": "ok",
+    "refreshRateSeconds": 600,
+    "slotOffsetMs": 12345,
+    "maxDailyArticles": 500,
+    "blockingComparisons": [],
+    "passingComparisons": [],
+    "externalProperties": [],
+    "formatOptions": {},
+    "dateCheckOptions": {
+      "oldArticleDateDiffMsThreshold": 604800000
+    },
+    "createdAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6a000000000000000000001c"
+    },
+    "title": "MAL manga de Pol",
+    "url": "https://myanimelist.example.net/rss.php?type=rwm&u=pol",
+    "inputUrl": "https://myanimelist.example.net/rss.php?type=rwm&u=pol",
+    "connections": {
+      "discordChannels": [
+        {
+          "id": {
+            "$oid": "6a000000000000000000001b"
+          },
+          "name": "animu-pelis-series",
+          "filters": {
+            "expression": {
+              "type": "LOGICAL",
+              "op": "AND",
+              "children": [
+                {
+                  "type": "RELATIONAL",
+                  "op": "CONTAINS",
+                  "left": {
+                    "type": "ARTICLE",
+                    "value": "description"
+                  },
+                  "right": {
+                    "type": "STRING",
+                    "value": "Completed"
+                  },
+                  "not": null
+                }
+              ]
+            }
+          },
+          "rateLimits": [],
+          "customPlaceholders": [],
+          "details": {
+            "embeds": [],
+            "channel": {
+              "id": "200000000000000011",
+              "guildId": "100000000000000001"
+            },
+            "placeholderLimits": [],
+            "formatter": {
+              "formatTables": false,
+              "stripImages": false,
+              "disableImageLinkPreviews": false,
+              "ignoreNewLines": false
+            },
+            "componentRows": [],
+            "forumThreadTags": [],
+            "content": "Pol se ha leido **{{title}}**\n{{link}}"
+          },
+          "createdAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          },
+          "updatedAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          },
+          "mentions": {
+            "targets": []
+          }
+        }
+      ],
+      "createdAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      },
+      "updatedAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      }
+    },
+    "user": {
+      "id": {
+        "$oid": "6a000000000000000000001d"
+      },
+      "discordUserId": "300000000000000001"
+    },
+    "healthStatus": "ok",
+    "refreshRateSeconds": 600,
+    "slotOffsetMs": 12345,
+    "maxDailyArticles": 500,
+    "blockingComparisons": [],
+    "passingComparisons": [],
+    "externalProperties": [],
+    "formatOptions": {},
+    "dateCheckOptions": {
+      "oldArticleDateDiffMsThreshold": 604800000
+    },
+    "createdAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6a000000000000000000001f"
+    },
+    "title": "MAL anime de Victor",
+    "url": "https://myanimelist.example.net/rss.php?type=rwa&u=victor",
+    "inputUrl": "https://myanimelist.example.net/rss.php?type=rwa&u=victor",
+    "connections": {
+      "discordChannels": [
+        {
+          "id": {
+            "$oid": "6a000000000000000000001e"
+          },
+          "name": "animu-pelis-series",
+          "filters": {
+            "expression": {
+              "type": "LOGICAL",
+              "op": "AND",
+              "children": [
+                {
+                  "type": "RELATIONAL",
+                  "op": "CONTAINS",
+                  "left": {
+                    "type": "ARTICLE",
+                    "value": "description"
+                  },
+                  "right": {
+                    "type": "STRING",
+                    "value": "Completed"
+                  },
+                  "not": null
+                }
+              ]
+            }
+          },
+          "rateLimits": [],
+          "customPlaceholders": [],
+          "details": {
+            "embeds": [],
+            "channel": {
+              "id": "200000000000000012",
+              "guildId": "100000000000000001"
+            },
+            "placeholderLimits": [],
+            "formatter": {
+              "formatTables": false,
+              "stripImages": false,
+              "disableImageLinkPreviews": false,
+              "ignoreNewLines": false
+            },
+            "componentRows": [],
+            "forumThreadTags": [],
+            "content": "Victor se ha visto **{{title}}**\n{{link}}"
+          },
+          "createdAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          },
+          "updatedAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          },
+          "mentions": {
+            "targets": []
+          }
+        }
+      ],
+      "createdAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      },
+      "updatedAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      }
+    },
+    "user": {
+      "id": {
+        "$oid": "6a0000000000000000000020"
+      },
+      "discordUserId": "300000000000000001"
+    },
+    "healthStatus": "ok",
+    "refreshRateSeconds": 600,
+    "slotOffsetMs": 12345,
+    "maxDailyArticles": 500,
+    "blockingComparisons": [],
+    "passingComparisons": [],
+    "externalProperties": [],
+    "formatOptions": {},
+    "dateCheckOptions": {
+      "oldArticleDateDiffMsThreshold": 604800000
+    },
+    "createdAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6a0000000000000000000022"
+    },
+    "title": "mixx.io",
+    "url": "https://mixx.example.com/feed",
+    "inputUrl": "https://mixx.example.com/feed",
+    "connections": {
+      "discordChannels": [
+        {
+          "id": {
+            "$oid": "6a0000000000000000000021"
+          },
+          "name": "tecnologia",
+          "filters": null,
+          "rateLimits": [],
+          "customPlaceholders": [],
+          "details": {
+            "embeds": [],
+            "channel": {
+              "id": "200000000000000013",
+              "guildId": "100000000000000001"
+            },
+            "placeholderLimits": [],
+            "formatter": {
+              "formatTables": false,
+              "stripImages": false,
+              "disableImageLinkPreviews": false,
+              "ignoreNewLines": false
+            },
+            "componentRows": [],
+            "forumThreadTags": []
+          },
+          "createdAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          },
+          "updatedAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          }
+        }
+      ],
+      "createdAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      },
+      "updatedAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      }
+    },
+    "user": {
+      "id": {
+        "$oid": "6a0000000000000000000023"
+      },
+      "discordUserId": "300000000000000001"
+    },
+    "healthStatus": "ok",
+    "refreshRateSeconds": 600,
+    "slotOffsetMs": 12345,
+    "maxDailyArticles": 500,
+    "blockingComparisons": [],
+    "passingComparisons": [],
+    "externalProperties": [],
+    "formatOptions": {},
+    "dateCheckOptions": {
+      "oldArticleDateDiffMsThreshold": 604800000
+    },
+    "createdAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6a0000000000000000000025"
+    },
+    "title": "Blog de Yessica",
+    "url": "https://yessica.example.com/rss.xml",
+    "inputUrl": "https://yessica.example.com/rss.xml",
+    "connections": {
+      "discordChannels": [
+        {
+          "id": {
+            "$oid": "6a0000000000000000000024"
+          },
+          "name": "blogs",
+          "filters": null,
+          "rateLimits": [],
+          "customPlaceholders": [],
+          "details": {
+            "embeds": [],
+            "channel": {
+              "id": "200000000000000014",
+              "guildId": "100000000000000001"
+            },
+            "placeholderLimits": [],
+            "formatter": {
+              "formatTables": false,
+              "stripImages": false,
+              "disableImageLinkPreviews": false,
+              "ignoreNewLines": false
+            },
+            "componentRows": [],
+            "forumThreadTags": []
+          },
+          "createdAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          },
+          "updatedAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          }
+        }
+      ],
+      "createdAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      },
+      "updatedAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      }
+    },
+    "user": {
+      "id": {
+        "$oid": "6a0000000000000000000026"
+      },
+      "discordUserId": "300000000000000001"
+    },
+    "healthStatus": "ok",
+    "refreshRateSeconds": 600,
+    "slotOffsetMs": 12345,
+    "maxDailyArticles": 500,
+    "blockingComparisons": [],
+    "passingComparisons": [],
+    "externalProperties": [],
+    "formatOptions": {},
+    "dateCheckOptions": {
+      "oldArticleDateDiffMsThreshold": 604800000
+    },
+    "createdAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6a0000000000000000000028"
+    },
+    "title": "Edicion Deluxe",
+    "url": "https://kill-the-newsletter.example.com/feeds/abc123.xml",
+    "inputUrl": "https://kill-the-newsletter.example.com/feeds/abc123.xml",
+    "connections": {
+      "discordChannels": [
+        {
+          "id": {
+            "$oid": "6a0000000000000000000027"
+          },
+          "name": "gaming",
+          "filters": null,
+          "rateLimits": [],
+          "customPlaceholders": [],
+          "details": {
+            "embeds": [],
+            "channel": {
+              "id": "200000000000000015",
+              "guildId": "100000000000000001"
+            },
+            "placeholderLimits": [],
+            "formatter": {
+              "formatTables": false,
+              "stripImages": false,
+              "disableImageLinkPreviews": false,
+              "ignoreNewLines": false
+            },
+            "componentRows": [],
+            "forumThreadTags": []
+          },
+          "createdAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          },
+          "updatedAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          }
+        }
+      ],
+      "createdAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      },
+      "updatedAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      }
+    },
+    "user": {
+      "id": {
+        "$oid": "6a0000000000000000000029"
+      },
+      "discordUserId": "300000000000000001"
+    },
+    "healthStatus": "ok",
+    "refreshRateSeconds": 600,
+    "slotOffsetMs": 12345,
+    "maxDailyArticles": 500,
+    "blockingComparisons": [],
+    "passingComparisons": [],
+    "externalProperties": [],
+    "formatOptions": {},
+    "dateCheckOptions": {
+      "oldArticleDateDiffMsThreshold": 604800000
+    },
+    "createdAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6a000000000000000000002c"
+    },
+    "title": "Obsidian Changelog",
+    "url": "https://obsidian.example.com/changelog.xml",
+    "inputUrl": "https://obsidian.example.com/changelog.xml",
+    "connections": {
+      "discordChannels": [
+        {
+          "id": {
+            "$oid": "6a000000000000000000002a"
+          },
+          "name": "obsidian",
+          "filters": {
+            "expression": {
+              "type": "LOGICAL",
+              "op": "AND",
+              "children": [
+                {
+                  "type": "RELATIONAL",
+                  "op": "CONTAINS",
+                  "left": {
+                    "type": "ARTICLE",
+                    "value": "title"
+                  },
+                  "right": {
+                    "type": "STRING",
+                    "value": "Early access"
+                  },
+                  "not": true
+                }
+              ]
+            }
+          },
+          "rateLimits": [],
+          "customPlaceholders": [],
+          "details": {
+            "embeds": [],
+            "channel": {
+              "id": "200000000000000016",
+              "guildId": "100000000000000001"
+            },
+            "placeholderLimits": [],
+            "formatter": {
+              "formatTables": false,
+              "stripImages": false,
+              "disableImageLinkPreviews": false,
+              "ignoreNewLines": false
+            },
+            "componentRows": [],
+            "forumThreadTags": [],
+            "content": "**{{title}}**\n{{link}}"
+          },
+          "createdAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          },
+          "updatedAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          }
+        },
+        {
+          "id": {
+            "$oid": "6a000000000000000000002b"
+          },
+          "name": "tech",
+          "filters": {
+            "expression": {
+              "type": "LOGICAL",
+              "op": "AND",
+              "children": [
+                {
+                  "type": "RELATIONAL",
+                  "op": "CONTAINS",
+                  "left": {
+                    "type": "ARTICLE",
+                    "value": "title"
+                  },
+                  "right": {
+                    "type": "STRING",
+                    "value": "Early access"
+                  },
+                  "not": true
+                }
+              ]
+            }
+          },
+          "rateLimits": [],
+          "customPlaceholders": [],
+          "details": {
+            "embeds": [],
+            "channel": {
+              "id": "200000000000000017",
+              "guildId": "100000000000000002"
+            },
+            "placeholderLimits": [],
+            "formatter": {
+              "formatTables": false,
+              "stripImages": false,
+              "disableImageLinkPreviews": false,
+              "ignoreNewLines": false
+            },
+            "componentRows": [],
+            "forumThreadTags": [],
+            "content": "**{{title}}**\n{{link}}"
+          },
+          "createdAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          },
+          "updatedAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          }
+        }
+      ],
+      "createdAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      },
+      "updatedAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      }
+    },
+    "user": {
+      "id": {
+        "$oid": "6a000000000000000000002d"
+      },
+      "discordUserId": "300000000000000001"
+    },
+    "healthStatus": "ok",
+    "refreshRateSeconds": 600,
+    "slotOffsetMs": 12345,
+    "maxDailyArticles": 500,
+    "blockingComparisons": [],
+    "passingComparisons": [],
+    "externalProperties": [],
+    "formatOptions": {},
+    "dateCheckOptions": {
+      "oldArticleDateDiffMsThreshold": 604800000
+    },
+    "createdAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6a000000000000000000002f"
+    },
+    "title": "PolHostRex",
+    "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCaaaaaaaaaaaaaaaaaaaaa1",
+    "inputUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCaaaaaaaaaaaaaaaaaaaaa1",
+    "connections": {
+      "discordChannels": [
+        {
+          "id": {
+            "$oid": "6a000000000000000000002e"
+          },
+          "name": "pol-videos",
+          "filters": null,
+          "rateLimits": [],
+          "customPlaceholders": [],
+          "details": {
+            "embeds": [],
+            "channel": {
+              "id": "200000000000000018",
+              "guildId": "100000000000000001"
+            },
+            "placeholderLimits": [],
+            "formatter": {
+              "formatTables": false,
+              "stripImages": false,
+              "disableImageLinkPreviews": false,
+              "ignoreNewLines": false
+            },
+            "componentRows": [],
+            "forumThreadTags": [],
+            "content": "**{{title}}**\n{{link}}"
+          },
+          "createdAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          },
+          "updatedAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          }
+        }
+      ],
+      "createdAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      },
+      "updatedAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      }
+    },
+    "user": {
+      "id": {
+        "$oid": "6a0000000000000000000030"
+      },
+      "discordUserId": "300000000000000001"
+    },
+    "healthStatus": "ok",
+    "refreshRateSeconds": 600,
+    "slotOffsetMs": 12345,
+    "maxDailyArticles": 500,
+    "blockingComparisons": [],
+    "passingComparisons": [],
+    "externalProperties": [],
+    "formatOptions": {},
+    "dateCheckOptions": {
+      "oldArticleDateDiffMsThreshold": 604800000
+    },
+    "createdAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6a0000000000000000000032"
+    },
+    "title": "Oriol Capdevila",
+    "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCaaaaaaaaaaaaaaaaaaaaa2",
+    "inputUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCaaaaaaaaaaaaaaaaaaaaa2",
+    "connections": {
+      "discordChannels": [
+        {
+          "id": {
+            "$oid": "6a0000000000000000000031"
+          },
+          "name": "ori-videos",
+          "filters": null,
+          "rateLimits": [],
+          "customPlaceholders": [],
+          "details": {
+            "embeds": [],
+            "channel": {
+              "id": "200000000000000019",
+              "guildId": "100000000000000001"
+            },
+            "placeholderLimits": [],
+            "formatter": {
+              "formatTables": false,
+              "stripImages": false,
+              "disableImageLinkPreviews": false,
+              "ignoreNewLines": false
+            },
+            "componentRows": [],
+            "forumThreadTags": [],
+            "content": "**{{title}}**\n{{link}}"
+          },
+          "createdAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          },
+          "updatedAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          }
+        }
+      ],
+      "createdAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      },
+      "updatedAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      }
+    },
+    "user": {
+      "id": {
+        "$oid": "6a0000000000000000000033"
+      },
+      "discordUserId": "300000000000000001"
+    },
+    "healthStatus": "ok",
+    "refreshRateSeconds": 600,
+    "slotOffsetMs": 12345,
+    "maxDailyArticles": 500,
+    "blockingComparisons": [],
+    "passingComparisons": [],
+    "externalProperties": [],
+    "formatOptions": {},
+    "dateCheckOptions": {
+      "oldArticleDateDiffMsThreshold": 604800000
+    },
+    "createdAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6a0000000000000000000035"
+    },
+    "title": "Victor Segura",
+    "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCaaaaaaaaaaaaaaaaaaaaa3",
+    "inputUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCaaaaaaaaaaaaaaaaaaaaa3",
+    "connections": {
+      "discordChannels": [
+        {
+          "id": {
+            "$oid": "6a0000000000000000000034"
+          },
+          "name": "victor-videos",
+          "filters": null,
+          "rateLimits": [],
+          "customPlaceholders": [],
+          "details": {
+            "embeds": [],
+            "channel": {
+              "id": "200000000000000020",
+              "guildId": "100000000000000001"
+            },
+            "placeholderLimits": [],
+            "formatter": {
+              "formatTables": false,
+              "stripImages": false,
+              "disableImageLinkPreviews": false,
+              "ignoreNewLines": false
+            },
+            "componentRows": [],
+            "forumThreadTags": [],
+            "content": "**{{title}}**\n{{link}}"
+          },
+          "createdAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          },
+          "updatedAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          }
+        }
+      ],
+      "createdAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      },
+      "updatedAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      }
+    },
+    "user": {
+      "id": {
+        "$oid": "6a0000000000000000000036"
+      },
+      "discordUserId": "300000000000000001"
+    },
+    "healthStatus": "ok",
+    "refreshRateSeconds": 600,
+    "slotOffsetMs": 12345,
+    "maxDailyArticles": 500,
+    "blockingComparisons": [],
+    "passingComparisons": [],
+    "externalProperties": [],
+    "formatOptions": {},
+    "dateCheckOptions": {
+      "oldArticleDateDiffMsThreshold": 604800000
+    },
+    "createdAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6a0000000000000000000038"
+    },
+    "title": "Alva Majo",
+    "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCaaaaaaaaaaaaaaaaaaaaa4",
+    "inputUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCaaaaaaaaaaaaaaaaaaaaa4",
+    "connections": {
+      "discordChannels": [
+        {
+          "id": {
+            "$oid": "6a0000000000000000000037"
+          },
+          "name": "alva",
+          "filters": null,
+          "rateLimits": [],
+          "customPlaceholders": [],
+          "details": {
+            "embeds": [],
+            "channel": {
+              "id": "200000000000000021",
+              "guildId": "100000000000000002"
+            },
+            "placeholderLimits": [],
+            "formatter": {
+              "formatTables": false,
+              "stripImages": false,
+              "disableImageLinkPreviews": false,
+              "ignoreNewLines": false
+            },
+            "componentRows": [],
+            "forumThreadTags": [],
+            "content": "**{{title}}**\n{{link}}"
+          },
+          "createdAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          },
+          "updatedAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          }
+        }
+      ],
+      "createdAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      },
+      "updatedAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      }
+    },
+    "user": {
+      "id": {
+        "$oid": "6a0000000000000000000039"
+      },
+      "discordUserId": "300000000000000001"
+    },
+    "healthStatus": "ok",
+    "refreshRateSeconds": 600,
+    "slotOffsetMs": 12345,
+    "maxDailyArticles": 500,
+    "blockingComparisons": [],
+    "passingComparisons": [],
+    "externalProperties": [],
+    "formatOptions": {},
+    "dateCheckOptions": {
+      "oldArticleDateDiffMsThreshold": 604800000
+    },
+    "createdAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "6a000000000000000000003b"
+    },
+    "title": "Alva Majo Clips",
+    "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCaaaaaaaaaaaaaaaaaaaaa5",
+    "inputUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCaaaaaaaaaaaaaaaaaaaaa5",
+    "connections": {
+      "discordChannels": [
+        {
+          "id": {
+            "$oid": "6a000000000000000000003a"
+          },
+          "name": "alva-clips",
+          "filters": null,
+          "rateLimits": [],
+          "customPlaceholders": [],
+          "details": {
+            "embeds": [],
+            "channel": {
+              "id": "200000000000000022",
+              "guildId": "100000000000000002"
+            },
+            "placeholderLimits": [],
+            "formatter": {
+              "formatTables": false,
+              "stripImages": false,
+              "disableImageLinkPreviews": false,
+              "ignoreNewLines": false
+            },
+            "componentRows": [],
+            "forumThreadTags": [],
+            "content": "**{{title}}**\n{{link}}"
+          },
+          "createdAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          },
+          "updatedAt": {
+            "$date": "2026-03-14T10:00:00.000Z"
+          }
+        }
+      ],
+      "createdAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      },
+      "updatedAt": {
+        "$date": "2026-03-14T10:00:00.000Z"
+      }
+    },
+    "user": {
+      "id": {
+        "$oid": "6a000000000000000000003c"
+      },
+      "discordUserId": "300000000000000001"
+    },
+    "healthStatus": "ok",
+    "refreshRateSeconds": 600,
+    "slotOffsetMs": 12345,
+    "maxDailyArticles": 500,
+    "blockingComparisons": [],
+    "passingComparisons": [],
+    "externalProperties": [],
+    "formatOptions": {},
+    "dateCheckOptions": {
+      "oldArticleDateDiffMsThreshold": 604800000
+    },
+    "createdAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-03-14T10:00:00.000Z"
+    },
+    "__v": 0
+  }
+]

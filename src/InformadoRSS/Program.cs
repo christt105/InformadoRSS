@@ -1,5 +1,6 @@
 using InformadoRSS;
 using InformadoRSS.Alerts;
+using InformadoRSS.Import;
 using InformadoRSS.Scheduling;
 using InformadoRSS.Sinks.Discord;
 using InformadoRSS.Sinks.Ntfy;
@@ -20,6 +21,11 @@ if (args.Length > 0 && args[0] == HealthCheckCommand.Flag)
     return await HealthCheckCommand.RunAsync(client, url);
 }
 
+if (args.Length > 0 && ImportCommand.Handles(args[0]))
+{
+    return await ImportCommand.RunAsync(args);
+}
+
 var builder = WebApplication.CreateSlimBuilder(args);
 
 if (string.IsNullOrEmpty(builder.Configuration["urls"]) && string.IsNullOrEmpty(builder.Configuration["http_ports"]))
@@ -38,6 +44,7 @@ builder.Services.AddDiscordDirectory();
 builder.Services.AddNtfySink();
 builder.Services.AddScheduler();
 builder.Services.AddAlerts();
+builder.Services.AddMonitorssImport();
 
 var app = builder.Build();
 
@@ -48,6 +55,7 @@ app.UseStaticFiles();
 
 app.MapGet("/health", () => new HealthResponse("ok", AppInfo.Version));
 app.MapDiscordApi();
+app.MapImportApi();
 
 app.Map("/api/{**path}", () => Results.NotFound());
 app.MapFallbackToFile("index.html");
