@@ -34,6 +34,21 @@ public sealed class SeenItemAndSettingsStoreTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task ForgottenItemsAreUnseenAgainOnlyForThatRoute()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        await _db.SeenItems.MarkSeenAsync(_routeA, ["1", "2"], DateTimeOffset.UnixEpoch, ct);
+        await _db.SeenItems.MarkSeenAsync(_routeB, ["1"], DateTimeOffset.UnixEpoch, ct);
+
+        Assert.True(await _db.SeenItems.ForgetAsync(_routeA, "1", ct));
+        Assert.False(await _db.SeenItems.ForgetAsync(_routeA, "1", ct));
+        Assert.False(await _db.SeenItems.ForgetAsync(_routeA, "unknown", ct));
+
+        Assert.Equal(["1"], await _db.SeenItems.FilterUnseenAsync(_routeA, ["1", "2"], ct));
+        Assert.Empty(await _db.SeenItems.FilterUnseenAsync(_routeB, ["1"], ct));
+    }
+
+    [Fact]
     public async Task SeedingIsTrackedPerRouteEvenWithoutItems()
     {
         var ct = TestContext.Current.CancellationToken;
