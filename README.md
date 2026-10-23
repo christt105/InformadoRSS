@@ -51,6 +51,12 @@ dotnet publish src/InformadoRSS -c Release -r linux-x64 -o out
 
 Items are deduplicated by their id (`guid` or Atom `id`). Some feeds keep one entry per thing and rewrite it in place: a MyAnimeList list feed (`rss.php?type=rw&u=<user>`) has one entry per anime whose description goes from `Watching - 1 of 12 episodes` to `Completed - 12 of 12 episodes`, so the change is never sent. A feed can set an identity pattern, a regular expression over the plain-text description whose first match is appended to the item id. With `^[^-]+` on a MyAnimeList feed, each status (`Watching`, `Completed`, `Dropped`, ...) is a new item while episode progress inside a status is not. Changing the pattern marks the items currently in the feed as seen without sending them.
 
+## Old items and manual sends
+
+Items published more than `Scheduler:MaxItemAge` ago (default `7.00:00:00`, set it with the `Scheduler__MaxItemAge` environment variable) are marked as seen without being sent, so a long outage does not flood the channels when the service comes back. Items without a publication date are not affected.
+
+The feed page of the web UI has an Items section that fetches the feed and shows what each route did with every item. From there an item can be sent right away, to a chosen Discord channel or to the route destinations, without changing any state, or reset so that routes forget it and the next check treats it as new (for example after fixing a wrong publication date; an item still older than the maximum age is skipped again). The same actions are available at `GET /api/feeds/{id}/items`, `POST /api/feeds/{id}/items/send` and `POST /api/feeds/{id}/items/reset`.
+
 ## Alerts and ntfy
 
 InformadoRSS sends one alert when a feed or destination breaks and one when it recovers. A feed counts as broken after it has failed continuously for a while (6 hours by default, so short daily outages such as YouTube feeds answering 404 for a few hours stay quiet); a destination counts as broken when its sink rejects it permanently (for example a deleted Discord channel). What was alerted is stored in the database, so restarts do not repeat alerts. Without a configured target, alerts are only logged.

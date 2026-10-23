@@ -141,6 +141,31 @@ export interface FeedValidation {
   items: FeedItemPreview[]
 }
 
+export interface RouteItemState {
+  routeId: number
+  routeName: string
+  seen: boolean
+}
+
+export interface FeedItemStatus {
+  id: string
+  title: string | null
+  link: string | null
+  published: string | null
+  tooOld: boolean
+  routes: RouteItemState[]
+}
+
+export interface FeedItems {
+  maxItemAgeSeconds: number
+  items: FeedItemStatus[]
+}
+
+export interface ItemSendResult {
+  sent: boolean
+  errors: string[]
+}
+
 export interface Setting {
   key: string
   label: string
@@ -229,6 +254,12 @@ export const api = {
   updateFeed: (feedId: number, input: FeedInput) => request<Feed>('PUT', `/api/feeds/${feedId}`, input),
   deleteFeed: (feedId: number) => request<null>('DELETE', `/api/feeds/${feedId}`),
   validateFeed: (url: string) => request<FeedValidation>('POST', '/api/feeds/validate', { url }),
+
+  feedItems: (feedId: number) => request<FeedItems>('GET', `/api/feeds/${feedId}/items`),
+  resetItem: (feedId: number, itemId: string, routeId?: number) =>
+    request<{ reset: number }>('POST', `/api/feeds/${feedId}/items/reset`, { itemId, routeId }),
+  sendItem: (feedId: number, itemId: string, routeId: number, channelId?: string) =>
+    request<ItemSendResult>('POST', `/api/feeds/${feedId}/items/send`, { itemId, routeId, channelId }),
 
   route: (routeId: number) => request<Route>('GET', `/api/routes/${routeId}`),
   createRoute: (feedId: number, input: RouteInput) => request<Route>('POST', `/api/feeds/${feedId}/routes`, input),

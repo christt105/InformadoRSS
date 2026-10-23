@@ -146,10 +146,19 @@ public sealed class FeedProcessor
 
         var matched = new List<FeedItem>();
         var rejected = new List<string>();
+        var oldest = _time.GetUtcNow() - _options.MaxItemAge;
+        var tooOld = 0;
         foreach (var item in items)
         {
             if (!unseen.Remove(item.Id))
             {
+                continue;
+            }
+
+            if (item.Published is { } published && published < oldest)
+            {
+                rejected.Add(item.Id);
+                tooOld++;
                 continue;
             }
 
@@ -168,6 +177,11 @@ public sealed class FeedProcessor
             {
                 _logger.FilterTimeout(route.Id, name, item.Id);
             }
+        }
+
+        if (tooOld > 0)
+        {
+            _logger.ItemsTooOld(route.Id, name, tooOld, _options.MaxItemAge);
         }
 
         if (rejected.Count > 0)

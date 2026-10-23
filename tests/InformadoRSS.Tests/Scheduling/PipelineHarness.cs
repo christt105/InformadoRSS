@@ -16,7 +16,7 @@ public sealed class PipelineHarness : IAsyncDisposable
     private readonly InMemoryDatabase _db = new();
     private ServiceProvider? _services;
 
-    public SchedulerOptions Options { get; set; } = new();
+    public SchedulerOptions Options { get; set; } = new() { MaxItemAge = TimeSpan.FromDays(3650) };
 
     public ManualTimeProvider Time { get; } = new(Start);
 

@@ -87,6 +87,37 @@ public sealed class SqliteSeenItemStore(SqliteDatabase database) : ISeenItemStor
         return inserted;
     }
 
+    public async Task<bool> ForgetAsync(long routeId, string itemId, CancellationToken cancellationToken)
+    {
+        await using var connection = await database.OpenAsync(cancellationToken);
+        await using var transaction = (SqliteTransaction)await connection.BeginTransactionAsync(cancellationToken);
+
+        await using (var command = connection.CreateCommand())
+        {
+            command.Transaction = transaction;
+            command.CommandText = """
+                DELETE FROM destination_items
+                WHERE item_id = $itemId AND destination_id IN (SELECT id FROM destinations WHERE route_id = $routeId)
+                """;
+            command.Parameters.AddWithValue("$routeId", routeId);
+            command.Parameters.AddWithValue("$itemId", itemId);
+            await command.ExecuteNonQueryAsync(cancellationToken);
+        }
+
+        int deleted;
+        await using (var command = connection.CreateCommand())
+        {
+            command.Transaction = transaction;
+            command.CommandText = "DELETE FROM seen_items WHERE route_id = $routeId AND item_id = $itemId";
+            command.Parameters.AddWithValue("$routeId", routeId);
+            command.Parameters.AddWithValue("$itemId", itemId);
+            deleted = await command.ExecuteNonQueryAsync(cancellationToken);
+        }
+
+        await transaction.CommitAsync(cancellationToken);
+        return deleted > 0;
+    }
+
     public async Task<IReadOnlySet<int>> ListDoneDestinationsAsync(long routeId, string itemId, CancellationToken cancellationToken)
     {
         await using var connection = await database.OpenAsync(cancellationToken);
