@@ -80,10 +80,9 @@ public sealed class DiscordEndpointsTests : IAsyncDisposable
 
         Assert.Equal(HttpStatusCode.OK, first.StatusCode);
         var channels = (await ReadJsonAsync(first)).EnumerateArray().ToList();
-        Assert.Equal([GeneralId, NewsId, ForumId, HiddenId, AlertsId], channels.Select(channel => channel.GetProperty("id").GetString()));
-        Assert.Equal("forum", channels[2].GetProperty("type").GetString());
-        Assert.Equal("Feeds", channels[4].GetProperty("categoryName").GetString());
-        Assert.Equal(CategoryId, channels[4].GetProperty("categoryId").GetString());
+        Assert.Equal([GeneralId, NewsId, HiddenId, AlertsId], channels.Select(channel => channel.GetProperty("id").GetString()));
+        Assert.Equal("Feeds", channels[3].GetProperty("categoryName").GetString());
+        Assert.Equal(CategoryId, channels[3].GetProperty("categoryId").GetString());
         Assert.Equal(2, _api.Requests.Count);
     }
 

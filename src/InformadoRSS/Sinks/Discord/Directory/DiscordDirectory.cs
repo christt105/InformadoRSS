@@ -12,7 +12,6 @@ public sealed class DiscordDirectory(DiscordRestClient client, IDiscordTokenProv
 {
     public const string TextType = "text";
     public const string AnnouncementType = "announcement";
-    public const string ForumType = "forum";
 
     private const string CdnBase = "https://cdn.discordapp.com/";
 
@@ -39,7 +38,7 @@ public sealed class DiscordDirectory(DiscordRestClient client, IDiscordTokenProv
             null);
     }
 
-    /// <summary>Lists the text, announcement and forum channels of a guild, in the order Discord shows them.</summary>
+    /// <summary>Lists the text and announcement channels of a guild, in the order Discord shows them.</summary>
     public async Task<DiscordResult<IReadOnlyList<DiscordChannelSummary>>> GetChannelsAsync(
         string guildId,
         bool refresh,
@@ -86,7 +85,7 @@ public sealed class DiscordDirectory(DiscordRestClient client, IDiscordTokenProv
     }
 
     /// <summary>
-    /// Computes the bot's permissions in a text, announcement or forum channel of a guild. A channel that is not in the
+    /// Computes the bot's permissions in a text or announcement channel of a guild. A channel that is not in the
     /// guild, or is of another type, fails with a 404 <see cref="DiscordApiResponse"/>.
     /// </summary>
     public async Task<DiscordResult<DiscordChannelPermissions>> CheckPermissionsAsync(
@@ -126,7 +125,7 @@ public sealed class DiscordDirectory(DiscordRestClient client, IDiscordTokenProv
                 new DiscordApiResponse(
                     DiscordApiOutcome.HttpError,
                     StatusCode: (int)HttpStatusCode.NotFound,
-                    Message: $"channel {channelId} is not a text, announcement or forum channel the bot can see in this server"));
+                    Message: $"channel {channelId} is not a text or announcement channel the bot can see in this server"));
         }
 
         var guild = await CachedAsync(
@@ -150,27 +149,18 @@ public sealed class DiscordDirectory(DiscordRestClient client, IDiscordTokenProv
         }
 
         var permissions = DiscordPermissionCalculator.Compute(guild.Value, member.Value, user.Value.Id, channel);
-        var checks = RequiredPermissions(type)
+        var checks = RequiredPermissions
             .Select(required => new DiscordPermissionCheck(required.Name, required.Label, (permissions & required.Bit) == required.Bit))
             .ToList();
         return new(new DiscordChannelPermissions(guildId, channelId, type, checks.TrueForAll(check => check.Granted), checks), null);
     }
 
-    private static IEnumerable<(string Name, string Label, ulong Bit)> RequiredPermissions(string type)
-    {
-        yield return ("viewChannel", "View Channel", DiscordPermissions.ViewChannel);
-        if (type == ForumType)
-        {
-            yield return ("createPosts", "Create Posts", DiscordPermissions.SendMessages);
-            yield return ("sendMessagesInPosts", "Send Messages in Posts", DiscordPermissions.SendMessagesInThreads);
-        }
-        else
-        {
-            yield return ("sendMessages", "Send Messages", DiscordPermissions.SendMessages);
-        }
-
-        yield return ("embedLinks", "Embed Links", DiscordPermissions.EmbedLinks);
-    }
+    private static readonly (string Name, string Label, ulong Bit)[] RequiredPermissions =
+    [
+        ("viewChannel", "View Channel", DiscordPermissions.ViewChannel),
+        ("sendMessages", "Send Messages", DiscordPermissions.SendMessages),
+        ("embedLinks", "Embed Links", DiscordPermissions.EmbedLinks),
+    ];
 
     private Task<DiscordResult<List<DiscordChannel>>> GetGuildChannelsAsync(
         string token,
@@ -256,7 +246,6 @@ public sealed class DiscordDirectory(DiscordRestClient client, IDiscordTokenProv
         {
             DiscordChannelType.Text => TextType,
             DiscordChannelType.Announcement => AnnouncementType,
-            DiscordChannelType.Forum => ForumType,
             _ => null,
         };
 

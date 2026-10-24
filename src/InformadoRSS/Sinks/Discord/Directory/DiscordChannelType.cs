@@ -6,5 +6,4 @@ public enum DiscordChannelType
     Text = 0,
     Category = 4,
     Announcement = 5,
-    Forum = 15,
 }
