@@ -1,3 +1,5 @@
+<p align="center"><img src="docs/logo.png" alt="InformadoRSS logo" width="128" /></p>
+
 # InformadoRSS
 
 Lightweight single-container RSS/Atom to Discord forwarder.
