@@ -4,7 +4,7 @@ import { RouterLink, RouterView } from 'vue-router'
 
 <template>
   <header class="topbar">
-    <RouterLink to="/" class="brand">InformadoRSS</RouterLink>
+    <RouterLink to="/" class="brand"><img src="/logo.png" alt="" class="brand-logo" />InformadoRSS</RouterLink>
     <nav>
       <RouterLink to="/">Feeds</RouterLink>
       <RouterLink to="/settings">Settings</RouterLink>
