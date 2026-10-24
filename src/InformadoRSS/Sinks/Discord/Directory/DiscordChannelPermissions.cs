@@ -4,9 +4,11 @@ namespace InformadoRSS.Sinks.Discord;
 /// <param name="ChannelType">The <see cref="DiscordChannelSummary.Type"/> of the channel.</param>
 /// <param name="CanPost">Whether every permission in <paramref name="Permissions"/> is granted.</param>
 /// <param name="Permissions">The permissions InformadoRSS needs for this channel type.</param>
+/// <param name="TimedOutUntil">When the bot's timeout in the guild ends, if it is timed out.</param>
 public sealed record DiscordChannelPermissions(
     string GuildId,
     string ChannelId,
     string ChannelType,
     bool CanPost,
-    IReadOnlyList<DiscordPermissionCheck> Permissions);
+    IReadOnlyList<DiscordPermissionCheck> Permissions,
+    DateTimeOffset? TimedOutUntil);

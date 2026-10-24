@@ -83,7 +83,8 @@ public sealed class DiscordEndpointsTests : IAsyncDisposable
         Assert.Equal([GeneralId, NewsId, HiddenId, AlertsId], channels.Select(channel => channel.GetProperty("id").GetString()));
         Assert.Equal("Feeds", channels[3].GetProperty("categoryName").GetString());
         Assert.Equal(CategoryId, channels[3].GetProperty("categoryId").GetString());
-        Assert.Equal(2, _api.Requests.Count);
+        Assert.Equal([true, false, false, true], channels.Select(channel => channel.GetProperty("canPost").GetBoolean()));
+        Assert.Equal(2, _api.RequestedRoutes.Count(route => route == $"GET guilds/{GuildId}/channels"));
     }
 
     [Fact]
