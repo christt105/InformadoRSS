@@ -59,4 +59,7 @@ internal static partial class SchedulerLog
 
     [LoggerMessage(Level = LogLevel.Information, Message = "Route {RouteId} ({RouteName}) delivered {Count} items; {Pending} left for the next cycle")]
     public static partial void RouteDelivered(this ILogger logger, long routeId, string routeName, int count, int pending);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "Route {RouteId} ({RouteName}) skipped {Count} items published more than {MaxAge} ago")]
+    public static partial void ItemsTooOld(this ILogger logger, long routeId, string routeName, int count, TimeSpan maxAge);
 }

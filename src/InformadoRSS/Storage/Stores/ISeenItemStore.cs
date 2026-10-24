@@ -20,6 +20,10 @@ public interface ISeenItemStore
     /// <returns>How many ids were not seen before.</returns>
     Task<int> MarkSeenAsync(long routeId, IEnumerable<string> itemIds, DateTimeOffset at, CancellationToken cancellationToken);
 
+    /// <summary>Makes the route forget the item, so the next cycle treats it as new, and drops its per-destination progress.</summary>
+    /// <returns>Whether the item was seen before.</returns>
+    Task<bool> ForgetAsync(long routeId, string itemId, CancellationToken cancellationToken);
+
     /// <summary>Positions of the route destinations already done with an item that is not seen yet.</summary>
     Task<IReadOnlySet<int>> ListDoneDestinationsAsync(long routeId, string itemId, CancellationToken cancellationToken);
 

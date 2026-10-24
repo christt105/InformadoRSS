@@ -34,6 +34,44 @@ public sealed class FeedProcessorTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task ItemsOlderThanTheMaximumAgeAreMarkedSeenWithoutSending()
+    {
+        _h.Options = new SchedulerOptions();
+        var feed = await _h.AddFeedAsync();
+        var route = await _h.AddRouteAsync(feed);
+        _h.Source.ReturnsItems(Item("a"));
+        await _h.RunCycleAsync(feed);
+
+        var fresh = Start.AddDays(-2);
+        var stale = Start.AddDays(-8);
+        _h.Source.ReturnsItems(FakeSource.V2, Item("fresh", fresh), Item("stale", stale), Item("undated"), Item("a"));
+        await _h.RunCycleAsync(feed);
+
+        Assert.Equal(["undated", "fresh"], _h.Discord.Contents);
+        Assert.Empty(await _h.SeenItems.FilterUnseenAsync(route.Id, ["stale"], TestContext.Current.CancellationToken));
+
+        _h.Source.ReturnsItems(FakeSource.V1, Item("fresh", fresh), Item("stale", stale), Item("undated"), Item("a"));
+        await _h.RunCycleAsync(feed);
+
+        Assert.Equal(["undated", "fresh"], _h.Discord.Contents);
+    }
+
+    [Fact]
+    public async Task MaximumAgeIsConfigurable()
+    {
+        _h.Options = new SchedulerOptions { MaxItemAge = TimeSpan.FromDays(30) };
+        var feed = await _h.AddFeedAsync();
+        await _h.AddRouteAsync(feed);
+        _h.Source.ReturnsItems(Item("a"));
+        await _h.RunCycleAsync(feed);
+
+        _h.Source.ReturnsItems(FakeSource.V2, Item("old", Start.AddDays(-20)), Item("a"));
+        await _h.RunCycleAsync(feed);
+
+        Assert.Equal(["old"], _h.Discord.Contents);
+    }
+
+    [Fact]
     public async Task IdentityPatternSendsStatusChangesOfTheSameEntry()
     {
         var feed = await _h.Feeds.AddAsync(

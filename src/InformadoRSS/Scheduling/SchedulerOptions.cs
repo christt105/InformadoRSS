@@ -16,6 +16,9 @@ public sealed record SchedulerOptions
     /// <summary>How many items a route may deliver per cycle; the rest wait for the next cycle.</summary>
     public int MaxItemsPerRoute { get; init; } = 5;
 
+    /// <summary>Items published longer ago than this are marked seen without being sent, e.g. after the service was down for a while.</summary>
+    public TimeSpan MaxItemAge { get; init; } = TimeSpan.FromDays(7);
+
     /// <summary>Upper bound of the failure backoff, unless the feed interval itself is longer.</summary>
     public TimeSpan MaxBackoff { get; init; } = TimeSpan.FromHours(1);
 
@@ -36,6 +39,7 @@ public sealed record SchedulerOptions
             Enabled = ReadBoolean(section, nameof(Enabled), defaults.Enabled),
             MaxConcurrency = ReadPositive(section, nameof(MaxConcurrency), defaults.MaxConcurrency),
             MaxItemsPerRoute = ReadPositive(section, nameof(MaxItemsPerRoute), defaults.MaxItemsPerRoute),
+            MaxItemAge = ReadDuration(section, nameof(MaxItemAge), defaults.MaxItemAge),
             MaxBackoff = ReadDuration(section, nameof(MaxBackoff), defaults.MaxBackoff),
             MaxRetryAfter = ReadDuration(section, nameof(MaxRetryAfter), defaults.MaxRetryAfter),
             PollInterval = ReadDuration(section, nameof(PollInterval), defaults.PollInterval),

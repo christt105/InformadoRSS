@@ -3,6 +3,7 @@ import { onMounted, ref, watch } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import { api, ApiRequestError, errorMessage, type Feed, type FieldError } from '../api'
 import ErrorList from '../components/ErrorList.vue'
+import FeedItems from '../components/FeedItems.vue'
 import HealthBadges from '../components/HealthBadges.vue'
 import { dateTime, timeAgo } from '../format'
 
@@ -126,6 +127,8 @@ watch(() => props.feedId, load)
         </li>
       </ul>
     </section>
+
+    <FeedItems :feed="feed" />
 
     <form class="card stack" @submit.prevent="save">
       <h2>Feed settings</h2>
