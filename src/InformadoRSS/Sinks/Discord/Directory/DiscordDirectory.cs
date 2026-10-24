@@ -8,7 +8,11 @@ namespace InformadoRSS.Sinks.Discord;
 /// Lists the guilds and channels the bot can see and checks its permissions in a channel, for the destination picker.
 /// Discord responses are kept in <see cref="DiscordDirectoryCache"/>; pass <c>refresh</c> to ask Discord again.
 /// </summary>
-public sealed class DiscordDirectory(DiscordRestClient client, IDiscordTokenProvider tokenProvider, DiscordDirectoryCache cache)
+public sealed class DiscordDirectory(
+    DiscordRestClient client,
+    IDiscordTokenProvider tokenProvider,
+    DiscordDirectoryCache cache,
+    TimeProvider time)
 {
     public const string TextType = "text";
     public const string AnnouncementType = "announcement";
@@ -38,7 +42,11 @@ public sealed class DiscordDirectory(DiscordRestClient client, IDiscordTokenProv
             null);
     }
 
-    /// <summary>Lists the text and announcement channels of a guild, in the order Discord shows them.</summary>
+    /// <summary>
+    /// Lists the text and announcement channels of a guild, in the order Discord shows them, with whether the bot can
+    /// post in each. Failing to read the bot's permissions leaves <see cref="DiscordChannelSummary.CanPost"/> unknown
+    /// instead of failing the listing.
+    /// </summary>
     public async Task<DiscordResult<IReadOnlyList<DiscordChannelSummary>>> GetChannelsAsync(
         string guildId,
         bool refresh,
@@ -56,6 +64,8 @@ public sealed class DiscordDirectory(DiscordRestClient client, IDiscordTokenProv
             return new(null, channels.Failure);
         }
 
+        var membership = await GetMembershipAsync(token, guildId, refresh, cancellationToken);
+        var now = time.GetUtcNow();
         var categories = channels.Value
             .Where(channel => channel.Type == (int)DiscordChannelType.Category)
             .ToDictionary(channel => channel.Id, StringComparer.Ordinal);
@@ -79,7 +89,8 @@ public sealed class DiscordDirectory(DiscordRestClient client, IDiscordTokenProv
                     TypeName(entry.Channel)!,
                     entry.Category?.Id,
                     entry.Category?.Name,
-                    entry.Channel.Position))
+                    entry.Channel.Position,
+                    membership.IsSuccess ? CanPost(Permissions(membership.Value, entry.Channel, now)) : null))
                 .ToList(),
             null);
     }
@@ -100,16 +111,6 @@ public sealed class DiscordDirectory(DiscordRestClient client, IDiscordTokenProv
             return new(null, MissingToken());
         }
 
-        var user = await CachedAsync(
-            token,
-            "user",
-            refresh: false,
-            () => ReadAsync(client.GetCurrentUserAsync(cancellationToken), DiscordJsonContext.Default.DiscordUser));
-        if (!user.IsSuccess)
-        {
-            return new(null, user.Failure);
-        }
-
         var channels = await GetGuildChannelsAsync(token, guildId, refresh, cancellationToken);
         if (!channels.IsSuccess)
         {
@@ -126,6 +127,59 @@ public sealed class DiscordDirectory(DiscordRestClient client, IDiscordTokenProv
                     DiscordApiOutcome.HttpError,
                     StatusCode: (int)HttpStatusCode.NotFound,
                     Message: $"channel {channelId} is not a text or announcement channel the bot can see in this server"));
+        }
+
+        var membership = await GetMembershipAsync(token, guildId, refresh, cancellationToken);
+        if (!membership.IsSuccess)
+        {
+            return new(null, membership.Failure);
+        }
+
+        var now = time.GetUtcNow();
+        var permissions = Permissions(membership.Value, channel, now);
+        var checks = RequiredPermissions
+            .Select(required => new DiscordPermissionCheck(required.Name, required.Label, (permissions & required.Bit) == required.Bit))
+            .ToList();
+        var timedOutUntil = DiscordPermissionCalculator.IsTimedOut(membership.Value.Member, now)
+            ? membership.Value.Member.CommunicationDisabledUntil
+            : null;
+        return new(
+            new DiscordChannelPermissions(guildId, channelId, type, checks.TrueForAll(check => check.Granted), checks, timedOutUntil),
+            null);
+    }
+
+    private static readonly (string Name, string Label, ulong Bit)[] RequiredPermissions =
+    [
+        ("viewChannel", "View Channel", DiscordPermissions.ViewChannel),
+        ("sendMessages", "Send Messages", DiscordPermissions.SendMessages),
+        ("embedLinks", "Embed Links", DiscordPermissions.EmbedLinks),
+    ];
+
+    private static ulong Permissions(DiscordBotMembership membership, DiscordChannel channel, DateTimeOffset now)
+    {
+        var permissions = DiscordPermissionCalculator.Compute(membership.Guild, membership.Member, membership.UserId, channel);
+        return DiscordPermissionCalculator.IsTimedOut(membership.Member, now)
+            ? DiscordPermissionCalculator.ApplyTimeout(permissions)
+            : permissions;
+    }
+
+    private static bool CanPost(ulong permissions) =>
+        Array.TrueForAll(RequiredPermissions, required => (permissions & required.Bit) == required.Bit);
+
+    private async Task<DiscordResult<DiscordBotMembership>> GetMembershipAsync(
+        string token,
+        string guildId,
+        bool refresh,
+        CancellationToken cancellationToken)
+    {
+        var user = await CachedAsync(
+            token,
+            "user",
+            refresh: false,
+            () => ReadAsync(client.GetCurrentUserAsync(cancellationToken), DiscordJsonContext.Default.DiscordUser));
+        if (!user.IsSuccess)
+        {
+            return new(null, user.Failure);
         }
 
         var guild = await CachedAsync(
@@ -148,19 +202,8 @@ public sealed class DiscordDirectory(DiscordRestClient client, IDiscordTokenProv
             return new(null, member.Failure);
         }
 
-        var permissions = DiscordPermissionCalculator.Compute(guild.Value, member.Value, user.Value.Id, channel);
-        var checks = RequiredPermissions
-            .Select(required => new DiscordPermissionCheck(required.Name, required.Label, (permissions & required.Bit) == required.Bit))
-            .ToList();
-        return new(new DiscordChannelPermissions(guildId, channelId, type, checks.TrueForAll(check => check.Granted), checks), null);
+        return new(new DiscordBotMembership(guild.Value, member.Value, user.Value.Id), null);
     }
-
-    private static readonly (string Name, string Label, ulong Bit)[] RequiredPermissions =
-    [
-        ("viewChannel", "View Channel", DiscordPermissions.ViewChannel),
-        ("sendMessages", "Send Messages", DiscordPermissions.SendMessages),
-        ("embedLinks", "Embed Links", DiscordPermissions.EmbedLinks),
-    ];
 
     private Task<DiscordResult<List<DiscordChannel>>> GetGuildChannelsAsync(
         string token,
