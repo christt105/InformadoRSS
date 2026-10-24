@@ -89,6 +89,18 @@ h3 {
   font-weight: 600;
 }
 
+.topbar .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.brand-logo {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 0.4rem;
+}
+
 .page {
   max-width: 56rem;
   margin: 0 auto;
