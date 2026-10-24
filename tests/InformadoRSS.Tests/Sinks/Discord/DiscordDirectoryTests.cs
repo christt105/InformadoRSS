@@ -86,7 +86,6 @@ public sealed class DiscordDirectoryTests : IDisposable
             [
                 new DiscordChannelSummary(GeneralId, "general", "text", null, null, 1),
                 new DiscordChannelSummary(NewsId, "news", "announcement", null, null, 2),
-                new DiscordChannelSummary(ForumId, "posts", "forum", null, null, 3),
                 new DiscordChannelSummary(HiddenId, "hidden", "text", CategoryId, "Feeds", 2),
                 new DiscordChannelSummary(AlertsId, "alerts", "text", CategoryId, "Feeds", 5),
             ],
@@ -222,22 +221,6 @@ public sealed class DiscordDirectoryTests : IDisposable
     }
 
     [Fact]
-    public async Task ForumNeedsCreatePostsAndSendMessagesInPosts()
-    {
-        var directory = CreateDirectory();
-
-        var without = await directory.CheckPermissionsAsync(GuildId, ForumId, refresh: false, Cancel);
-        _api.On(GuildRoute, Guild(botRole: DiscordPermissions.SendMessagesInThreads)).On(MemberRoute, Member(BotRoleId));
-        var with = await directory.CheckPermissionsAsync(GuildId, ForumId, refresh: true, Cancel);
-
-        Assert.Equal(["viewChannel", "createPosts", "sendMessagesInPosts", "embedLinks"], without.Value!.Permissions.Select(check => check.Name));
-        Assert.Equal("Create Posts", without.Value.Permissions[1].Label);
-        Assert.False(without.Value.CanPost);
-        Assert.Equal(["sendMessagesInPosts"], without.Value.Permissions.Where(check => !check.Granted).Select(check => check.Name));
-        Assert.True(with.Value!.CanPost);
-    }
-
-    [Fact]
     public async Task OwnerCanPostEverywhere()
     {
         _api.On(GuildRoute, Guild(ownerId: BotId, everyone: 0));
@@ -261,6 +244,7 @@ public sealed class DiscordDirectoryTests : IDisposable
     [InlineData("999")]
     [InlineData(VoiceId)]
     [InlineData(CategoryId)]
+    [InlineData(ForumId)]
     public async Task UnknownOrUnsupportedChannelIsNotFound(string channelId)
     {
         var result = await CreateDirectory().CheckPermissionsAsync(GuildId, channelId, refresh: false, Cancel);

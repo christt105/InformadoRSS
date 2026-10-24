@@ -197,7 +197,7 @@ export interface Guild {
 export interface Channel {
   id: string
   name: string
-  type: 'text' | 'announcement' | 'forum'
+  type: 'text' | 'announcement'
   categoryId: string | null
   categoryName: string | null
   position: number
