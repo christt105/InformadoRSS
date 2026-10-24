@@ -309,6 +309,24 @@ public sealed class FeedProcessorTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task RenderFailureSkipsOnlyThatItem()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var feed = await _h.AddFeedAsync();
+        var route = await _h.AddRouteAsync(feed);
+        _h.Source.ReturnsItems(Item("seed"));
+        await _h.RunCycleAsync(feed);
+
+        _h.Renderer.Failing.Add("a");
+        _h.Source.ReturnsItems(Item("b", Day(2)), Item("a", Day(1)), Item("seed"));
+        await _h.RunCycleAsync(feed);
+        await _h.RunCycleAsync(feed);
+
+        Assert.Equal(["b"], _h.Discord.Contents);
+        Assert.Empty(await _h.SeenItems.FilterUnseenAsync(route.Id, ["a", "b"], ct));
+    }
+
+    [Fact]
     public async Task RouteSeededOnAnEmptyFeedSendsTheFirstItemThatAppears()
     {
         var ct = TestContext.Current.CancellationToken;

@@ -35,7 +35,7 @@ internal static partial class SchedulerLog
     [LoggerMessage(Level = LogLevel.Warning, Message = "Route {RouteId} ({RouteName}): filter regex timed out on item {ItemId}; item skipped")]
     public static partial void FilterTimeout(this ILogger logger, long routeId, string routeName, string itemId);
 
-    [LoggerMessage(Level = LogLevel.Error, Message = "Route {RouteId} ({RouteName}): rendering item {ItemId} failed; retrying next cycle")]
+    [LoggerMessage(Level = LogLevel.Error, Message = "Route {RouteId} ({RouteName}): rendering item {ItemId} failed; skipping it")]
     public static partial void RenderFailed(this ILogger logger, Exception exception, long routeId, string routeName, string itemId);
 
     [LoggerMessage(Level = LogLevel.Warning, Message = "Route {RouteId} ({RouteName}): no sink named '{Sink}' is registered; retrying next cycle")]
