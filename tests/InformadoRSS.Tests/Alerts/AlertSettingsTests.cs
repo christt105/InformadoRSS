@@ -13,7 +13,7 @@ public sealed class AlertSettingsTests
         Assert.Null(settings.DiscordChannelId);
         Assert.Null(settings.DiscordUserId);
         Assert.Null(settings.NtfyTopic);
-        Assert.Equal(TimeSpan.FromHours(6), settings.FeedBrokenAfter);
+        Assert.Equal(TimeSpan.FromHours(24), settings.FeedBrokenAfter);
         Assert.Empty(settings.Problems);
     }
 
