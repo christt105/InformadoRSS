@@ -20,7 +20,11 @@ public interface IFeedStore
     /// <summary>Deletes the feed together with its routes, destinations and seen items.</summary>
     Task<bool> DeleteAsync(long id, CancellationToken cancellationToken);
 
-    /// <summary>Resets the failure count and stores the validators to send on the next fetch.</summary>
+    /// <summary>
+    /// Resets the failure count and stores the validators to send on the next fetch. When neither changes, the success
+    /// time may be kept for up to an hour instead of written on every fetch, so a healthy feed does not write to disk
+    /// every few minutes.
+    /// </summary>
     Task RecordSuccessAsync(long id, DateTimeOffset at, FeedValidators validators, CancellationToken cancellationToken);
 
     /// <summary>Increments the failure count. Validators are kept.</summary>
