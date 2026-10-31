@@ -4,7 +4,7 @@ namespace InformadoRSS.Storage;
 
 public sealed class SqliteLatestItemStore(SqliteDatabase database) : ILatestItemStore
 {
-    /// <remarks>Does nothing when the feed no longer exists.</remarks>
+    /// <remarks>Does nothing when the feed no longer exists or the item is already stored unchanged.</remarks>
     public async Task SetAsync(long feedId, LatestItem item, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(item);
@@ -17,6 +17,8 @@ public sealed class SqliteLatestItemStore(SqliteDatabase database) : ILatestItem
             ON CONFLICT (feed_id) DO UPDATE SET
                 item_id = excluded.item_id, title = excluded.title, link = excluded.link,
                 published_at = excluded.published_at, fetched_at = excluded.fetched_at
+            WHERE item_id IS NOT excluded.item_id OR title IS NOT excluded.title OR link IS NOT excluded.link
+                OR published_at IS NOT excluded.published_at
             """;
         command.Parameters.AddWithValue("$feedId", feedId);
         command.Parameters.AddWithValue("$itemId", item.Id);

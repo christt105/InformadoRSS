@@ -33,12 +33,19 @@ public sealed class SqliteDatabase
         }.ToString());
     }
 
+    /// <summary>
+    /// Opens a connection with <c>synchronous = NORMAL</c>: in WAL mode a commit no longer waits for a disk flush, and
+    /// a power loss can only drop the last commits, never corrupt the database.
+    /// </summary>
     public async Task<SqliteConnection> OpenAsync(CancellationToken cancellationToken)
     {
         var connection = new SqliteConnection(_connectionString);
         try
         {
             await connection.OpenAsync(cancellationToken);
+            await using var command = connection.CreateCommand();
+            command.CommandText = "PRAGMA synchronous = NORMAL";
+            await command.ExecuteNonQueryAsync(cancellationToken);
             return connection;
         }
         catch

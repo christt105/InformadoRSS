@@ -3,7 +3,10 @@ namespace InformadoRSS.Storage;
 /// <summary>Remembers the newest item of each feed. Rows are removed together with their feed.</summary>
 public interface ILatestItemStore
 {
-    /// <summary>Stores <paramref name="item"/> as the newest item of the feed, replacing the previous one.</summary>
+    /// <summary>
+    /// Stores <paramref name="item"/> as the newest item of the feed, replacing the previous one. Storing the same item
+    /// again writes nothing, so <see cref="LatestItem.FetchedAt"/> keeps the first fetch that returned it.
+    /// </summary>
     Task SetAsync(long feedId, LatestItem item, CancellationToken cancellationToken);
 
     /// <summary>Forgets the newest item of the feed, e.g. after its URL changed.</summary>
