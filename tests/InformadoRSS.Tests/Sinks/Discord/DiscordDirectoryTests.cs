@@ -41,7 +41,7 @@ public sealed class DiscordDirectoryTests : IDisposable
             new DiscordRateLimiter(_time),
             new DiscordClientOptions(),
             _time);
-        return new DiscordDirectory(client, _token, _cache);
+        return new DiscordDirectory(client, _token, _cache, _time);
     }
 
     private int CountRequests(string route) => _api.RequestedRoutes.Count(requested => requested == route);
@@ -84,10 +84,10 @@ public sealed class DiscordDirectoryTests : IDisposable
         Assert.True(result.IsSuccess);
         Assert.Equal(
             [
-                new DiscordChannelSummary(GeneralId, "general", "text", null, null, 1),
-                new DiscordChannelSummary(NewsId, "news", "announcement", null, null, 2),
-                new DiscordChannelSummary(HiddenId, "hidden", "text", CategoryId, "Feeds", 2),
-                new DiscordChannelSummary(AlertsId, "alerts", "text", CategoryId, "Feeds", 5),
+                new DiscordChannelSummary(GeneralId, "general", "text", null, null, 1, true),
+                new DiscordChannelSummary(NewsId, "news", "announcement", null, null, 2, false),
+                new DiscordChannelSummary(HiddenId, "hidden", "text", CategoryId, "Feeds", 2, false),
+                new DiscordChannelSummary(AlertsId, "alerts", "text", CategoryId, "Feeds", 5, true),
             ],
             result.Value);
     }
@@ -178,6 +178,55 @@ public sealed class DiscordDirectoryTests : IDisposable
         Assert.Equal(DiscordApiOutcome.MissingToken, guilds.Failure?.Outcome);
         Assert.Equal(DiscordApiOutcome.MissingToken, permissions.Failure?.Outcome);
         Assert.Empty(_api.Requests);
+    }
+
+    [Fact]
+    public async Task ListingStillWorksWhenTheBotPermissionsCannotBeRead()
+    {
+        _api.On(MemberRoute, () => FakeDiscordApi.Json(HttpStatusCode.Forbidden, """{"message":"Missing Access","code":50001}"""));
+
+        var result = await CreateDirectory().GetChannelsAsync(GuildId, refresh: false, Cancel);
+
+        Assert.True(result.IsSuccess);
+        Assert.Equal(4, result.Value.Count);
+        Assert.All(result.Value, channel => Assert.Null(channel.CanPost));
+    }
+
+    [Fact]
+    public async Task TimedOutBotCannotPostAnywhere()
+    {
+        _api.On(MemberRoute, MemberTimedOutUntil("2026-10-18T13:00:00+00:00"));
+        var directory = CreateDirectory();
+
+        var permissions = await directory.CheckPermissionsAsync(GuildId, GeneralId, refresh: false, Cancel);
+        var channels = await directory.GetChannelsAsync(GuildId, refresh: false, Cancel);
+
+        Assert.False(permissions.Value!.CanPost);
+        Assert.Equal(new DateTimeOffset(2026, 10, 18, 13, 0, 0, TimeSpan.Zero), permissions.Value.TimedOutUntil);
+        Assert.Equal(["sendMessages", "embedLinks"], permissions.Value.Permissions.Where(check => !check.Granted).Select(check => check.Name));
+        Assert.All(channels.Value!, channel => Assert.False(channel.CanPost));
+    }
+
+    [Fact]
+    public async Task ExpiredTimeoutIsIgnored()
+    {
+        _api.On(MemberRoute, MemberTimedOutUntil("2026-10-18T11:00:00+00:00"));
+
+        var result = await CreateDirectory().CheckPermissionsAsync(GuildId, GeneralId, refresh: false, Cancel);
+
+        Assert.True(result.Value!.CanPost);
+        Assert.Null(result.Value.TimedOutUntil);
+    }
+
+    [Fact]
+    public async Task TimeoutDoesNotApplyToAdministrators()
+    {
+        _api.On(GuildRoute, Guild(botRole: DiscordPermissions.Administrator))
+            .On(MemberRoute, MemberTimedOutUntil("2026-10-18T13:00:00+00:00", BotRoleId));
+
+        var result = await CreateDirectory().CheckPermissionsAsync(GuildId, GeneralId, refresh: false, Cancel);
+
+        Assert.True(result.Value!.CanPost);
     }
 
     [Fact]

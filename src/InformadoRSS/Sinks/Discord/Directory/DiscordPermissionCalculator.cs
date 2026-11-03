@@ -94,5 +94,22 @@ public static class DiscordPermissionCalculator
         return permissions;
     }
 
+    /// <summary>
+    /// Whether the member is timed out at <paramref name="now"/>. Discord leaves a timed-out member only
+    /// <see cref="DiscordPermissions.ViewChannel"/> and <see cref="DiscordPermissions.ReadMessageHistory"/>, unless they
+    /// own the guild or are an administrator.
+    /// </summary>
+    public static bool IsTimedOut(DiscordGuildMember member, DateTimeOffset now)
+    {
+        ArgumentNullException.ThrowIfNull(member);
+        return member.CommunicationDisabledUntil is { } until && until > now;
+    }
+
+    /// <summary>Drops what a timeout takes away from <paramref name="permissions"/> computed by <see cref="Compute"/>.</summary>
+    public static ulong ApplyTimeout(ulong permissions) =>
+        permissions == DiscordPermissions.All
+            ? permissions
+            : permissions & (DiscordPermissions.ViewChannel | DiscordPermissions.ReadMessageHistory);
+
     private static ulong Apply(ulong permissions, ulong allow, ulong deny) => (permissions & ~deny) | allow;
 }

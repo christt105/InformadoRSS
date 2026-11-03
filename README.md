@@ -8,7 +8,7 @@ It polls feeds, filters items per route and posts them to Discord channels throu
 
 ## Status
 
-In use since October 2026 as a replacement for MonitoRSS, running 19 feeds and about 30 routes on a home server in a single container (about 75 MiB of RAM and a 37 MB image). Feeds are polled, filtered per route and delivered to Discord or ntfy, with alerts for broken feeds and destinations. The web UI manages feeds, routes (filter builder, template editor, Discord server and channel picker) and settings; it has no login and is meant for a trusted LAN.
+In use since October 2026 as a replacement for MonitoRSS, running 19 feeds and about 30 routes on a home server in a single container (about 75 MiB of RAM and a 37 MB image). Feeds are polled, filtered per route and delivered to Discord or ntfy, with alerts for broken feeds and destinations. The web UI manages feeds, routes (filter builder, template editor, and a Discord server and channel picker that flags channels the bot cannot post in, including while it is timed out) and settings; it has no login and is meant for a trusted LAN.
 
 The UI talks to a JSON API under `/api`: `/api/feeds` (list with health, newest item and routes; create, read, replace, delete; `POST /api/feeds/validate` to check a URL without saving), `/api/feeds/{feedId}/routes` and `/api/routes/{id}` (plus `POST /api/routes/validate`), `/api/settings` (secrets such as the bot token are write-only), `/api/meta`, `/api/discord/...` and `/api/import/...`.
 

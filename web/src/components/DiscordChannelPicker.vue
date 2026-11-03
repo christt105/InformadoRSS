@@ -128,7 +128,7 @@ watch(channelId, checkPermissions)
           <option v-if="channelId && !channel && channels.length === 0" :value="channelId">{{ channelId }}</option>
           <optgroup v-for="[category, list] in categories" :key="category" :label="category">
             <option v-for="c in list" :key="c.id" :value="c.id">
-              #{{ c.name }}{{ c.type === 'text' ? '' : ` (${c.type})` }}
+              #{{ c.name }}{{ c.type === 'text' ? '' : ` (${c.type})` }}{{ c.canPost === false ? ' (bot cannot post)' : '' }}
             </option>
           </optgroup>
         </select>
@@ -142,6 +142,9 @@ watch(channelId, checkPermissions)
     <p v-if="error" class="notice error">
       {{ error }}
       <RouterLink v-if="tokenMissing" to="/settings">Open settings</RouterLink>
+    </p>
+    <p v-if="permissions?.timedOutUntil" class="notice">
+      The bot is timed out in this server until {{ new Date(permissions.timedOutUntil).toLocaleString() }}.
     </p>
     <p v-if="permissions && !permissions.canPost" class="notice">
       The bot cannot post here. Missing permissions: {{ missing.join(', ') }}.

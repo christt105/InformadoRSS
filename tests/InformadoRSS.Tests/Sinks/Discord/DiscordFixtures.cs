@@ -40,10 +40,13 @@ public static class DiscordFixtures
         }
         """;
 
-    public static string Member(params string[] roles)
+    public static string Member(params string[] roles) => MemberTimedOutUntil(null, roles);
+
+    public static string MemberTimedOutUntil(string? until, params string[] roles)
     {
         var roleList = string.Join(',', roles.Select(role => $"\"{role}\""));
-        return $$"""{"roles":[{{roleList}}],"user":{"id":"{{BotId}}"} }""";
+        var timeout = until is null ? "null" : $"\"{until}\"";
+        return $$"""{"roles":[{{roleList}}],"user":{"id":"{{BotId}}"},"communication_disabled_until":{{timeout}} }""";
     }
 
     public static string Channels =>

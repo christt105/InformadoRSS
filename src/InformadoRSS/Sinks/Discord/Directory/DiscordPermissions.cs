@@ -14,6 +14,7 @@ public static class DiscordPermissions
     public const ulong SendTtsMessages = 1UL << 12;
     public const ulong EmbedLinks = 1UL << 14;
     public const ulong AttachFiles = 1UL << 15;
+    public const ulong ReadMessageHistory = 1UL << 16;
     public const ulong MentionEveryone = 1UL << 17;
 
     /// <summary>Permissions that are implicitly lost without <see cref="SendMessages"/>.</summary>

@@ -201,6 +201,7 @@ export interface Channel {
   categoryId: string | null
   categoryName: string | null
   position: number
+  canPost: boolean | null
 }
 
 export interface PermissionCheck {
@@ -215,6 +216,7 @@ export interface ChannelPermissions {
   channelType: string
   canPost: boolean
   permissions: PermissionCheck[]
+  timedOutUntil: string | null
 }
 
 /** An API call that answered with an error status; `body` holds the JSON error when the server sent one. */
