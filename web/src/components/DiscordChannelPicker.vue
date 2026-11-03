@@ -143,9 +143,6 @@ watch(channelId, checkPermissions)
       {{ error }}
       <RouterLink v-if="tokenMissing" to="/settings">Open settings</RouterLink>
     </p>
-    <p v-if="channel?.type === 'forum' || permissions?.channelType === 'forum'" class="notice">
-      This is a forum channel. Forum channels are not supported for delivery yet; pick a text or announcement channel.
-    </p>
     <p v-if="permissions && !permissions.canPost" class="notice">
       The bot cannot post here. Missing permissions: {{ missing.join(', ') }}.
     </p>
