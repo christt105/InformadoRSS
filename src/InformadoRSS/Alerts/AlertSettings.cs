@@ -24,7 +24,7 @@ public sealed record AlertSettings
     /// <summary>Whole minutes a feed may go without a successful fetch before it is reported as broken.</summary>
     public const string FeedBrokenAfterMinutesKey = "alerts.feedBrokenAfterMinutes";
 
-    public static TimeSpan DefaultFeedBrokenAfter { get; } = TimeSpan.FromHours(6);
+    public static TimeSpan DefaultFeedBrokenAfter { get; } = TimeSpan.FromHours(24);
 
     public AlertTarget Target { get; init; } = AlertTarget.Discord;
 
@@ -36,8 +36,8 @@ public sealed record AlertSettings
 
     /// <summary>
     /// How long a feed may keep failing before the "feed broken" alert, measured from the first failure after its last
-    /// success. Time based rather than a failure count, so daily outages of a few hours (such as YouTube feeds answering
-    /// 404 for a while) do not raise alerts.
+    /// success. Time based rather than a failure count, so daily outages of several hours (such as YouTube feeds answering
+    /// 404 for up to about 9 hours every night) do not raise alerts.
     /// </summary>
     public TimeSpan FeedBrokenAfter { get; init; } = DefaultFeedBrokenAfter;
 

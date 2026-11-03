@@ -7,6 +7,9 @@ public sealed class SqliteFeedStore(SqliteDatabase database) : IFeedStore
     private const string SelectColumns =
         "SELECT id, url, name, interval_seconds, consecutive_failures, last_success_at, last_error_at, last_error, etag, last_modified, identity_pattern FROM feeds";
 
+    /// <summary>How old the stored success time may get before a success that changes nothing else rewrites it.</summary>
+    public static TimeSpan SuccessRefreshInterval { get; } = TimeSpan.FromHours(1);
+
     public async Task<IReadOnlyList<Feed>> ListAsync(CancellationToken cancellationToken)
     {
         await using var connection = await database.OpenAsync(cancellationToken);
@@ -86,9 +89,12 @@ public sealed class SqliteFeedStore(SqliteDatabase database) : IFeedStore
             UPDATE feeds
             SET consecutive_failures = 0, last_success_at = $at, etag = $etag, last_modified = $lastModified
             WHERE id = $id
+                AND (consecutive_failures <> 0 OR last_success_at IS NULL OR last_success_at <= $refreshBefore
+                    OR etag IS NOT $etag OR last_modified IS NOT $lastModified)
             """;
         command.Parameters.AddWithValue("$id", id);
         command.Parameters.AddWithValue("$at", at.ToUnixTimeMilliseconds());
+        command.Parameters.AddWithValue("$refreshBefore", (at - SuccessRefreshInterval).ToUnixTimeMilliseconds());
         command.Parameters.AddWithValue("$etag", SqliteValues.OrDbNull(validators.ETag));
         command.Parameters.AddWithValue("$lastModified", SqliteValues.OrDbNull(validators.LastModified));
         await command.ExecuteNonQueryAsync(cancellationToken);

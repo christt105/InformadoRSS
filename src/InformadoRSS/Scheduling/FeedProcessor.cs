@@ -192,6 +192,7 @@ public sealed class FeedProcessor
         var ordered = OldestFirst(matched);
         var batch = ordered.Take(_options.MaxItemsPerRoute).ToList();
         var delivered = 0;
+        var unrenderable = 0;
         foreach (var item in batch)
         {
             RenderedMessage message;
@@ -202,7 +203,9 @@ public sealed class FeedProcessor
             catch (Exception ex) when (ex is not OperationCanceledException)
             {
                 _logger.RenderFailed(ex, route.Id, name, item.Id);
-                return false;
+                await _seenItems.MarkSeenAsync(route.Id, [item.Id], _time.GetUtcNow(), cancellationToken);
+                unrenderable++;
+                continue;
             }
 
             if (!await DeliverAsync(route, item, message, cancellationToken))
@@ -214,7 +217,7 @@ public sealed class FeedProcessor
             delivered++;
         }
 
-        var pending = ordered.Count - delivered;
+        var pending = ordered.Count - delivered - unrenderable;
         if (delivered > 0)
         {
             _logger.RouteDelivered(route.Id, name, delivered, pending);

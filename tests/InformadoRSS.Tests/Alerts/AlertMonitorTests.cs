@@ -90,7 +90,7 @@ public sealed class AlertMonitorTests : IAsyncLifetime
     public async Task DailyYouTubeOutageDoesNotAlert()
     {
         await FailAsync(TimeSpan.Zero);
-        for (var i = 0; i < 6; i++)
+        for (var i = 0; i < 18; i++)
         {
             await FailAsync(TimeSpan.FromMinutes(30));
         }
@@ -108,7 +108,7 @@ public sealed class AlertMonitorTests : IAsyncLifetime
     public async Task LongOutageAlertsOnceThenRecoversOnce()
     {
         await FailAsync(TimeSpan.Zero);
-        for (var i = 0; i < 5; i++)
+        for (var i = 0; i < 23; i++)
         {
             await FailAsync(TimeSpan.FromHours(1));
         }
@@ -124,7 +124,7 @@ public sealed class AlertMonitorTests : IAsyncLifetime
 
         Assert.Equal(["Feed failing: PolHostRex"], AlertTitles());
         var message = JsonDocument.Parse(_discord.Requests[0].Body).RootElement.GetProperty("embeds")[0];
-        Assert.Contains("failing for 6h (8 failures in a row)", message.GetProperty("description").GetString(), StringComparison.Ordinal);
+        Assert.Contains("failing for 1d (26 failures in a row)", message.GetProperty("description").GetString(), StringComparison.Ordinal);
         Assert.Contains("HTTP 404 Not Found", message.GetProperty("description").GetString(), StringComparison.Ordinal);
         Assert.Equal(AlertSender.ProblemColor, message.GetProperty("color").GetInt32());
 
@@ -140,11 +140,12 @@ public sealed class AlertMonitorTests : IAsyncLifetime
     {
         var ct = TestContext.Current.CancellationToken;
         await FailAsync(TimeSpan.Zero);
-        await FailAsync(TimeSpan.FromHours(7));
+        var pastThreshold = AlertSettings.DefaultFeedBrokenAfter + TimeSpan.FromHours(1);
+        await FailAsync(pastThreshold);
         Assert.Single(_discord.Requests);
 
         var state = await new SqliteAlertStateStore(_db.Database).GetFeedStateAsync(_feed.Id, ct);
-        Assert.Equal(new FeedAlertState(Start, Start + TimeSpan.FromHours(7)), state);
+        Assert.Equal(new FeedAlertState(Start, Start + pastThreshold), state);
 
         await FailAsync(TimeSpan.FromHours(1));
         await FailAsync(TimeSpan.FromHours(1));
@@ -172,7 +173,7 @@ public sealed class AlertMonitorTests : IAsyncLifetime
         _discord.On(AlertRoute, () => FakeDiscordApi.Json(HttpStatusCode.BadGateway, """{"message":"bad gateway","code":0}"""));
 
         await FailAsync(TimeSpan.Zero);
-        await FailAsync(TimeSpan.FromHours(6));
+        await FailAsync(AlertSettings.DefaultFeedBrokenAfter);
 
         Assert.Single(_discord.Requests);
         Assert.Null((await _states.GetFeedStateAsync(_feed.Id, ct))!.AlertedAt);
@@ -191,7 +192,7 @@ public sealed class AlertMonitorTests : IAsyncLifetime
         _discord.On(AlertRoute, () => FakeDiscordApi.Json(HttpStatusCode.NotFound, """{"message":"Unknown Channel","code":10003}"""));
 
         await FailAsync(TimeSpan.Zero);
-        await FailAsync(TimeSpan.FromHours(6));
+        await FailAsync(AlertSettings.DefaultFeedBrokenAfter);
         await FailAsync(TimeSpan.FromHours(1));
 
         Assert.Single(_discord.Requests);
@@ -204,7 +205,7 @@ public sealed class AlertMonitorTests : IAsyncLifetime
         await _db.Settings.SetAsync(AlertSettings.DiscordChannelIdKey, null, ct);
 
         await FailAsync(TimeSpan.Zero);
-        await FailAsync(TimeSpan.FromHours(6));
+        await FailAsync(AlertSettings.DefaultFeedBrokenAfter);
 
         Assert.NotNull((await _states.GetFeedStateAsync(_feed.Id, ct))!.AlertedAt);
 
@@ -225,7 +226,7 @@ public sealed class AlertMonitorTests : IAsyncLifetime
             .On("POST channels/555/messages", """{"id":"1"}""");
 
         await FailAsync(TimeSpan.Zero);
-        await FailAsync(TimeSpan.FromHours(6));
+        await FailAsync(AlertSettings.DefaultFeedBrokenAfter);
 
         Assert.Equal(["POST users/@me/channels", "POST channels/555/messages"], _discord.RequestedRoutes);
         Assert.Equal("77", JsonDocument.Parse(_discord.Requests[0].Body).RootElement.GetProperty("recipient_id").GetString());
@@ -243,7 +244,7 @@ public sealed class AlertMonitorTests : IAsyncLifetime
             () => FakeDiscordApi.Json(HttpStatusCode.BadRequest, """{"message":"Invalid Recipient(s)","code":50033}"""));
 
         await FailAsync(TimeSpan.Zero);
-        await FailAsync(TimeSpan.FromHours(6));
+        await FailAsync(AlertSettings.DefaultFeedBrokenAfter);
         await FailAsync(TimeSpan.FromHours(1));
 
         Assert.Equal(["POST users/@me/channels"], _discord.RequestedRoutes);
@@ -258,7 +259,7 @@ public sealed class AlertMonitorTests : IAsyncLifetime
         await _db.Settings.SetAsync(NtfySettings.UrlKey, "http://ntfy.local:8094", ct);
 
         await FailAsync(TimeSpan.Zero);
-        await FailAsync(TimeSpan.FromHours(6));
+        await FailAsync(AlertSettings.DefaultFeedBrokenAfter);
         await SucceedAsync(TimeSpan.FromMinutes(10));
 
         Assert.Empty(_discord.Requests);
@@ -268,7 +269,7 @@ public sealed class AlertMonitorTests : IAsyncLifetime
         Assert.Equal("Feed failing: PolHostRex", FakeNtfyServer.Header(broken, "Title"));
         Assert.Equal("4", FakeNtfyServer.Header(broken, "Priority"));
         Assert.Equal("warning", FakeNtfyServer.Header(broken, "Tags"));
-        Assert.StartsWith("PolHostRex has been failing for 6h", body, StringComparison.Ordinal);
+        Assert.StartsWith("PolHostRex has been failing for 1d", body, StringComparison.Ordinal);
         var recovered = _ntfy.Requests[1].Request;
         Assert.Equal("Feed recovered: PolHostRex", FakeNtfyServer.Header(recovered, "Title"));
         Assert.Equal("white_check_mark", FakeNtfyServer.Header(recovered, "Tags"));
@@ -322,7 +323,7 @@ public sealed class AlertMonitorTests : IAsyncLifetime
         await FailAsync(TimeSpan.Zero);
         await _db.Feeds.DeleteAsync(_feed.Id, ct);
 
-        _time.Advance(TimeSpan.FromHours(7));
+        _time.Advance(AlertSettings.DefaultFeedBrokenAfter + TimeSpan.FromHours(1));
         await NotifyAsync();
 
         Assert.Empty(_discord.Requests);

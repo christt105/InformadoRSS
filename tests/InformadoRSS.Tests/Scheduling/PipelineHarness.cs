@@ -28,6 +28,8 @@ public sealed class PipelineHarness : IAsyncDisposable
 
     public FakeSink Ntfy { get; } = new("ntfy");
 
+    public FakeRenderer Renderer { get; } = new();
+
     /// <summary>Cycle observers registered in the scheduler services; add them before the first <see cref="CreateScheduler"/>.</summary>
     public List<IFeedCycleObserver> Observers { get; } = [];
 
@@ -78,7 +80,7 @@ public sealed class PipelineHarness : IAsyncDisposable
     public async Task<Feed> ReloadAsync(Feed feed) => (await Feeds.GetAsync(feed.Id, TestContext.Current.CancellationToken))!;
 
     public FeedProcessor CreateProcessor() =>
-        new(Source, Feeds, Routes, SeenItems, LatestItems, new FakeRenderer(), [Discord, Ntfy], Backoff, Options, Time, NullLogger<FeedProcessor>.Instance);
+        new(Source, Feeds, Routes, SeenItems, LatestItems, Renderer, [Discord, Ntfy], Backoff, Options, Time, NullLogger<FeedProcessor>.Instance);
 
     /// <summary>Reloads the feed from storage and runs one cycle, like the scheduler does.</summary>
     public async Task<FeedOutcome> RunCycleAsync(Feed feed) =>

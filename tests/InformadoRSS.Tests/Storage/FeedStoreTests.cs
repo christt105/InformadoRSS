@@ -81,6 +81,45 @@ public sealed class FeedStoreTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task UnchangedSuccessRefreshesItsTimeOnlyOncePerInterval()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var feed = await _db.Feeds.AddAsync(Blog, ct);
+        var t0 = new DateTimeOffset(2026, 10, 18, 12, 0, 0, TimeSpan.Zero);
+        var validators = new FeedValidators("\"abc\"", null);
+
+        await _db.Feeds.RecordSuccessAsync(feed.Id, t0, validators, ct);
+        await _db.Feeds.RecordSuccessAsync(feed.Id, t0.AddMinutes(10), validators, ct);
+        Assert.Equal(t0, (await _db.Feeds.GetAsync(feed.Id, ct))!.Health.LastSuccessAt);
+
+        await _db.Feeds.RecordSuccessAsync(feed.Id, t0 + SqliteFeedStore.SuccessRefreshInterval, validators, ct);
+        Assert.Equal(t0 + SqliteFeedStore.SuccessRefreshInterval, (await _db.Feeds.GetAsync(feed.Id, ct))!.Health.LastSuccessAt);
+    }
+
+    [Fact]
+    public async Task SuccessIsWrittenAtOnceWhenValidatorsOrFailuresChange()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var feed = await _db.Feeds.AddAsync(Blog, ct);
+        var t0 = new DateTimeOffset(2026, 10, 18, 12, 0, 0, TimeSpan.Zero);
+        var changed = new FeedValidators("\"def\"", null);
+
+        await _db.Feeds.RecordSuccessAsync(feed.Id, t0, new FeedValidators("\"abc\"", null), ct);
+        await _db.Feeds.RecordSuccessAsync(feed.Id, t0.AddMinutes(10), changed, ct);
+
+        var revalidated = (await _db.Feeds.GetAsync(feed.Id, ct))!;
+        Assert.Equal(t0.AddMinutes(10), revalidated.Health.LastSuccessAt);
+        Assert.Equal(changed, revalidated.Validators);
+
+        await _db.Feeds.RecordFailureAsync(feed.Id, t0.AddMinutes(20), "HTTP 404", ct);
+        await _db.Feeds.RecordSuccessAsync(feed.Id, t0.AddMinutes(30), changed, ct);
+
+        var recovered = (await _db.Feeds.GetAsync(feed.Id, ct))!;
+        Assert.Equal(0, recovered.Health.ConsecutiveFailures);
+        Assert.Equal(t0.AddMinutes(30), recovered.Health.LastSuccessAt);
+    }
+
+    [Fact]
     public async Task ChangingUrlDropsValidators()
     {
         var ct = TestContext.Current.CancellationToken;
